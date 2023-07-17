@@ -1,59 +1,26 @@
 {
-  "last_node_id": 31,
-  "last_link_id": 35,
+  "last_node_id": 38,
+  "last_link_id": 51,
   "nodes": [
-    {
-      "id": 5,
-      "type": "EmptyLatentImage",
-      "pos": [
-        633,
-        -295
-      ],
-      "size": {
-        "0": 315,
-        "1": 106
-      },
-      "flags": {},
-      "order": 0,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            2
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        512,
-        768,
-        1
-      ]
-    },
     {
       "id": 3,
       "type": "KSampler",
       "pos": [
-        630,
-        -144
+        571.8721572265622,
+        -146.3239873046875
       ],
       "size": {
         "0": 315,
         "1": 262
       },
       "flags": {},
-      "order": 6,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
           "name": "model",
           "type": "MODEL",
-          "link": 1
+          "link": 47
         },
         {
           "name": "positive",
@@ -85,131 +52,13 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        255691940806508,
+        462878846866285,
         "randomize",
         20,
         7,
         "dpmpp_2m",
         "exponential",
         1
-      ]
-    },
-    {
-      "id": 4,
-      "type": "CheckpointLoaderSimple",
-      "pos": [
-        -227,
-        73
-      ],
-      "size": {
-        "0": 315,
-        "1": 98
-      },
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            1,
-            26
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            5,
-            16
-          ],
-          "slot_index": 1
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [],
-          "slot_index": 2
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CheckpointLoaderSimple"
-      },
-      "widgets_values": [
-        "wololo-mix-v2.safetensors"
-      ]
-    },
-    {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        146,
-        172
-      ],
-      "size": {
-        "0": 441.3026428222656,
-        "1": 259.2375183105469
-      },
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 5
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            6,
-            28
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "(by bad-artist-anime:0.8, by bad-artist:0.8, verybadimagenegative_v1.3, bad-hands-5, negative_hand, negative_hand-neg, bad_prompt_version2, FastNegativeV2, easynegative, ng_deepnegative_v1_75t), (worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
-      ]
-    },
-    {
-      "id": 22,
-      "type": "UpscaleModelLoader",
-      "pos": [
-        606,
-        259
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "UPSCALE_MODEL",
-          "type": "UPSCALE_MODEL",
-          "links": [
-            21
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UpscaleModelLoader"
-      },
-      "widgets_values": [
-        "RealESRGAN_x4plus_anime_6B.pth"
       ]
     },
     {
@@ -224,7 +73,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 8,
+      "order": 15,
       "mode": 0,
       "inputs": [
         {
@@ -265,7 +114,7 @@
         "1": 130
       },
       "flags": {},
-      "order": 10,
+      "order": 17,
       "mode": 0,
       "inputs": [
         {
@@ -296,44 +145,44 @@
       ]
     },
     {
-      "id": 25,
-      "type": "VAEEncode",
+      "id": 8,
+      "type": "VAEDecode",
       "pos": [
-        1653,
-        -71
+        664.8721572265622,
+        163.6760126953125
       ],
       "size": {
         "0": 210,
         "1": 46
       },
       "flags": {},
-      "order": 11,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
-          "name": "pixels",
-          "type": "IMAGE",
-          "link": 24
+          "name": "samples",
+          "type": "LATENT",
+          "link": 7
         },
         {
           "name": "vae",
           "type": "VAE",
-          "link": 31
+          "link": 37
         }
       ],
       "outputs": [
         {
-          "name": "LATENT",
-          "type": "LATENT",
+          "name": "IMAGE",
+          "type": "IMAGE",
           "links": [
-            25
+            20,
+            34
           ],
-          "shape": 3,
           "slot_index": 0
         }
       ],
       "properties": {
-        "Node name for S&R": "VAEEncode"
+        "Node name for S&R": "VAEDecode"
       }
     },
     {
@@ -348,23 +197,23 @@
         "1": 262
       },
       "flags": {},
-      "order": 12,
+      "order": 19,
       "mode": 0,
       "inputs": [
         {
           "name": "model",
           "type": "MODEL",
-          "link": 26
+          "link": 49
         },
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 27
+          "link": 43
         },
         {
           "name": "negative",
           "type": "CONDITIONING",
-          "link": 28
+          "link": 45
         },
         {
           "name": "latent_image",
@@ -387,37 +236,35 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        1026941345902408,
+        502249068073047,
         "randomize",
         13,
         8,
         "dpmpp_2m",
         "karras",
-        0.45
+        0.55
       ]
     },
     {
       "id": 19,
       "type": "VAELoader",
       "pos": [
-        -231,
-        221
+        -661.1278427734378,
+        250.6760126953125
       ],
       "size": {
         "0": 315,
         "1": 58
       },
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "outputs": [
         {
           "name": "VAE",
           "type": "VAE",
           "links": [
-            18,
-            31,
-            32
+            36
           ],
           "shape": 3,
           "slot_index": 0
@@ -431,18 +278,366 @@
       ]
     },
     {
+      "id": 32,
+      "type": "Reroute",
+      "pos": [
+        45.87215722656244,
+        288.6760126953125
+      ],
+      "size": [
+        75,
+        26
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            37,
+            40
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 33,
+      "type": "Reroute",
+      "pos": [
+        1441,
+        277
+      ],
+      "size": [
+        75,
+        26
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 40
+        }
+      ],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            39,
+            41
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        120.87215722656248,
+        192.6760126953125
+      ],
+      "size": {
+        "0": 441.3026428222656,
+        "1": 259.2375183105469
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            6,
+            44
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "(by bad-artist-anime:0.8, by bad-artist:0.8, verybadimagenegative_v1.3, bad-hands-5, negative_hand, negative_hand-neg, bad_prompt_version2, FastNegativeV2, easynegative, ng_deepnegative_v1_75t), (worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
+      ]
+    },
+    {
+      "id": 35,
+      "type": "Reroute",
+      "pos": [
+        1359.222430419922,
+        144.03236694335936
+      ],
+      "size": [
+        140.8,
+        26
+      ],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 44
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            45
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 36,
+      "type": "Reroute",
+      "pos": [
+        393.8721572265626,
+        -148.3239873046875
+      ],
+      "size": [
+        82,
+        26
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 46
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            47
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 4,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -654.1278427734378,
+        71.6760126953125
+      ],
+      "size": {
+        "0": 315,
+        "1": 98
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            46,
+            48
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            5,
+            16
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "wololo-mix-v2.safetensors"
+      ]
+    },
+    {
+      "id": 37,
+      "type": "Reroute",
+      "pos": [
+        1712,
+        -161
+      ],
+      "size": [
+        82,
+        26
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 48
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            49
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 25,
+      "type": "VAEEncode",
+      "pos": [
+        1653,
+        -27
+      ],
+      "size": {
+        "0": 210,
+        "1": 46
+      },
+      "flags": {},
+      "order": 18,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 24
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 41
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            25
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode"
+      }
+    },
+    {
+      "id": 34,
+      "type": "Reroute",
+      "pos": [
+        1681,
+        -101
+      ],
+      "size": [
+        140.8,
+        26
+      ],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 51
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            43
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
+    },
+    {
       "id": 18,
       "type": "Prompt Generator",
       "pos": [
-        150,
-        -348
+        -125.12784277343758,
+        -333.3239873046875
       ],
       "size": {
         "0": 445.82281494140625,
         "1": 461.5046691894531
       },
       "flags": {},
-      "order": 5,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -457,7 +652,7 @@
           "type": "CONDITIONING",
           "links": [
             17,
-            27
+            50
           ],
           "shape": 3,
           "slot_index": 0
@@ -469,7 +664,7 @@
       "widgets_values": [
         "gpt2",
         "female_positive-gpt2-141972-5-1",
-        "1girl, solo, mature woman, short hair, white hair, ((stunningly beautiful)), medium breasts, beautiful face, beautiful eyes, beautiful body, rogue, archer",
+        "1girl, solo, koenigsegg jesko, koenigsegg, car, jesko, mature woman, white hair, short hair, driving high speed car, driving car",
         20,
         50,
         "disable",
@@ -484,59 +679,79 @@
       ]
     },
     {
-      "id": 8,
-      "type": "VAEDecode",
+      "id": 5,
+      "type": "EmptyLatentImage",
       "pos": [
-        723,
-        166
+        367.8721572265626,
+        -59.3239873046875
       ],
       "size": {
-        "0": 210,
-        "1": 46
+        "0": 315,
+        "1": 106
       },
-      "flags": {},
-      "order": 7,
+      "flags": {
+        "collapsed": true
+      },
+      "order": 0,
       "mode": 0,
-      "inputs": [
-        {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 7
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 18
-        }
-      ],
       "outputs": [
         {
-          "name": "IMAGE",
-          "type": "IMAGE",
+          "name": "LATENT",
+          "type": "LATENT",
           "links": [
-            20,
-            34
+            2
           ],
           "slot_index": 0
         }
       ],
       "properties": {
-        "Node name for S&R": "VAEDecode"
-      }
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        512,
+        768,
+        1
+      ]
+    },
+    {
+      "id": 31,
+      "type": "SaveImage",
+      "pos": [
+        1903,
+        351
+      ],
+      "size": [
+        460.6601699218754,
+        738.5096362304689
+      ],
+      "flags": {},
+      "order": 21,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 35
+        }
+      ],
+      "properties": {},
+      "widgets_values": [
+        "ComfyUI"
+      ]
     },
     {
       "id": 27,
       "type": "VAEDecode",
       "pos": [
-        1925,
-        245
+        1951,
+        256
       ],
       "size": {
         "0": 210,
         "1": 46
       },
       "flags": {},
-      "order": 13,
+      "order": 20,
       "mode": 0,
       "inputs": [
         {
@@ -547,7 +762,7 @@
         {
           "name": "vae",
           "type": "VAE",
-          "link": 32
+          "link": 39
         }
       ],
       "outputs": [
@@ -566,44 +781,50 @@
       }
     },
     {
-      "id": 31,
-      "type": "SaveImage",
+      "id": 22,
+      "type": "UpscaleModelLoader",
       "pos": [
-        1903,
-        351
+        983,
+        -221
       ],
       "size": {
         "0": 315,
         "1": 58
       },
       "flags": {},
-      "order": 14,
+      "order": 1,
       "mode": 0,
-      "inputs": [
+      "outputs": [
         {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 35
+          "name": "UPSCALE_MODEL",
+          "type": "UPSCALE_MODEL",
+          "links": [
+            21
+          ],
+          "shape": 3,
+          "slot_index": 0
         }
       ],
-      "properties": {},
+      "properties": {
+        "Node name for S&R": "UpscaleModelLoader"
+      },
       "widgets_values": [
-        "ComfyUI"
+        "RealESRGAN_x4plus_anime_6B.pth"
       ]
     },
     {
       "id": 30,
       "type": "PreviewImage",
       "pos": [
-        980,
-        356
+        562.8721572265622,
+        274.6760126953125
       ],
-      "size": {
-        "0": 210,
-        "1": 26
-      },
+      "size": [
+        327.5105535333803,
+        515.4847634055394
+      ],
       "flags": {},
-      "order": 9,
+      "order": 16,
       "mode": 0,
       "inputs": [
         {
@@ -615,17 +836,45 @@
       "properties": {
         "Node name for S&R": "PreviewImage"
       }
+    },
+    {
+      "id": 38,
+      "type": "Reroute",
+      "pos": [
+        1108,
+        -324
+      ],
+      "size": [
+        140.8,
+        26
+      ],
+      "flags": {},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "",
+          "type": "*",
+          "link": 50
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            51
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
     }
   ],
   "links": [
-    [
-      1,
-      4,
-      0,
-      3,
-      0,
-      "MODEL"
-    ],
     [
       2,
       5,
@@ -675,14 +924,6 @@
       "CONDITIONING"
     ],
     [
-      18,
-      19,
-      0,
-      8,
-      1,
-      "VAE"
-    ],
-    [
       20,
       8,
       0,
@@ -723,52 +964,12 @@
       "LATENT"
     ],
     [
-      26,
-      4,
-      0,
-      26,
-      0,
-      "MODEL"
-    ],
-    [
-      27,
-      18,
-      0,
-      26,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      28,
-      7,
-      0,
-      26,
-      2,
-      "CONDITIONING"
-    ],
-    [
       29,
       26,
       0,
       27,
       0,
       "LATENT"
-    ],
-    [
-      31,
-      19,
-      0,
-      25,
-      1,
-      "VAE"
-    ],
-    [
-      32,
-      19,
-      0,
-      27,
-      1,
-      "VAE"
     ],
     [
       34,
@@ -785,9 +986,142 @@
       31,
       0,
       "IMAGE"
+    ],
+    [
+      36,
+      19,
+      0,
+      32,
+      0,
+      "*"
+    ],
+    [
+      37,
+      32,
+      0,
+      8,
+      1,
+      "VAE"
+    ],
+    [
+      39,
+      33,
+      0,
+      27,
+      1,
+      "VAE"
+    ],
+    [
+      40,
+      32,
+      0,
+      33,
+      0,
+      "*"
+    ],
+    [
+      41,
+      33,
+      0,
+      25,
+      1,
+      "VAE"
+    ],
+    [
+      43,
+      34,
+      0,
+      26,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      44,
+      7,
+      0,
+      35,
+      0,
+      "*"
+    ],
+    [
+      45,
+      35,
+      0,
+      26,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      46,
+      4,
+      0,
+      36,
+      0,
+      "*"
+    ],
+    [
+      47,
+      36,
+      0,
+      3,
+      0,
+      "MODEL"
+    ],
+    [
+      48,
+      4,
+      0,
+      37,
+      0,
+      "*"
+    ],
+    [
+      49,
+      37,
+      0,
+      26,
+      0,
+      "MODEL"
+    ],
+    [
+      50,
+      18,
+      0,
+      38,
+      0,
+      "*"
+    ],
+    [
+      51,
+      38,
+      0,
+      34,
+      0,
+      "*"
     ]
   ],
-  "groups": [],
+  "groups": [
+    {
+      "title": "Txt2Img",
+      "bounding": [
+        -682,
+        -443,
+        1602,
+        1278
+      ],
+      "color": "#3f789e"
+    },
+    {
+      "title": "Hires .fix",
+      "bounding": [
+        948,
+        -439,
+        1499,
+        1561
+      ],
+      "color": "#a1309b"
+    }
+  ],
   "config": {},
   "extra": {},
   "version": 0.4
