@@ -14,7 +14,7 @@ class PromptGenerator:
                 "model_name":([file for file in listdir(join("models", "prompt_generators")) if isdir(join(join("models", "prompt_generators"), file))],),
                 "seed": ("STRING", {
                     "multiline" : True,
-                    "default" : "1girl, solo, riding motorbike"
+                    "default" : "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))"
                 }),
                 "min_token": ("INT", {
                     "default": 5,
