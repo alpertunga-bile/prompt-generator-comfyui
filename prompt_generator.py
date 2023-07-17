@@ -1,3 +1,6 @@
+from os import listdir
+from os.path import join, isdir
+
 class PromptGenerator:
     @classmethod
     def INPUT_TYPES(s):
@@ -8,9 +11,7 @@ class PromptGenerator:
                     "multiline" : False,
                     "default" : "gpt2"
                 }),
-                "model_name": ("STRING", {
-                    "multiline" : False,
-                }),
+                "model_name":([file for file in listdir(join("models", "prompt_generators")) if isdir(join(join("models", "prompt_generators"), file))],),
                 "seed": ("STRING", {
                     "multiline" : True,
                     "default" : "mature woman"
@@ -80,17 +81,19 @@ class PromptGenerator:
         can_add = True
 
         for prompt in prompts:
-            keyword = prompt.strip("(),")
+            keyword = prompt.strip("(),").strip()
+            
+            if keyword == "":
+                continue
+
             for pos_prompt in pure_prompts:
                 if keyword in pos_prompt:
                     can_add = False
                     break
-            
-            if keyword == "":
-                can_add = False
 
             if can_add is False:
                 continue
+
             pure_prompts.append(prompt)
             can_add = True
 
@@ -106,18 +109,18 @@ class PromptGenerator:
         temp_line = temp_line.replace("\n", ", ")
         temp_line = temp_line.replace("  ", " ")
         temp_line = temp_line.replace("\t", " ")
+        temp_line = temp_line.replace("|", ",")
         temp_line = sub(pattern, ', ', temp_line)
 
-        # remove duplicates
-        temp_line = ', '.join(self.RemoveDuplicates(temp_line))
+        temp_line = ','.join(self.RemoveDuplicates(temp_line))
 
         return temp_line
     
-    def GetGeneratedText(self, generator, gen_args, seed, is_recursive, recursive_level):
+    def GetGeneratedText(self, generator, gen_args, seed, is_self_recursive, recursive_level):
         result = generator.generate_text(seed, gen_args)
         generated_text = self.Preprocess(seed + result.text)
 
-        if is_recursive:
+        if is_self_recursive:
             for _ in range(0, recursive_level):
                 result = generator.generate_text(generated_text, gen_args)
                 generated_text = self.Preprocess(result.text)
@@ -130,13 +133,13 @@ class PromptGenerator:
             
         return generated_text
     
-    def LogOutputs(self, seed : str, generated_text : str, self_recursive : str, recursive_level : int, gen_settings, log_filename : str, ) -> None:
+    def LogOutputs(self, seed : str, generated_text : str, self_recursive : str, recursive_level : int, gen_settings, log_filename : str) -> None:
         from datetime import datetime
 
         print_string = f"{'  PROMPT GENERATOR OUTPUT  '.center(200, '#')}\n{generated_text}\n{'#'*200}\n"
         print(print_string)
 
-        log_string = f"{'#'*200}\nDate & Time : {datetime.now()}\nSeed : {seed}\nPrompt : {generated_text}"
+        log_string = f"{'#'*200}\nDate & Time : {datetime.now()}\nSeed : {seed}\nPrompt : {generated_text}\n"
         log_string += f"min_token = {gen_settings.min_length}\n"
         log_string += f"max_token = {gen_settings.max_length}\n"
         log_string += f"do_sample = {gen_settings.do_sample}\n"
@@ -167,7 +170,7 @@ class PromptGenerator:
             print(f"{real_path} is not exists")
             generated_text = seed
         else:
-            is_recursive = True if self_recursive == "enable" else False
+            is_self_recursive = True if self_recursive == "enable" else False
 
             upper_model_type = model_type.upper()
             if model_type.find("/") != -1:
@@ -187,7 +190,7 @@ class PromptGenerator:
                 no_repeat_ngram_size=no_repeat_ngram_size
             )
 
-            generated_text = self.GetGeneratedText(generator, gen_settings, seed, is_recursive, recursive_level)
+            generated_text = self.GetGeneratedText(generator, gen_settings, seed, is_self_recursive, recursive_level)
 
         self.LogOutputs(seed, generated_text, self_recursive, recursive_level, gen_settings, prompt_log_filename)
 
