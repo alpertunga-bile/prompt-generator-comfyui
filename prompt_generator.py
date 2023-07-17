@@ -1,7 +1,7 @@
 from os import listdir
 from os.path import join, isdir
 
-class PromptGenerator:
+class PromptGenerator:    
     @classmethod
     def INPUT_TYPES(s):
         return {
@@ -14,22 +14,22 @@ class PromptGenerator:
                 "model_name":([file for file in listdir(join("models", "prompt_generators")) if isdir(join(join("models", "prompt_generators"), file))],),
                 "seed": ("STRING", {
                     "multiline" : True,
-                    "default" : "mature woman"
+                    "default" : "1girl, solo, riding motorbike"
                 }),
                 "min_token": ("INT", {
                     "default": 5,
                     "min":0,
-                    "max":20,
+                    "max":30,
                     "step":1
                 }),
                 "max_token": ("INT", {
-                    "default": 30,
-                    "min":20,
-                    "max":50,
+                    "default": 50,
+                    "min":35,
+                    "max":100,
                     "step":1
                 }),
-                "do_sample": (["enable", "disable"],),
-                "early_stopping": (["enable", "disable"],),
+                "do_sample": (["disable", "enable"],),
+                "early_stopping": (["disable", "enable"],),
                 "num_beams": ("INT", {
                     "default": 1,
                     "min":1,
@@ -60,7 +60,7 @@ class PromptGenerator:
                     "max":50,
                     "step":1
                 }),
-                "self_recursive": (["enable", "disable"],),
+                "self_recursive": (["disable", "enable"],),
                 "recursive_level": ("INT", {
                     "default": 0,
                     "min":0,
@@ -75,7 +75,7 @@ class PromptGenerator:
 
     CATEGORY = "Prompt Generator"
 
-    def RemoveDuplicates(self, line : str) -> list:
+    def RemoveDuplicates(self, line : str) -> list[str]:
         prompts = line.split(",")
         pure_prompts = []
         can_add = True
@@ -116,7 +116,7 @@ class PromptGenerator:
 
         return temp_line
     
-    def GetGeneratedText(self, generator, gen_args, seed, is_self_recursive, recursive_level):
+    def GetGeneratedText(self, generator, gen_args, seed : str, is_self_recursive : bool, recursive_level : int) -> str:
         result = generator.generate_text(seed, gen_args)
         generated_text = self.Preprocess(seed + result.text)
 
@@ -156,15 +156,19 @@ class PromptGenerator:
     def generate(self, clip, model_type, model_name, seed, min_token, max_token, do_sample, early_stopping, num_beams, temperature, top_k, top_p, no_repeat_ngram_size, self_recursive, recursive_level):
         from happytransformer import HappyGeneration, GENSettings
         from os.path import join, exists
-        
-        real_path = join(join("models", "prompt_generators"), model_name)
+        from os import mkdir
+
+        root = join("models", "prompt_generators")
+        real_path = join(root, model_name)
         prompt_log_filename = "generated_prompt.txt"
+        generated_text = ""
+
+        if exists(root) is False:
+            mkdir(root)
 
         if exists(prompt_log_filename) is False:
             file = open(prompt_log_filename, "w")
             file.close()
-
-        generated_text = ""
 
         if exists(real_path) is False:
             print(f"{real_path} is not exists")
