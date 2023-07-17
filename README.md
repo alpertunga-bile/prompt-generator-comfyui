@@ -16,7 +16,7 @@ Custom prompt generator node for ComfyUI
 ![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
 
 # Variables
-- You can get info from variables from [this](https://happytransformer.com/text-generation/) and [this](https://happytransformer.com/text-generation/settings/) links
+- You can get info about variables from [this](https://happytransformer.com/text-generation/) and [this](https://happytransformer.com/text-generation/settings/) links
 
 ## How Recursive Works?
 - Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to understand the functionality more accurately.
