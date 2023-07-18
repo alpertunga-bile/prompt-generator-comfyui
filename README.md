@@ -10,7 +10,7 @@ Custom prompt generator node for ComfyUI
 - Open the ```hires.fixWithPromptGenerator.json``` workflow
 
 # Features
-- Print generated text to terminal and log the node's state in ```generated_prompt.txt``` file
+- Print generated text to terminal and log the node's state in ```generated_prompts.txt``` file
 
 # Example Workflow
 ![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
