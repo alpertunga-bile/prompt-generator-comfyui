@@ -82,30 +82,50 @@ class PromptGenerator:
 
     CATEGORY = "Prompt Generator"
 
-    def RemoveDuplicates(self, line : str) -> list[str]:
-        prompts = line.split(",")
-        pure_prompts = []
-        can_add = True
+    def GetUniqueList(self, sequence : list) -> list:
+        seen = set()
+        return [x for x in sequence if not (x in seen or seen.add(x))]
 
-        for prompt in prompts:
-            keyword = prompt.strip("(),")
+    def RemoveDuplicates(self, line : str) -> list[str]:
+        char_blacklist = set("():.1234567890")
+
+        # remove exact prompts
+        prompts = self.GetUniqueList(line.split(","))
+        pure_prompts = []
+
+        def GetCanAdd(given_substring : str, original_string : str) -> bool:
+            if len(given_substring) > len(original_string):
+                if original_string in given_substring:
+                    return False
+            else:
+                if given_substring in original_string:
+                    return False
             
+            return True
+
+        # remove exact keyword
+        for prompt in prompts:
+            can_add = True
+            # extract the keyword
+            keyword = "".join(c for c in prompt if c not in char_blacklist)
+
             if keyword == "":
                 continue
 
-            for pos_prompt in pure_prompts:
-                if keyword in pos_prompt:
+            for pure_prompt in pure_prompts:
+                if prompt == pure_prompt:
                     can_add = False
                     break
 
-            if can_add is False:
-                continue
+                extracted_pure_prompt = "".join(c for c in pure_prompt if c not in char_blacklist)
+                if GetCanAdd(keyword, extracted_pure_prompt) is False:
+                    can_add = False
+                    break
 
-            pure_prompts.append(prompt)
-            can_add = True
+            if can_add:
+                pure_prompts.append(prompt)
 
-        return pure_prompts
-
+        return self.GetUniqueList(pure_prompts)
 
     def Preprocess(self, line : str, preprocess_mode : str) -> str:
         from re import sub, compile
@@ -116,13 +136,13 @@ class PromptGenerator:
         temp_line = temp_line.replace("\n", ", ")
         temp_line = temp_line.replace("\t", " ")
         temp_line = temp_line.replace("|", ",")
-        temp_line = sub(pattern, ', ', temp_line)
         temp_line = temp_line.replace("  ", " ")
+        temp_line = sub(pattern, ', ', temp_line)
 
         if preprocess_mode == "exact_keyword":
             temp_line = ','.join(self.RemoveDuplicates(temp_line))
         elif preprocess_mode == "exact_prompt":
-            temp_line = ','.join(list(dict.fromkeys(temp_line.split(","))))
+            temp_line = ','.join(self.GetUniqueList(temp_line.split(",")))
 
         return temp_line
     
