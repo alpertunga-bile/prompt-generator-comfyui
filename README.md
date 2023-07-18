@@ -14,11 +14,18 @@ Custom prompt generator node for ComfyUI
 
 # Example Workflow
 ![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
+- **Prompt Generator Node** may look different with final version but workflow is not going to change
 
 # Variables
-- You can get info about variables from [this](https://happytransformer.com/text-generation/) and [this](https://happytransformer.com/text-generation/settings/) links
+- For ```model_type``` variable copy and paste the model's name from [this site](https://huggingface.co/models?pipeline_tag=text-generation) like this ```tiiuae/falcon-40b```
+- You can get information about variables from [this](https://happytransformer.com/text-generation/settings/) link
 
 ## How Recursive Works?
 - Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to understand the functionality more accurately.
 - With self recursive, let's say generator's output is ```b```. So next seed is going to be ```b``` and generator's output is ```c```. Final output is ```a, c```. It can be used for generating random outputs.
 - Without self recursive, let's say generator's output is ```b```. So next seed is going to be ```a, b``` and generator's output is ```a, b, c```. Final output is ```a, b, c```. It can be used for more accurate prompts.
+
+## How Preprocess Mode Works?
+- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Parantheses are removed an looking for the keyword. First prompt is added to final prompt so add important prompts to seed.
+- **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Looking for the exact match of the prompt.
+- **none** => Everything is allowed even the repeated prompts.
