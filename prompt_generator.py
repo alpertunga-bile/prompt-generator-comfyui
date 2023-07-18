@@ -17,15 +17,15 @@ class PromptGenerator:
                     "default" : "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))"
                 }),
                 "min_token": ("INT", {
-                    "default": 5,
+                    "default": 20,
                     "min":0,
-                    "max":30,
+                    "max":100,
                     "step":1
                 }),
                 "max_token": ("INT", {
                     "default": 50,
                     "min":35,
-                    "max":100,
+                    "max":200,
                     "step":1
                 }),
                 "do_sample": (["disable", "enable"],),
@@ -67,6 +67,7 @@ class PromptGenerator:
                     "max":50,
                     "step":1
                 }),
+                "preprocess_mode": (["exact_keyword", "exact_prompt", "none"],),
             },
         }
     
@@ -81,7 +82,7 @@ class PromptGenerator:
         can_add = True
 
         for prompt in prompts:
-            keyword = prompt.strip("(),").strip()
+            keyword = prompt.strip("(),")
             
             if keyword == "":
                 continue
@@ -100,60 +101,63 @@ class PromptGenerator:
         return pure_prompts
 
 
-    def Preprocess(self, line : str) -> str:
+    def Preprocess(self, line : str, preprocess_mode : str) -> str:
         from re import sub, compile
         
         pattern = compile(r'(,\s){2,}')
 
         temp_line = line.replace(u'\xa0', u' ')
         temp_line = temp_line.replace("\n", ", ")
-        temp_line = temp_line.replace("  ", " ")
         temp_line = temp_line.replace("\t", " ")
         temp_line = temp_line.replace("|", ",")
         temp_line = sub(pattern, ', ', temp_line)
+        temp_line = temp_line.replace("  ", " ")
 
-        temp_line = ','.join(self.RemoveDuplicates(temp_line))
+        if preprocess_mode == "exact_keyword":
+            temp_line = ','.join(self.RemoveDuplicates(temp_line))
+        elif preprocess_mode == "exact_prompt":
+            temp_line = ','.join(list(dict.fromkeys(temp_line.split(","))))
 
         return temp_line
     
-    def GetGeneratedText(self, generator, gen_args, seed : str, is_self_recursive : bool, recursive_level : int) -> str:
+    def GetGeneratedText(self, generator, gen_args, seed : str, is_self_recursive : bool, recursive_level : int, preprocess_mode : str) -> str:
         result = generator.generate_text(seed, gen_args)
-        generated_text = self.Preprocess(seed + result.text)
+        generated_text = self.Preprocess(seed + result.text, preprocess_mode)
 
         if is_self_recursive:
             for _ in range(0, recursive_level):
                 result = generator.generate_text(generated_text, gen_args)
-                generated_text = self.Preprocess(result.text)
-            generated_text = self.Preprocess(seed + generated_text)
+                generated_text = self.Preprocess(result.text, preprocess_mode)
+            generated_text = self.Preprocess(seed + generated_text, preprocess_mode)
         else:
             for _ in range(0, recursive_level):
                 result = generator.generate_text(generated_text, gen_args)
                 generated_text += result.text
-                generated_text = self.Preprocess(generated_text)
+                generated_text = self.Preprocess(generated_text, preprocess_mode)
             
         return generated_text
     
-    def LogOutputs(self, seed : str, generated_text : str, self_recursive : str, recursive_level : int, gen_settings, log_filename : str) -> None:
+    def LogOutputs(self, seed : str, generated_text : str, self_recursive : str, recursive_level : int, preprocess_mode : str, gen_settings, log_filename : str) -> None:
         from datetime import datetime
 
         print_string = f"{'  PROMPT GENERATOR OUTPUT  '.center(200, '#')}\n{generated_text}\n{'#'*200}\n"
         print(print_string)
 
         log_string = f"{'#'*200}\nDate & Time : {datetime.now()}\nSeed : {seed}\nPrompt : {generated_text}\n"
-        log_string += f"min_token = {gen_settings.min_length}\n"
-        log_string += f"max_token = {gen_settings.max_length}\n"
-        log_string += f"do_sample = {gen_settings.do_sample}\n"
-        log_string += f"early_stopping = {gen_settings.early_stopping}\n"
-        log_string += f"num_beams = {gen_settings.num_beams}\n"
-        log_string += f"temperature = {gen_settings.temperature}\n"
-        log_string += f"top_k = {gen_settings.top_k}\n"
-        log_string += f"top_p = {gen_settings.top_p}\n"
-        log_string += f"no_repeat_ngram_size = {gen_settings.no_repeat_ngram_size}\n"
-        log_string += f"self_recursive = {self_recursive}\nrecursive_level = {recursive_level}\n"
+        log_string += f"min_token : {gen_settings.min_length}\n"
+        log_string += f"max_token : {gen_settings.max_length}\n"
+        log_string += f"do_sample : {gen_settings.do_sample}\n"
+        log_string += f"early_stopping : {gen_settings.early_stopping}\n"
+        log_string += f"num_beams : {gen_settings.num_beams}\n"
+        log_string += f"temperature : {gen_settings.temperature}\n"
+        log_string += f"top_k : {gen_settings.top_k}\n"
+        log_string += f"top_p : {gen_settings.top_p}\n"
+        log_string += f"no_repeat_ngram_size : {gen_settings.no_repeat_ngram_size}\n"
+        log_string += f"self_recursive : {self_recursive}\nrecursive_level : {recursive_level}\npreprocess_mode : {preprocess_mode}\n"
         with open(log_filename, "a") as file:
             file.write(log_string)
 
-    def generate(self, clip, model_type, model_name, seed, min_token, max_token, do_sample, early_stopping, num_beams, temperature, top_k, top_p, no_repeat_ngram_size, self_recursive, recursive_level):
+    def generate(self, clip, model_type, model_name, seed, min_token, max_token, do_sample, early_stopping, num_beams, temperature, top_k, top_p, no_repeat_ngram_size, self_recursive, recursive_level, preprocess_mode):
         from happytransformer import HappyGeneration, GENSettings
         from os.path import join, exists
         from os import mkdir
@@ -194,9 +198,9 @@ class PromptGenerator:
                 no_repeat_ngram_size=no_repeat_ngram_size
             )
 
-            generated_text = self.GetGeneratedText(generator, gen_settings, seed, is_self_recursive, recursive_level)
+            generated_text = self.GetGeneratedText(generator, gen_settings, seed, is_self_recursive, recursive_level, preprocess_mode)
 
-        self.LogOutputs(seed, generated_text, self_recursive, recursive_level, gen_settings, prompt_log_filename)
+        self.LogOutputs(seed, generated_text, self_recursive, recursive_level, preprocess_mode, gen_settings, prompt_log_filename)
 
         tokens = clip.tokenize(generated_text)
         cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)
