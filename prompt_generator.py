@@ -1,7 +1,13 @@
-from os import listdir
-from os.path import join, isdir
+from os import listdir, mkdir
+from os.path import join, isdir, exists
 
-class PromptGenerator:    
+class PromptGenerator:
+    def __init__(self) -> None:
+        root = join("models", "prompt_generators")
+        if exists(root) is False:
+            print(f"{root} is created. Please add your prompt generators to {root} folder")
+            mkdir(root)
+    
     @classmethod
     def INPUT_TYPES(s):
         return {
@@ -16,13 +22,13 @@ class PromptGenerator:
                     "multiline" : True,
                     "default" : "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))"
                 }),
-                "min_token": ("INT", {
+                "min_length": ("INT", {
                     "default": 20,
                     "min":0,
                     "max":100,
                     "step":1
                 }),
-                "max_token": ("INT", {
+                "max_length": ("INT", {
                     "default": 50,
                     "min":35,
                     "max":200,
@@ -144,8 +150,8 @@ class PromptGenerator:
         print(print_string)
 
         log_string = f"{'#'*200}\nDate & Time : {datetime.now()}\nSeed : {seed}\nPrompt : {generated_text}\n"
-        log_string += f"min_token : {gen_settings.min_length}\n"
-        log_string += f"max_token : {gen_settings.max_length}\n"
+        log_string += f"min_length : {gen_settings.min_length}\n"
+        log_string += f"max_length : {gen_settings.max_length}\n"
         log_string += f"do_sample : {gen_settings.do_sample}\n"
         log_string += f"early_stopping : {gen_settings.early_stopping}\n"
         log_string += f"num_beams : {gen_settings.num_beams}\n"
@@ -157,18 +163,13 @@ class PromptGenerator:
         with open(log_filename, "a") as file:
             file.write(log_string)
 
-    def generate(self, clip, model_type, model_name, seed, min_token, max_token, do_sample, early_stopping, num_beams, temperature, top_k, top_p, no_repeat_ngram_size, self_recursive, recursive_level, preprocess_mode):
+    def generate(self, clip, model_type, model_name, seed, min_length, max_length, do_sample, early_stopping, num_beams, temperature, top_k, top_p, no_repeat_ngram_size, self_recursive, recursive_level, preprocess_mode):
         from happytransformer import HappyGeneration, GENSettings
-        from os.path import join, exists
-        from os import mkdir
 
         root = join("models", "prompt_generators")
         real_path = join(root, model_name)
-        prompt_log_filename = "generated_prompt.txt"
+        prompt_log_filename = "generated_prompts.txt"
         generated_text = ""
-
-        if exists(root) is False:
-            mkdir(root)
 
         if exists(prompt_log_filename) is False:
             file = open(prompt_log_filename, "w")
@@ -187,8 +188,8 @@ class PromptGenerator:
             generator = HappyGeneration(model_type=upper_model_type, model_name=model_type, load_path=real_path)
 
             gen_settings = GENSettings(
-                min_length=min_token,
-                max_length=max_token,
+                min_length=min_length,
+                max_length=max_length,
                 do_sample=True if do_sample == "enable" else False,
                 early_stopping=True if early_stopping == "enable" else False,
                 num_beams=num_beams,
