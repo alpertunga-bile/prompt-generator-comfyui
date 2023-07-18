@@ -26,6 +26,6 @@ Custom prompt generator node for ComfyUI
 - Without self recursive, let's say generator's output is ```b```. So next seed is going to be ```a, b``` and generator's output is ```a, b, c```. Final output is ```a, b, c```. It can be used for more accurate prompts.
 
 ## How Preprocess Mode Works?
-- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Parantheses are removed an looking for the keyword. First prompt is added to final prompt so add important prompts to seed.
-- **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Looking for the exact match of the prompt.
+- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. Adding prompts from the beginning of the generated text so add important prompts to seed.
+- **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Checking the exact match of the prompt.
 - **none** => Everything is allowed even the repeated prompts.
