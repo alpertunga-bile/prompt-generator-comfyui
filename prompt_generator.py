@@ -93,6 +93,7 @@ class PromptGenerator:
         prompts = self.GetUniqueList(line.split(","))
         pure_prompts = []
 
+        """
         def GetCanAdd(given_substring : str, original_string : str) -> bool:
             if len(given_substring) > len(original_string):
                 if original_string in given_substring:
@@ -102,6 +103,7 @@ class PromptGenerator:
                     return False
             
             return True
+        """
 
         # remove exact keyword
         for prompt in prompts:
@@ -118,7 +120,7 @@ class PromptGenerator:
                     break
 
                 extracted_pure_prompt = "".join(c for c in pure_prompt if c not in char_blacklist)
-                if GetCanAdd(keyword, extracted_pure_prompt) is False:
+                if keyword in extracted_pure_prompt or keyword == extracted_pure_prompt:
                     can_add = False
                     break
 
