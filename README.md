@@ -1,6 +1,15 @@
 # prompt-generator-comfyui
 Custom prompt generator node for ComfyUI
 
+# Table Of Contents
+- [Setup](#setup)
+- [Features](#features)
+- [Example Workflow](#example-workflow)
+- [Variables](#variables)
+  - [How Recursive Works?](#how-recursive-works)
+  - [How Preprocess Mode Works?](#how-preprocess-mode-works)
+- [Example Outputs](#example-outputs)
+
 # Setup
 - Run ```pip install happytransformer``` command in the environment that you are launching ComfyUI with
 - Copy ```prompt_generator.py``` file to ```custom_nodes``` folder in ComfyUI
@@ -29,3 +38,8 @@ Custom prompt generator node for ComfyUI
 - **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. Adding prompts from the beginning of the generated text so add important prompts to seed.
 - **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Checking the exact match of the prompt.
 - **none** => Everything is allowed even the repeated prompts.
+
+# Example Outputs
+![ComfyUI_00062_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/82522192-b486-4703-86e2-18aff79fe29b)
+![ComfyUI_00054_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/906c9c1d-d8b5-4aa7-89cc-6a1918eac454)
+![ComfyUI_00048_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/e559c843-8e4c-4f45-9a39-c7f457218467)
