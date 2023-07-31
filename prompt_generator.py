@@ -2,12 +2,6 @@ from os import listdir, mkdir
 from os.path import join, isdir, exists
 
 class PromptGenerator:
-    def __init__(self) -> None:
-        root = join("models", "prompt_generators")
-        if exists(root) is False:
-            print(f"{root} is created. Please add your prompt generators to {root} folder")
-            mkdir(root)
-    
     @classmethod
     def INPUT_TYPES(s):
         return {
@@ -187,10 +181,11 @@ class PromptGenerator:
 
     def generate(self, clip, model_type, model_name, seed, min_length, max_length, do_sample, early_stopping, num_beams, temperature, top_k, top_p, no_repeat_ngram_size, self_recursive, recursive_level, preprocess_mode):
         from happytransformer import HappyGeneration, GENSettings
+        from datetime import date
 
         root = join("models", "prompt_generators")
         real_path = join(root, model_name)
-        prompt_log_filename = "generated_prompts.txt"
+        prompt_log_filename = join("generated_prompts", str(date.today()))
         generated_text = ""
 
         if exists(prompt_log_filename) is False:
@@ -228,12 +223,3 @@ class PromptGenerator:
         tokens = clip.tokenize(generated_text)
         cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)
         return ([[cond, {"pooled_output": pooled}]], )
-
-NODE_CLASS_MAPPINGS = {
-    "Prompt Generator": PromptGenerator
-}
-
-# A dictionary that contains the friendly/humanly readable titles for the nodes
-NODE_DISPLAY_NAME_MAPPINGS = {
-    "Prompt Generator": "Prompt Generator"
-}
