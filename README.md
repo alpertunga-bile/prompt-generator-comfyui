@@ -2,8 +2,6 @@
 Custom prompt generator node for ComfyUI
 
 # Table Of Contents
-- [prompt-generator-comfyui](#prompt-generator-comfyui)
-- [Table Of Contents](#table-of-contents)
 - [Setup](#setup)
 - [Features](#features)
 - [Example Workflow](#example-workflow)
