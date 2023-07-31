@@ -12,9 +12,10 @@ Custom prompt generator node for ComfyUI
 
 # Setup
 - Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
-- Put your generator under ```prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Run the ComfyUI
 - Open the ```hires.fixWithPromptGenerator.json``` workflow
+- Put your generator under ```prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
+- Click ```Refresh``` button in ComfyUI
 
 # Features
 - Print generated text to terminal and log the node's state under  ```generated_prompts``` folder with date as filename.
