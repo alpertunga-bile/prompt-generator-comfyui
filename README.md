@@ -37,6 +37,15 @@ Custom prompt generator node for ComfyUI
 - **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. Adding prompts from the beginning of the generated text so add important prompts to seed.
 - **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Checking the exact match of the prompt.
 - **none** => Everything is allowed even the repeated prompts.
+### Example
+```
+# ---------------------------------------------------------------------- Original ---------------------------------------------------------------------- #
+((masterpiece)), ((masterpiece:1.2)), (masterpiece), blahblah, blah, blah, ((blahblah)), (((((blah))))), ((same prompt)), same prompt, (masterpiece)
+# ------------------------------------------------------------- Preprocess (Exact Keyword) ------------------------------------------------------------- #
+((masterpiece)), blahblah, blah, ((same prompt))
+# ------------------------------------------------------------- Preprocess (Exact Prompt) -------------------------------------------------------------- #
+((masterpiece)), ((masterpiece:1.2)), (masterpiece), blahblah, blah, ((blahblah)), (((((blah))))), ((same prompt)), same prompt
+```
 
 # Example Outputs
 ![ComfyUI_00062_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/82522192-b486-4703-86e2-18aff79fe29b)
