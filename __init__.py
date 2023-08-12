@@ -10,7 +10,6 @@ os_name = system()
 path.append(dirname(__file__))
 
 from prompt_generator import PromptGenerator
-from aspect_node import AspectNode
 
 
 def check_package(package_name: str) -> None:
@@ -70,11 +69,10 @@ if find_spec("onnxruntime-gpu") is None:
 
 # Import PromptGenerator node to ComfyUI
 
-NODE_CLASS_MAPPINGS = {"Prompt Generator": PromptGenerator, "Aspect": AspectNode}
+NODE_CLASS_MAPPINGS = {"Prompt Generator": PromptGenerator,}
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "Prompt Generator": "Prompt Generator",
-    "Aspect": "Aspect Node",
 }
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
