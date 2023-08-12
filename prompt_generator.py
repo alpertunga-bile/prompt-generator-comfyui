@@ -100,6 +100,7 @@ class PromptGenerator:
 
     def log_outputs(
         self,
+        model_name: str,
         prompt: str,
         generated_text: str,
         self_recursive: str,
@@ -119,6 +120,7 @@ class PromptGenerator:
         with open(log_filename, "a") as file:
             file.write(f"{'#'*200}\n")
             file.write(f"Date & Time           : {datetime.now()}\n")
+            file.write(f"Model                 : {model_name}\n")
             file.write(f"Prompt                : {prompt}\n")
             file.write(f"Generated Prompt      : {generated_text}\n")
             file.write(f"cfg                   : {gen_settings.guidance_scale}\n")
@@ -209,6 +211,7 @@ class PromptGenerator:
         )
 
         self.log_outputs(
+            model_name,
             prompt,
             generated_text,
             self_recursive,
