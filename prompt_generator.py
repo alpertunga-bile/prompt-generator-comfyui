@@ -17,7 +17,7 @@ class PromptGenerator:
                         if isdir(join(join("models", "prompt_generators"), file))
                     ],
                 ),
-                "accelerator": (["enable", "disable"],),
+                "accelerate": (["enable", "disable"],),
                 "prompt": (
                     "STRING",
                     {
@@ -145,7 +145,7 @@ class PromptGenerator:
         self,
         clip,
         model_name,
-        accelerator,
+        accelerate,
         prompt,
         cfg,
         min_length,
@@ -179,7 +179,7 @@ class PromptGenerator:
             raise ValueError(f"{real_path} is not exists")
 
         is_self_recursive = True if self_recursive == "enable" else False
-        is_accelerate = True if accelerator == "enable" else False
+        is_accelerate = True if accelerate == "enable" else False
 
         generator = Generator(real_path, is_accelerate)
 
