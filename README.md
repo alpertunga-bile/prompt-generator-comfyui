@@ -2,12 +2,15 @@
 Custom prompt generator node for ComfyUI
 
 # Table Of Contents
+- [prompt-generator-comfyui](#prompt-generator-comfyui)
+- [Table Of Contents](#table-of-contents)
 - [Setup](#setup)
 - [Features](#features)
 - [Example Workflow](#example-workflow)
 - [Variables](#variables)
   - [How Recursive Works?](#how-recursive-works)
   - [How Preprocess Mode Works?](#how-preprocess-mode-works)
+    - [Example](#example)
 - [Example Outputs](#example-outputs)
 
 # Setup
@@ -18,6 +21,10 @@ Custom prompt generator node for ComfyUI
 - Click ```Refresh``` button in ComfyUI
 
 # Features
+- Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
+- ONNX and transformers model are supported.
+- Preprocessing outputs. See [this section](#how-preprocess-mode-works).
+- Recursive generation is supported. See [this section](#how-recursive-works).
 - Print generated text to terminal and log the node's state under  ```generated_prompts``` folder with date as filename.
 
 # Example Workflow
@@ -25,8 +32,7 @@ Custom prompt generator node for ComfyUI
 - **Prompt Generator Node** may look different with final version but workflow is not going to change
 
 # Variables
-- For ```model_type``` variable copy and paste the model's name from [this site](https://huggingface.co/models?pipeline_tag=text-generation) like this ```tiiuae/falcon-40b```
-- You can get information about variables from [this](https://happytransformer.com/text-generation/settings/) link
+- You can get information about variables from [this link](https://happytransformer.com/text-generation/settings/) and [this link](https://huggingface.co/docs/transformers/v4.31.0/en/generation_strategies#text-generation-strategies).
 
 ## How Recursive Works?
 - Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to understand the functionality more accurately.
