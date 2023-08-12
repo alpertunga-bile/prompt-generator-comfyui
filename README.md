@@ -2,8 +2,6 @@
 Custom prompt generator node for ComfyUI
 
 # Table Of Contents
-- [prompt-generator-comfyui](#prompt-generator-comfyui)
-- [Table Of Contents](#table-of-contents)
 - [Setup](#setup)
 - [Features](#features)
 - [Example Workflow](#example-workflow)
@@ -22,14 +20,14 @@ Custom prompt generator node for ComfyUI
 
 # Features
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
-- ONNX and transformers model are supported.
+- ONNX and transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
 - Recursive generation is supported. See [this section](#how-recursive-works).
 - Print generated text to terminal and log the node's state under  ```generated_prompts``` folder with date as filename.
 
 # Example Workflow
 ![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
-- **Prompt Generator Node** may look different with final version but workflow is not going to change
+- **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
 # Variables
 - You can get information about variables from [this link](https://happytransformer.com/text-generation/settings/) and [this link](https://huggingface.co/docs/transformers/v4.31.0/en/generation_strategies#text-generation-strategies).
