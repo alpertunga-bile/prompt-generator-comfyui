@@ -1,6 +1,6 @@
 {
-  "last_node_id": 41,
-  "last_link_id": 56,
+  "last_node_id": 42,
+  "last_link_id": 59,
   "nodes": [
     {
       "id": 3,
@@ -14,7 +14,7 @@
         "1": 262
       },
       "flags": {},
-      "order": 10,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -25,7 +25,7 @@
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 53
+          "link": 58
         },
         {
           "name": "negative",
@@ -52,7 +52,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        1091892191454277,
+        884569790411861,
         "randomize",
         20,
         7,
@@ -195,7 +195,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        154049367201419,
+        887115133007299,
         "randomize",
         13,
         8,
@@ -216,7 +216,7 @@
         26
       ],
       "flags": {},
-      "order": 8,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -253,7 +253,7 @@
         26
       ],
       "flags": {},
-      "order": 12,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -290,7 +290,7 @@
         26
       ],
       "flags": {},
-      "order": 9,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
@@ -326,7 +326,7 @@
         26
       ],
       "flags": {},
-      "order": 4,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -362,7 +362,7 @@
         26
       ],
       "flags": {},
-      "order": 5,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -542,13 +542,13 @@
         26
       ],
       "flags": {},
-      "order": 11,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
           "name": "",
           "type": "*",
-          "link": 54
+          "link": 59
         }
       ],
       "outputs": [
@@ -567,53 +567,6 @@
       }
     },
     {
-      "id": 4,
-      "type": "CheckpointLoaderSimple",
-      "pos": [
-        -654.1278427734378,
-        71.6760126953125
-      ],
-      "size": {
-        "0": 315,
-        "1": 98
-      },
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            46,
-            48
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            5,
-            52
-          ],
-          "slot_index": 1
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [],
-          "slot_index": 2
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CheckpointLoaderSimple"
-      },
-      "widgets_values": [
-        "wololo-mix-v3.safetensors"
-      ]
-    },
-    {
       "id": 19,
       "type": "VAELoader",
       "pos": [
@@ -625,7 +578,7 @@
         "1": 58
       },
       "flags": {},
-      "order": 3,
+      "order": 2,
       "mode": 0,
       "outputs": [
         {
@@ -659,7 +612,7 @@
       "flags": {
         "collapsed": true
       },
-      "order": 6,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -685,63 +638,6 @@
       },
       "widgets_values": [
         "(by bad-artist-anime:0.8, by bad-artist:0.8, verybadimagenegative_v1.3, bad-hands-5, negative_hand, negative_hand-neg, bad_prompt_version2, FastNegativeV2, easynegative, ng_deepnegative_v1_75t), (worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
-      ]
-    },
-    {
-      "id": 39,
-      "type": "Prompt Generator",
-      "pos": [
-        -129,
-        -344
-      ],
-      "size": {
-        "0": 436,
-        "1": 549
-      },
-      "flags": {},
-      "order": 7,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 52
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            53,
-            54
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Prompt Generator"
-      },
-      "widgets_values": [
-        "female_positive_generator",
-        "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
-        1,
-        20,
-        50,
-        "disable",
-        "disable",
-        1,
-        1,
-        1,
-        50,
-        1,
-        1,
-        0,
-        "disable",
-        "disable",
-        0,
-        "exact_keyword"
       ]
     },
     {
@@ -875,6 +771,111 @@
       "properties": {},
       "widgets_values": [
         "ComfyUI"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -654.1278427734378,
+        71.6760126953125
+      ],
+      "size": {
+        "0": 315,
+        "1": 98
+      },
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            46,
+            48
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            5,
+            57
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "wololo-mix-v3.safetensors"
+      ]
+    },
+    {
+      "id": 42,
+      "type": "Prompt Generator",
+      "pos": [
+        -140,
+        -362
+      ],
+      "size": [
+        480.43060302734375,
+        580.0348632812501
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 57
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            58,
+            59
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Prompt Generator"
+      },
+      "widgets_values": [
+        "female_positive-gpt2-141972-5-1",
+        "enable",
+        "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
+        1,
+        20,
+        50,
+        "disable",
+        "disable",
+        1,
+        1,
+        1,
+        50,
+        1,
+        1,
+        0,
+        "disable",
+        "disable",
+        0,
+        "exact_keyword"
       ]
     }
   ],
@@ -1064,30 +1065,6 @@
       "*"
     ],
     [
-      52,
-      4,
-      1,
-      39,
-      0,
-      "CLIP"
-    ],
-    [
-      53,
-      39,
-      0,
-      3,
-      1,
-      "CONDITIONING"
-    ],
-    [
-      54,
-      39,
-      0,
-      38,
-      0,
-      "*"
-    ],
-    [
       55,
       8,
       0,
@@ -1102,6 +1079,30 @@
       41,
       0,
       "IMAGE"
+    ],
+    [
+      57,
+      4,
+      1,
+      42,
+      0,
+      "CLIP"
+    ],
+    [
+      58,
+      42,
+      0,
+      3,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      59,
+      42,
+      0,
+      38,
+      0,
+      "*"
     ]
   ],
   "groups": [
@@ -1120,8 +1121,8 @@
       "bounding": [
         926,
         -441,
-        1499,
-        1561
+        1468,
+        1275
       ],
       "color": "#a1309b"
     }

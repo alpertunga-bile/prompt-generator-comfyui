@@ -1,5 +1,9 @@
 from dataclasses import dataclass
-from generator.model import get_onnx_pipeline, get_default_pipeline
+from generator.model import (
+    get_default_pipeline,
+    get_onnx_pipeline,
+    get_bettertransformer_pipeline,
+)
 from generator.utility import get_accelerator_type, get_variable_dictionary
 from transformers import Pipeline
 
@@ -27,13 +31,17 @@ class GenerateArgs:
 class Generator:
     pipe: Pipeline = None
 
-    def __init__(self, model_path: str) -> None:
+    def __init__(self, model_path: str, is_accelerate: bool) -> None:
+        if is_accelerate is False:
+            self.pipe = get_default_pipeline(model_path)
+            return
+
         accelerator_type = get_accelerator_type(model_path)
 
         if accelerator_type == "onnx":
             self.pipe = get_onnx_pipeline(model_name=model_path)
         elif accelerator_type == "bettertransformer":
-            self.pipe = get_default_pipeline(model_name=model_path)
+            self.pipe = get_bettertransformer_pipeline(model_name=model_path)
         else:
             raise ValueError(
                 "Cant define accelerator type by folder. Can't find .onnx file for onnx, .bin for bettertransformer. Please check your model"

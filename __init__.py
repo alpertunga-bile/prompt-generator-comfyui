@@ -69,7 +69,9 @@ if find_spec("onnxruntime-gpu") is None:
 
 # Import PromptGenerator node to ComfyUI
 
-NODE_CLASS_MAPPINGS = {"Prompt Generator": PromptGenerator,}
+NODE_CLASS_MAPPINGS = {
+    "Prompt Generator": PromptGenerator,
+}
 
 NODE_DISPLAY_NAME_MAPPINGS = {
     "Prompt Generator": "Prompt Generator",
