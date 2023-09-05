@@ -11,15 +11,6 @@ path.append(dirname(__file__))
 
 from prompt_generator import PromptGenerator
 
-
-def check_package(package_name: str) -> None:
-    if find_spec(package_name) is None:
-        print(f"/_\ Installing {package_name}")
-        process = run(
-            f"pip install {package_name}", shell=True, check=True, capture_output=True
-        )
-
-
 print("/_\ Loading Prompt Generator")
 
 # Check prompt_generators folder under models folder
@@ -31,41 +22,6 @@ if exists(root) is False:
 
 if exists("generated_prompts") is False:
     mkdir("generated_prompts")
-
-# Check required packages
-
-# Installing from git because there is a error with normal transformers package
-if find_spec("transformers") is None:
-    print(f"/_\ Installing transformers")
-    process = run(
-        f"pip install git+https://github.com/huggingface/transformers",
-        shell=True,
-        check=True,
-        capture_output=True,
-    )
-
-check_package("accelerate")
-check_package("xformers")
-
-if os_name == "Linux":
-    check_package("triton")
-
-check_package("optimum")
-
-if find_spec("onnxruntime") is None:
-    print(f"/_\ Installing onnxruntime")
-    process = run(
-        f"pip install optimum[onnxruntime]", shell=True, check=True, capture_output=True
-    )
-
-if find_spec("onnxruntime-gpu") is None:
-    print(f"/_\ Installing onnxruntime-gpu")
-    process = run(
-        f"pip install optimum[onnxruntime-gpu]",
-        shell=True,
-        check=True,
-        capture_output=True,
-    )
 
 # Import PromptGenerator node to ComfyUI
 
