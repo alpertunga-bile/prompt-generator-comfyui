@@ -169,7 +169,7 @@ class PromptGenerator:
     ):
         from datetime import date
 
-        root = join("models", "prompt_generators")
+        root = join(models_dir, "prompt_generators")
         real_path = join(root, model_name)
         prompt_log_filename = join("generated_prompts", str(date.today())) + ".txt"
         generated_text = ""
