@@ -8,6 +8,7 @@ os_name = system()
 
 path.append(dirname(__file__))
 
+
 def check_package(package_name: str, install_name: str) -> None:
     if find_spec(package_name) is None:
         print(f"/_\ Installing {package_name}")
@@ -15,11 +16,11 @@ def check_package(package_name: str, install_name: str) -> None:
             f"pip install {install_name}", shell=True, check=True, capture_output=True
         )
 
+
 # Check required packages
 print("/_\ Checking packages")
 
-# Installing from git because there is an error with normal transformers package
-check_package("transformers", "git+https://github.com/huggingface/transformers")
+check_package("transformers", "transformers")
 check_package("accelerate", "accelerate")
 
 if os_name == "Linux":
