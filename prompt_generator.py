@@ -2,6 +2,7 @@ from os import listdir
 from os.path import join, isdir, exists
 from preprocess import preprocess
 from generator.generate import GenerateArgs, Generator
+from folder_paths import models_dir
 
 
 class PromptGenerator:
@@ -13,8 +14,8 @@ class PromptGenerator:
                 "model_name": (
                     [
                         file
-                        for file in listdir(join("models", "prompt_generators"))
-                        if isdir(join(join("models", "prompt_generators"), file))
+                        for file in listdir(join(models_dir, "prompt_generators"))
+                        if isdir(join(join(models_dir, "prompt_generators"), file))
                     ],
                 ),
                 "accelerate": (["enable", "disable"],),
