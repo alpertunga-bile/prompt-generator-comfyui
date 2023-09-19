@@ -14,6 +14,19 @@ Custom prompt generator node for ComfyUI
 - [Example Outputs](#example-outputs)
 
 # Setup
+## For Portable Version of the ComfyUI
+- [ ] Portable version users use these commands for now. I am going to add automation for this in the new commit.
+- Open cmd in the **ComfyUI_windows_portable** folder.
+- Execute these commands step by step:
+```
+.\python_embeded\python.exe -s -m pip install transformers
+.\python_embeded\python.exe -s -m pip install accelerate
+.\python_embeded\python.exe -s -m pip install optimum
+.\python_embeded\python.exe -s -m pip install optimum[onnxruntime-gpu]
+```
+- Run the **run_nvidia_gpu.bat** file
+
+## For Manual Installation of the ComfyUI
 - Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
 - Run the ComfyUI
 - Open the ```hires.fixWithPromptGenerator.json``` workflow
