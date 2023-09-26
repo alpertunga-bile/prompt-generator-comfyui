@@ -32,7 +32,7 @@ Custom prompt generator node for ComfyUI
 - Click ```Refresh``` button in ComfyUI
 
 # Features
-- Multiple output generation is added. You can choose 5 outputs and check the generated prompts in the log file and terminal. The prompts are logged and printed in order.
+- Multiple output generation is added. You can choose from 5 outputs and check the generated prompts in the log file and terminal. The prompts are logged and printed in order.
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
 - ONNX and transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
@@ -41,6 +41,9 @@ Custom prompt generator node for ComfyUI
 
 # Example Workflow
 ![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
+
+![example_workflow_basic](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/544907ff-2a75-415a-912c-90dfb6959efb)
+
 - **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
 # Variables
