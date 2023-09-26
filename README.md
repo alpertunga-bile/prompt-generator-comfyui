@@ -39,6 +39,9 @@ Custom prompt generator node for ComfyUI
 - Recursive generation is supported. See [this section](#how-recursive-works).
 - Print generated text to terminal and log the node's state under  ```generated_prompts``` folder with date as filename.
 
+## IMPORTANT NOTE 
+```num_beams``` must be dividable by ```num_beam_groups``` otherwise you will get errors.
+
 # Example Workflow
 ![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
 
@@ -47,7 +50,6 @@ Custom prompt generator node for ComfyUI
 - **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
 # Variables
-
 |      Variable Names       | Definitions                                                                                                                                                                                                                                                             |
 | :-----------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |      **model_name**       | Folder name that contains the model                                                                                                                                                                                                                                     |
