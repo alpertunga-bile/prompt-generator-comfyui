@@ -18,6 +18,7 @@ class GenerateArgs:
     do_sample: bool = False
     num_beams: int = 1
     num_beam_groups: int = 1
+    diversity_penalty: float = 0.8
     temperature: float = 1.0
     top_k: int = 50
     top_p: float = 1.0
@@ -59,3 +60,16 @@ class Generator:
         output = self.pipe(input, **args)
 
         return output[0]["generated_text"]
+    
+    def generate_multiple_output_texts(
+            self, input: str, args: GenerateArgs = GenerateArgs(),
+    ) -> list[str]:
+        if self.pipe is None:
+            raise RuntimeError("Pipeline is NONE. Please check your model path")
+
+        args.num_return_sequences = 5
+        args = get_variable_dictionary(args)
+
+        outputs = self.pipe(input, **args)
+
+        return [output["generated_text"] for output in outputs]

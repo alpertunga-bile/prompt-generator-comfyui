@@ -37,11 +37,12 @@ class PromptGenerator:
                 ),
                 "do_sample": (["disable", "enable"],),
                 "early_stopping": (["disable", "enable"],),
-                "num_beams": ("INT", {"default": 1, "min": 1, "max": 50, "step": 1}),
+                "num_beams": ("INT", {"default": 5, "min": 5, "max": 50, "step": 1}),
                 "num_beam_groups": (
                     "INT",
                     {"default": 1, "min": 1, "max": 50, "step": 1},
                 ),
+                "diversity_penalty": ("FLOAT", {"default": 1.0, "min": 1.0, "max": 10.0, "step": 0.1}),
                 "temperature": (
                     "FLOAT",
                     {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.1},
@@ -69,14 +70,14 @@ class PromptGenerator:
             },
         }
 
-    RETURN_TYPES = ("CONDITIONING")
-    RETURN_NAMES = ("encoded output")
+    RETURN_TYPES = ("CONDITIONING", "CONDITIONING", "CONDITIONING", "CONDITIONING", "CONDITIONING")
+    RETURN_NAMES = ("first_output", "second_output", "third_output", "fourth_output", "fifth_output")
 
     FUNCTION = "generate"
 
     CATEGORY = "Prompt Generator"
 
-    def get_generated_text(
+    def get_generated_texts(
         self,
         generator: Generator,
         gen_args: GenerateArgs,
@@ -84,28 +85,33 @@ class PromptGenerator:
         is_self_recursive: bool,
         recursive_level: int,
         preprocess_mode: str,
-    ) -> str:
-        result = generator.generate_text(prompt, gen_args)
-        generated_text = preprocess(prompt + result, preprocess_mode)
+    ) -> list[str]:
+        results = generator.generate_multiple_output_texts(prompt, gen_args)
+        gen_texts = []
 
-        if is_self_recursive:
-            for _ in range(0, recursive_level):
-                result = generator.generate_text(generated_text, gen_args)
-                generated_text = preprocess(result, preprocess_mode)
-            generated_text = preprocess(prompt + generated_text, preprocess_mode)
-        else:
-            for _ in range(0, recursive_level):
-                result = generator.generate_text(generated_text, gen_args)
-                generated_text += result
-                generated_text = preprocess(generated_text, preprocess_mode)
+        for result in results:
+            generated_text = preprocess(prompt + result, preprocess_mode)
 
-        return generated_text
+            if is_self_recursive:
+                for _ in range(0, recursive_level):
+                    result = generator.generate_text(generated_text, gen_args)
+                    generated_text = preprocess(result, preprocess_mode)
+                generated_text = preprocess(prompt + generated_text, preprocess_mode)
+            else:
+                for _ in range(0, recursive_level):
+                    result = generator.generate_text(generated_text, gen_args)
+                    generated_text += result
+                    generated_text = preprocess(generated_text, preprocess_mode)
+
+            gen_texts.append(generated_text)
+
+        return gen_texts
 
     def log_outputs(
         self,
         model_name: str,
         prompt: str,
-        generated_text: str,
+        generated_texts: list[str],
         self_recursive: str,
         recursive_level: int,
         preprocess_mode: str,
@@ -115,7 +121,8 @@ class PromptGenerator:
         from datetime import datetime
 
         print_string = f"{'  PROMPT GENERATOR OUTPUT  '.center(200, '#')}\n"
-        print_string += f"{generated_text}\n"
+        for generated_text in generated_texts:
+            print_string += f"[Gen Prompt] {generated_text}\n{'-'*200}\n"
         print_string += f"{'#'*200}\n"
 
         print(print_string)
@@ -125,7 +132,9 @@ class PromptGenerator:
             file.write(f"Date & Time           : {datetime.now()}\n")
             file.write(f"Model                 : {model_name}\n")
             file.write(f"Prompt                : {prompt}\n")
-            file.write(f"Generated Prompt      : {generated_text}\n")
+            file.write(f"Generated Prompts     :\n")
+            for generated_text in generated_texts:
+                file.write(f"{generated_text}\n{'-'*200}\n")
             file.write(f"cfg                   : {gen_settings.guidance_scale}\n")
             file.write(f"min_length            : {gen_settings.min_length}\n")
             file.write(f"max_length            : {gen_settings.max_length}\n")
@@ -146,6 +155,16 @@ class PromptGenerator:
             file.write(f"recursive_level       : {recursive_level}\n")
             file.write(f"preprocess_mode       : {preprocess_mode}\n")
 
+    def tokenize_texts(self, clip, texts: list[str]) -> list:
+        processed = []
+
+        for text in texts:
+            tokens = clip.tokenize(text)
+            cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)
+            processed.append([[cond, {"pooled_output": pooled}]])
+
+        return processed
+
     def generate(
         self,
         clip,
@@ -159,6 +178,7 @@ class PromptGenerator:
         early_stopping,
         num_beams,
         num_beam_groups,
+        diversity_penalty,
         temperature,
         top_k,
         top_p,
@@ -174,7 +194,6 @@ class PromptGenerator:
         root = join(models_dir, "prompt_generators")
         real_path = join(root, model_name)
         prompt_log_filename = join(base_path, "generated_prompts", str(date.today())) + ".txt"
-        generated_text = ""
 
         if exists(prompt_log_filename) is False:
             file = open(prompt_log_filename, "w")
@@ -196,6 +215,7 @@ class PromptGenerator:
             early_stopping=True if early_stopping == "enable" else False,
             num_beams=num_beams,
             num_beam_groups=num_beam_groups,
+            diversity_penalty=diversity_penalty,
             temperature=temperature,
             top_k=top_k,
             top_p=top_p,
@@ -204,7 +224,7 @@ class PromptGenerator:
             remove_invalid_values=True if remove_invalid_values == "enable" else False,
         )
 
-        generated_text = self.get_generated_text(
+        generated_texts = self.get_generated_texts(
             generator,
             gen_settings,
             prompt,
@@ -216,7 +236,7 @@ class PromptGenerator:
         self.log_outputs(
             model_name,
             prompt,
-            generated_text,
+            generated_texts,
             self_recursive,
             recursive_level,
             preprocess_mode,
@@ -224,6 +244,4 @@ class PromptGenerator:
             prompt_log_filename,
         )
 
-        tokens = clip.tokenize(generated_text)
-        cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)
-        return ([[cond, {"pooled_output": pooled}]])
+        return tuple(self.tokenize_texts(clip, generated_texts))

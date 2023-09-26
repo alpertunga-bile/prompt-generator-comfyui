@@ -32,6 +32,7 @@ Custom prompt generator node for ComfyUI
 - Click ```Refresh``` button in ComfyUI
 
 # Features
+- Multiple output generation is added. You can choose 5 outputs and check the generated prompts in the log file and terminal. The prompts are logged and printed in order.
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
 - ONNX and transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
@@ -56,6 +57,7 @@ Custom prompt generator node for ComfyUI
 |    **early_stopping**     | When True, generation finishes if the EOS token is reached                                                                                                                                                                                                              |
 |       **num_beams**       | Number of steps for each search path                                                                                                                                                                                                                                    |
 |    **num_beam_groups**    | Number of groups to divide num_beams into in order to ensure diversity among different groups of beams                                                                                                                                                                  |
+| **diversity_penalty** | This value is subtracted from a beam’s score if it generates a token same as any beam from other group at a particular time. Note that diversity_penalty is only effective if ```group beam search``` is enabled. |
 |      **temperature**      | How sensitive the algorithm is to selecting low probability options                                                                                                                                                                                                     |
 |         **top_k**         | How many potential answers are considered when performing sampling                                                                                                                                                                                                      |
 |         **top_p**         | Min number of tokens are selected where their probabilities add up to top_p                                                                                                                                                                                             |
@@ -66,7 +68,8 @@ Custom prompt generator node for ComfyUI
 |    **recursive_level**    | See [this section](#how-recursive-works)                                                                                                                                                                                                                                |
 |    **preprocess_mode**    | See [this section](#how-preprocess-mode-works)                                                                                                                                                                                                                          |
 
-- For more information, look [this link](https://huggingface.co/docs/transformers/v4.31.0/en/main_classes/text_generation#transformers.GenerationConfig)
+- For more information, follow [this link](https://huggingface.co/docs/transformers/v4.31.0/en/main_classes/text_generation#transformers.GenerationConfig)
+- Look [this link](https://huggingface.co/docs/transformers/v4.31.0/en/generation_strategies#text-generation-strategies) for text generation strategies
 
 ## How Recursive Works?
 - Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to understand the functionality more accurately.
