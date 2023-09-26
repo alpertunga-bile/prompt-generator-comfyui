@@ -2,7 +2,7 @@ from sys import path
 from os.path import dirname, exists, join
 from os import mkdir
 from platform import system
-from folder_paths import models_dir
+from folder_paths import models_dir, base_path
 
 os_name = system()
 
@@ -12,15 +12,16 @@ from prompt_generator import PromptGenerator
 
 print("/_\ Loading Prompt Generator")
 
-# Check prompt_generators folder under models folder
+# Check prompt_generators folder under the models folder
 
 root = join(models_dir, "prompt_generators")
 if exists(root) is False:
     print(f"/_\ {root} is created. Please add your prompt generators to {root} folder")
     mkdir(root)
 
-if exists("generated_prompts") is False:
-    mkdir("generated_prompts")
+prompts_file = join(base_path, "generated_prompts")
+if exists(prompts_file) is False:
+    mkdir(prompts_file)
 
 # Import PromptGenerator node to ComfyUI
 

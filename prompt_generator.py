@@ -2,7 +2,7 @@ from os import listdir
 from os.path import join, isdir, exists
 from preprocess import preprocess
 from generator.generate import GenerateArgs, Generator
-from folder_paths import models_dir
+from folder_paths import models_dir, base_path
 
 
 class PromptGenerator:
@@ -69,7 +69,9 @@ class PromptGenerator:
             },
         }
 
-    RETURN_TYPES = ("CONDITIONING",)
+    RETURN_TYPES = ("CONDITIONING")
+    RETURN_NAMES = ("encoded output")
+
     FUNCTION = "generate"
 
     CATEGORY = "Prompt Generator"
@@ -171,7 +173,7 @@ class PromptGenerator:
 
         root = join(models_dir, "prompt_generators")
         real_path = join(root, model_name)
-        prompt_log_filename = join("generated_prompts", str(date.today())) + ".txt"
+        prompt_log_filename = join(base_path, "generated_prompts", str(date.today())) + ".txt"
         generated_text = ""
 
         if exists(prompt_log_filename) is False:
@@ -224,4 +226,4 @@ class PromptGenerator:
 
         tokens = clip.tokenize(generated_text)
         cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)
-        return ([[cond, {"pooled_output": pooled}]],)
+        return ([[cond, {"pooled_output": pooled}]])

@@ -5,6 +5,8 @@ Custom prompt generator node for ComfyUI
 - [prompt-generator-comfyui](#prompt-generator-comfyui)
 - [Table Of Contents](#table-of-contents)
 - [Setup](#setup)
+  - [For Portable Version of the ComfyUI](#for-portable-version-of-the-comfyui)
+  - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui)
 - [Features](#features)
 - [Example Workflow](#example-workflow)
 - [Variables](#variables)
@@ -15,22 +17,18 @@ Custom prompt generator node for ComfyUI
 
 # Setup
 ## For Portable Version of the ComfyUI
-- [ ] Portable version users use these commands for now. I am going to add automation for this in the new commit.
-- Open cmd in the **ComfyUI_windows_portable** folder.
-- Execute these commands step by step:
-```
-.\python_embeded\python.exe -s -m pip install transformers
-.\python_embeded\python.exe -s -m pip install accelerate
-.\python_embeded\python.exe -s -m pip install optimum
-.\python_embeded\python.exe -s -m pip install optimum[onnxruntime-gpu]
-```
+- [x] Automatic installation is added for portable version.
+- Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
 - Run the **run_nvidia_gpu.bat** file
+- Open the ```hires.fixWithPromptGenerator.json``` workflow
+- Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
+- Click ```Refresh``` button in ComfyUI
 
 ## For Manual Installation of the ComfyUI
 - Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
 - Run the ComfyUI
 - Open the ```hires.fixWithPromptGenerator.json``` workflow
-- Put your generator under ```prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
+- Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Click ```Refresh``` button in ComfyUI
 
 # Features
