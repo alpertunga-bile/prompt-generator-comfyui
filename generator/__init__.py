@@ -1,5 +1,5 @@
 from sys import path
-from os.path import dirname
+from os.path import dirname, exists
 from subprocess import run
 from importlib.util import find_spec
 from platform import system
@@ -10,11 +10,18 @@ path.append(dirname(__file__))
 
 
 def check_package(package_name: str, install_name: str) -> None:
-    if find_spec(package_name) is None:
-        print(f"/_\ Installing {package_name}")
-        process = run(
-            f"pip install {install_name}", shell=True, check=True, capture_output=True
-        )
+    if find_spec(package_name):
+        return
+
+    print(f"/_\ Installing {package_name}")
+
+    command = ""
+    if exists("python_embeded"):
+        command = f".\\python_embeded\\python.exe -s -m pip install {install_name}"
+    else:
+        command = f"pip install {install_name}"
+
+    process = run(command, shell=True, check=True, capture_output=True)
 
 
 # Check required packages
