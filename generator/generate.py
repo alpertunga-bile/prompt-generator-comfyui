@@ -56,6 +56,7 @@ class Generator:
         if self.pipe is None:
             raise RuntimeError("Pipeline is NONE. Please check your model path")
 
+        args.num_return_sequences = 1
         args = get_variable_dictionary(args)
         output = self.pipe(input, **args)
 
