@@ -20,14 +20,21 @@ Custom prompt generator node for ComfyUI
 - [x] Automatic installation is added for portable version.
 - Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
 - Run the **run_nvidia_gpu.bat** file
-- Open the ```hires.fixWithPromptGenerator.json``` workflow
+- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator``` workflow
 - Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Click ```Refresh``` button in ComfyUI
 
 ## For Manual Installation of the ComfyUI
 - Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
 - Run the ComfyUI
-- Open the ```hires.fixWithPromptGenerator.json``` workflow
+- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator``` workflow
+- Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
+- Click ```Refresh``` button in ComfyUI
+
+## With ComfyUI Manager
+- Download the node with [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager)
+- Restart the ComfyUI
+- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator``` workflow
 - Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Click ```Refresh``` button in ComfyUI
 
@@ -39,9 +46,6 @@ Custom prompt generator node for ComfyUI
 - Recursive generation is supported. See [this section](#how-recursive-works).
 - Print generated text to terminal and log the node's state under  ```generated_prompts``` folder with date as filename.
 
-## IMPORTANT NOTE 
-```num_beams``` must be dividable by ```num_beam_groups``` otherwise you will get errors.
-
 # Example Workflow
 ![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
 
@@ -50,6 +54,10 @@ Custom prompt generator node for ComfyUI
 - **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
 # Variables
+
+## IMPORTANT NOTE 
+```num_beams``` must be dividable by ```num_beam_groups``` otherwise you will get errors.
+
 |      Variable Names       | Definitions                                                                                                                                                                                                                                                             |
 | :-----------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |      **model_name**       | Folder name that contains the model                                                                                                                                                                                                                                     |
