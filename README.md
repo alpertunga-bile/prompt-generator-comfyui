@@ -2,11 +2,10 @@
 Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can use text generation model to generate prompts. Before using, text generation model has to trained with prompt dataset.
 
 # Table Of Contents
-- [prompt-generator-comfyui](#prompt-generator-comfyui)
-- [Table Of Contents](#table-of-contents)
 - [Setup](#setup)
   - [For Portable Version of the ComfyUI](#for-portable-version-of-the-comfyui)
   - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui)
+  - [For ComfyUI Manager Users](#for-comfyui-manager-users)
 - [Features](#features)
 - [Example Workflow](#example-workflow)
 - [Variables](#variables)
@@ -31,7 +30,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Click ```Refresh``` button in ComfyUI
 
-## With ComfyUI Manager
+## For ComfyUI Manager Users
 - Download the node with [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager)
 - Restart the ComfyUI
 - Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator``` workflow
@@ -96,7 +95,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Without self recursive, let's say generator's output is ```b```. So next seed is going to be ```a, b``` and generator's output is ```c```. Final output is ```a, b, c```. It can be used for more accurate prompts.
 
 ## How Preprocess Mode Works?
-- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. Adding prompts from the beginning of the generated text so add important prompts to seed.
+- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. The algorithm is adding prompts from the beginning of the generated text so add important prompts to seed.
 - **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Checking the exact match of the prompt.
 - **none** => Everything is allowed even the repeated prompts.
 ### Example
