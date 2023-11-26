@@ -7,9 +7,11 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - [Setup](#setup)
   - [For Portable Version of the ComfyUI](#for-portable-version-of-the-comfyui)
   - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui)
+  - [With ComfyUI Manager](#with-comfyui-manager)
 - [Features](#features)
 - [Example Workflow](#example-workflow)
 - [Variables](#variables)
+  - [IMPORTANT NOTE](#important-note)
   - [How Recursive Works?](#how-recursive-works)
   - [How Preprocess Mode Works?](#how-preprocess-mode-works)
     - [Example](#example)
@@ -52,6 +54,12 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 ![example_workflow_basic](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/544907ff-2a75-415a-912c-90dfb6959efb)
 
 - You can found the used models in [this link](https://drive.google.com/drive/folders/1c21kMH6FTaia5C8239okL3Q0wJnnWc1N?usp=share_link)
+  - [x] As a note, I am training the ```female_positive_v2``` model frequently. So the model you get may be changed in another day. If you are curious about the model:
+    - The model is using [distilgpt2](https://huggingface.co/distilgpt2) text generation model.
+    - It is trained with 700.000+ unique prompts. I try to update the dataset every day, but I don't add new prompts right away because I'm trying to make the model's learning curve reasonable.
+    - It's training loss is around 0.46 and validation loss is around 0.41 (I can't say the exact values because it is changing frequently).
+    - Train size is 0.9 and test size is 0.1.
+  - [ ] I am considering to train the [bloom model](https://huggingface.co/bigscience/bloom-560m) for to test the prompt generation with a bigger model.
 - For to use the model follow these steps:
   - Download the model and unzip to ```models/prompt_generators``` folder.
   - Click ```Refresh``` button in ComfyUI.
@@ -62,7 +70,8 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 # Variables
 
 ## IMPORTANT NOTE 
-```num_beams``` must be dividable by ```num_beam_groups``` otherwise you will get errors.
+
+- ```num_beams``` must be dividable by ```num_beam_groups``` otherwise you will get errors.
 
 |      Variable Names       | Definitions                                                                                                                                                                                                                                                             |
 | :-----------------------: | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -70,13 +79,13 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 |      **accelerate**       | Open optimizations. Some of the models are not supported by BetterTransformer ([Check your model](https://huggingface.co/docs/optimum/bettertransformer/overview#supported-models)). If it is not supported switch this option to disable or convert your model to ONNX |
 |        **prompt**         | Input prompt for the generator                                                                                                                                                                                                                                          |
 |          **cfg**          | CFG is enabled by setting guidance_scale > 1. Higher guidance scale encourages the model to generate samples that are more closely linked to the input prompt, usually at the expense of poorer quality                                                                 |
-|      **min_length**       | Minimum number of generated tokens                                                                                                                                                                                                                                      |
-|      **max_length**       | Maximum number of generated tokens                                                                                                                                                                                                                                      |
+|    **min_new_tokens**     | The minimum numbers of tokens to generate, ignoring the number of tokens in the prompt.                                                                                                                                                                                 |
+|    **max_new_tokens**     | The maximum numbers of tokens to generate, ignoring the number of tokens in the prompt.                                                                                                                                                                                 |
 |       **do_sample**       | When True, picks words based on their conditional probability                                                                                                                                                                                                           |
 |    **early_stopping**     | When True, generation finishes if the EOS token is reached                                                                                                                                                                                                              |
 |       **num_beams**       | Number of steps for each search path                                                                                                                                                                                                                                    |
 |    **num_beam_groups**    | Number of groups to divide num_beams into in order to ensure diversity among different groups of beams                                                                                                                                                                  |
-| **diversity_penalty** | This value is subtracted from a beam’s score if it generates a token same as any beam from other group at a particular time. Note that diversity_penalty is only effective if ```group beam search``` is enabled. |
+|   **diversity_penalty**   | This value is subtracted from a beam’s score if it generates a token same as any beam from other group at a particular time. Note that diversity_penalty is only effective if ```group beam search``` is enabled.                                                       |
 |      **temperature**      | How sensitive the algorithm is to selecting low probability options                                                                                                                                                                                                     |
 |         **top_k**         | How many potential answers are considered when performing sampling                                                                                                                                                                                                      |
 |         **top_p**         | Min number of tokens are selected where their probabilities add up to top_p                                                                                                                                                                                             |

@@ -12,8 +12,8 @@ from transformers import Pipeline
 class GenerateArgs:
     num_return_sequences: int = 1
     return_full_text: bool = False
-    min_length: int = 0
-    max_length: int = 50
+    min_new_tokens: int = 0
+    max_new_tokens: int = 50
     early_stopping: bool = False
     do_sample: bool = False
     num_beams: int = 1
@@ -56,20 +56,22 @@ class Generator:
         if self.pipe is None:
             raise RuntimeError("Pipeline is NONE. Please check your model path")
 
+        args.num_return_sequences = 1
         args = get_variable_dictionary(args)
         output = self.pipe(input, **args)
 
         return output[0]["generated_text"]
-    
+
     def generate_multiple_output_texts(
-            self, input: str, args: GenerateArgs = GenerateArgs(),
+        self,
+        input: str,
+        args: GenerateArgs = GenerateArgs(),
     ) -> list[str]:
         if self.pipe is None:
             raise RuntimeError("Pipeline is NONE. Please check your model path")
 
         args.num_return_sequences = 5
         args = get_variable_dictionary(args)
-
         outputs = self.pipe(input, **args)
 
         return [output["generated_text"] for output in outputs]

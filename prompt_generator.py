@@ -3,6 +3,7 @@ from os.path import join, isdir, exists
 from preprocess import preprocess
 from generator.generate import GenerateArgs, Generator
 from folder_paths import models_dir, base_path
+from datetime import date, datetime
 
 
 class PromptGenerator:
@@ -30,19 +31,25 @@ class PromptGenerator:
                     "FLOAT",
                     {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.1},
                 ),
-                "min_length": ("INT", {"default": 20, "min": 0, "max": 100, "step": 1}),
-                "max_length": (
+                "min_new_tokens": (
+                    "INT",
+                    {"default": 20, "min": 0, "max": 100, "step": 1},
+                ),
+                "max_new_tokens": (
                     "INT",
                     {"default": 50, "min": 35, "max": 200, "step": 1},
                 ),
                 "do_sample": (["disable", "enable"],),
                 "early_stopping": (["disable", "enable"],),
-                "num_beams": ("INT", {"default": 5, "min": 5, "max": 50, "step": 1}),
+                "num_beams": ("INT", {"default": 5, "min": 1, "max": 50, "step": 1}),
                 "num_beam_groups": (
                     "INT",
-                    {"default": 1, "min": 1, "max": 50, "step": 1},
+                    {"default": 1, "min": 0, "max": 50, "step": 1},
                 ),
-                "diversity_penalty": ("FLOAT", {"default": 1.0, "min": 1.0, "max": 10.0, "step": 0.1}),
+                "diversity_penalty": (
+                    "FLOAT",
+                    {"default": 0.0, "min": 0.0, "max": 10.0, "step": 0.1},
+                ),
                 "temperature": (
                     "FLOAT",
                     {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.1},
@@ -70,8 +77,20 @@ class PromptGenerator:
             },
         }
 
-    RETURN_TYPES = ("CONDITIONING", "CONDITIONING", "CONDITIONING", "CONDITIONING", "CONDITIONING")
-    RETURN_NAMES = ("first_output", "second_output", "third_output", "fourth_output", "fifth_output")
+    RETURN_TYPES = (
+        "CONDITIONING",
+        "CONDITIONING",
+        "CONDITIONING",
+        "CONDITIONING",
+        "CONDITIONING",
+    )
+    RETURN_NAMES = (
+        "first_output",
+        "second_output",
+        "third_output",
+        "fourth_output",
+        "fifth_output",
+    )
 
     FUNCTION = "generate"
 
@@ -118,11 +137,10 @@ class PromptGenerator:
         gen_settings: GenerateArgs,
         log_filename: str,
     ) -> None:
-        from datetime import datetime
-
         print_string = f"{'  PROMPT GENERATOR OUTPUT  '.center(200, '#')}\n"
-        for generated_text in generated_texts:
-            print_string += f"[Gen Prompt] {generated_text}\n{'-'*200}\n"
+
+        for i in range(len(generated_texts)):
+            print_string += f"[{i + 1}. Prompt] {generated_texts[i]}\n{'-'*200}\n"
         print_string += f"{'#'*200}\n"
 
         print(print_string)
@@ -133,11 +151,15 @@ class PromptGenerator:
             file.write(f"Model                 : {model_name}\n")
             file.write(f"Prompt                : {prompt}\n")
             file.write(f"Generated Prompts     :\n")
-            for generated_text in generated_texts:
-                file.write(f"{generated_text}\n{'-'*200}\n")
+
+            for i in range(len(generated_texts)):
+                file.write(
+                    f"[{i + 1}. Prompt]           : {generated_texts[i]}\n{'-'*200}\n"
+                )
+
             file.write(f"cfg                   : {gen_settings.guidance_scale}\n")
-            file.write(f"min_length            : {gen_settings.min_length}\n")
-            file.write(f"max_length            : {gen_settings.max_length}\n")
+            file.write(f"min_new_tokens        : {gen_settings.min_new_tokens}\n")
+            file.write(f"max_new_tokens        : {gen_settings.max_new_tokens}\n")
             file.write(f"do_sample             : {gen_settings.do_sample}\n")
             file.write(f"early_stopping        : {gen_settings.early_stopping}\n")
             file.write(f"early_stopping        : {gen_settings.early_stopping}\n")
@@ -172,8 +194,8 @@ class PromptGenerator:
         accelerate,
         prompt,
         cfg,
-        min_length,
-        max_length,
+        min_new_tokens,
+        max_new_tokens,
         do_sample,
         early_stopping,
         num_beams,
@@ -189,11 +211,11 @@ class PromptGenerator:
         recursive_level,
         preprocess_mode,
     ):
-        from datetime import date
-
         root = join(models_dir, "prompt_generators")
         real_path = join(root, model_name)
-        prompt_log_filename = join(base_path, "generated_prompts", str(date.today())) + ".txt"
+        prompt_log_filename = (
+            join(base_path, "generated_prompts", str(date.today())) + ".txt"
+        )
 
         if exists(prompt_log_filename) is False:
             file = open(prompt_log_filename, "w")
@@ -209,8 +231,8 @@ class PromptGenerator:
 
         gen_settings = GenerateArgs(
             guidance_scale=cfg,
-            min_length=min_length,
-            max_length=max_length,
+            min_new_tokens=min_new_tokens,
+            max_new_tokens=max_new_tokens,
             do_sample=True if do_sample == "enable" else False,
             early_stopping=True if early_stopping == "enable" else False,
             num_beams=num_beams,
