@@ -2,14 +2,12 @@
 Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can use text generation model to generate prompts. Before using, text generation model has to trained with prompt dataset.
 
 # Table Of Contents
+- [prompt-generator-comfyui](#prompt-generator-comfyui)
+- [Table Of Contents](#table-of-contents)
 - [Setup](#setup)
   - [For Portable Version of the ComfyUI](#for-portable-version-of-the-comfyui)
   - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui)
-<<<<<<< HEAD
-  - [With ComfyUI Manager](#with-comfyui-manager)
-=======
   - [For ComfyUI Manager Users](#for-comfyui-manager-users)
->>>>>>> c9c058e35c82fcc860001fac2519bc8821638188
 - [Features](#features)
 - [Example Workflow](#example-workflow)
 - [Variables](#variables)
