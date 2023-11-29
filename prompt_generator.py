@@ -16,7 +16,7 @@ class PromptGenerator:
                     [
                         file
                         for file in listdir(join(models_dir, "prompt_generators"))
-                        if isdir(join(join(models_dir, "prompt_generators"), file))
+                        if isdir(join(models_dir, "prompt_generators", file))
                     ],
                 ),
                 "accelerate": (["enable", "disable"],),

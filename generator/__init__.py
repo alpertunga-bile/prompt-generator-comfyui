@@ -15,7 +15,7 @@ def check_package(package_name: str, install_name: str) -> None:
 
     print(f"/_\ Installing {package_name}")
 
-    command = ""
+    # check if portable version or manual
     if exists("python_embeded"):
         command = f".\\python_embeded\\python.exe -s -m pip install {install_name}"
     else:
@@ -24,17 +24,20 @@ def check_package(package_name: str, install_name: str) -> None:
     process = run(command, shell=True, check=True, capture_output=True)
 
 
+print(" Prompt Generator ComfyUI Node ".center(100, "-"))
+
 # Check required packages
 print("/_\ Checking packages")
 
 check_package("transformers", "transformers")
 check_package("accelerate", "accelerate")
 
+# triton package exists only in Linux
 if os_name == "Linux":
     check_package("triton", "triton")
 
 check_package("optimum", "optimum")
-check_package("onnxruntime-gpu", "optimum[onnxruntime-gpu]")
+check_package("onnxruntime", "optimum[onnxruntime-gpu]")
 
 """
 # This package is for onnx models that run on CPU

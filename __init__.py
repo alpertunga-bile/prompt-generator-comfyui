@@ -12,18 +12,18 @@ from prompt_generator import PromptGenerator
 
 print("/_\ Loading Prompt Generator")
 
-# Check prompt_generators folder under the models folder
+# check prompt_generators folder under the models folder
 
 root = join(models_dir, "prompt_generators")
 if exists(root) is False:
-    print(f"/_\ {root} is created. Please add your prompt generators to {root} folder")
     mkdir(root)
+    print(f"/_\ {root} is created. Please add your prompt generators to {root} folder")
 
 prompts_file = join(base_path, "generated_prompts")
 if exists(prompts_file) is False:
     mkdir(prompts_file)
 
-# Import PromptGenerator node to ComfyUI
+# import PromptGenerator node to ComfyUI
 
 NODE_CLASS_MAPPINGS = {
     "Prompt Generator": PromptGenerator,
@@ -34,3 +34,6 @@ NODE_DISPLAY_NAME_MAPPINGS = {
 }
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
+
+print("/_\ Loaded Successfully")
+print("-" * 100)
