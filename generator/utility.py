@@ -17,7 +17,7 @@ def get_accelerator_type(path: str) -> str:
         if file.endswith(".onnx"):
             accelerator_type = "onnx"
             break
-        if file.endswith(".bin"):
+        if file.endswith(".bin") or file.endswith(".safetensors"):
             accelerator_type = "bettertransformer"
             break
 

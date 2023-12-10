@@ -10,8 +10,10 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
   - [For ComfyUI Manager Users](#for-comfyui-manager-users)
 - [Features](#features)
 - [Example Workflow](#example-workflow)
+- [Pretrained Prompt Models](#pretrained-prompt-models)
+  - [Dataset](#dataset)
+  - [Models](#models)
 - [Variables](#variables)
-  - [IMPORTANT NOTE](#important-note)
   - [How Recursive Works?](#how-recursive-works)
   - [How Preprocess Mode Works?](#how-preprocess-mode-works)
     - [Example](#example)
@@ -22,21 +24,21 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - [x] Automatic installation is added for portable version.
 - Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
 - Run the **run_nvidia_gpu.bat** file
-- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator``` workflow
+- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator.json``` workflow
 - Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Click ```Refresh``` button in ComfyUI
 
 ## For Manual Installation of the ComfyUI
 - Clone the repository with ```git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git``` command under ```custom_nodes``` folder.
 - Run the ComfyUI
-- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator``` workflow
+- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator.json``` workflow
 - Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Click ```Refresh``` button in ComfyUI
 
 ## For ComfyUI Manager Users
 - Download the node with [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager)
 - Restart the ComfyUI
-- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator``` workflow
+- Open the ```hires.fixWithPromptGenerator.json``` or ```basicWorkflowWithPromptGenerator.json``` workflow
 - Put your generator under ```models/prompt_generators``` folder. You can create your prompt generator with [this repository](https://github.com/alpertunga-bile/prompt-markdown-parser). You have to put generator as folder. Do not just put ```pytorch_model.bin``` file for example.
 - Click ```Refresh``` button in ComfyUI
 
@@ -53,13 +55,6 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ![example_workflow_basic](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/544907ff-2a75-415a-912c-90dfb6959efb)
 
-- You can found the used models in [this link](https://drive.google.com/drive/folders/1c21kMH6FTaia5C8239okL3Q0wJnnWc1N?usp=share_link)
-  - [x] As a note, I am training the ```female_positive_v2``` model frequently. So the model you get may be changed in another day. If you are curious about the model:
-    - The model is using [distilgpt2](https://huggingface.co/distilgpt2) text generation model.
-    - It is trained with 700.000+ unique prompts. I try to update the dataset every day, but I don't add new prompts right away because I'm trying to make the model's learning curve reasonable.
-    - It's training loss is around 0.46 and validation loss is around 0.41 (I can't say the exact values because it is changing frequently).
-    - Train size is 0.9 and test size is 0.1.
-  - [ ] I am considering to train the [bloom model](https://huggingface.co/bigscience/bloom-560m) for to test the prompt generation with a bigger model.
 - For to use the model follow these steps:
   - Download the model and unzip to ```models/prompt_generators``` folder.
   - Click ```Refresh``` button in ComfyUI.
@@ -67,9 +62,34 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 - **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
-# Variables
+# Pretrained Prompt Models
 
-## IMPORTANT NOTE 
+- You can find the models in [this link](https://drive.google.com/drive/folders/1c21kMH6FTaia5C8239okL3Q0wJnnWc1N?usp=share_link)
+
+## Dataset
+
+- 1.364.471 rows of unique prompts **(Gathering In Process)**
+- %80 train | %20 test
+- Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
+- These Huggingface datasets are used:
+  - [FredZhang7/anime-prompts-180K](https://huggingface.co/datasets/FredZhang7/anime-prompts-180K)
+  - [FredZhang7/stable-diffusion-prompts-2.47M](https://huggingface.co/datasets/FredZhang7/stable-diffusion-prompts-2.47M)
+  - [thefcraft/civitai-stable-diffusion-337k](https://huggingface.co/datasets/thefcraft/civitai-stable-diffusion-337k)
+  - [Falah/stable_diffusion_prompts_dataset](https://huggingface.co/datasets/Falah/stable_diffusion_prompts_dataset)
+  - [daspartho/stable-diffusion-prompts](https://huggingface.co/datasets/daspartho/stable-diffusion-prompts)
+  - [andyyang/stable_diffusion_prompts_2m](https://huggingface.co/datasets/andyyang/stable_diffusion_prompts_2m)
+
+## Models
+
+- female_positive_generator_v2 **(Training In Process)**
+  - using [distilgpt2](https://huggingface.co/distilgpt2) model
+  - Training Loss ~0.46 | Test Loss ~0.42
+  
+- female_positive_generator_v3 **(Training In Process)**
+  - using [bigscience/bloom-560m](https://huggingface.co/bigscience/bloom-560m) model
+  - Training loss ~0.59
+
+# Variables
 
 - ```num_beams``` must be dividable by ```num_beam_groups``` otherwise you will get errors.
 
