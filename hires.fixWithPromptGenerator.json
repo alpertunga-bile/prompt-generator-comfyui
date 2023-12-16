@@ -1,6 +1,6 @@
 {
-  "last_node_id": 42,
-  "last_link_id": 59,
+  "last_node_id": 43,
+  "last_link_id": 61,
   "nodes": [
     {
       "id": 3,
@@ -14,7 +14,7 @@
         "1": 262
       },
       "flags": {},
-      "order": 11,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -25,7 +25,7 @@
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 58
+          "link": 61
         },
         {
           "name": "negative",
@@ -216,7 +216,7 @@
         26
       ],
       "flags": {},
-      "order": 4,
+      "order": 6,
       "mode": 0,
       "inputs": [
         {
@@ -253,7 +253,7 @@
         26
       ],
       "flags": {},
-      "order": 9,
+      "order": 11,
       "mode": 0,
       "inputs": [
         {
@@ -290,7 +290,7 @@
         26
       ],
       "flags": {},
-      "order": 10,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -326,7 +326,7 @@
         26
       ],
       "flags": {},
-      "order": 5,
+      "order": 7,
       "mode": 0,
       "inputs": [
         {
@@ -362,7 +362,7 @@
         26
       ],
       "flags": {},
-      "order": 6,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -439,7 +439,7 @@
         26
       ],
       "flags": {},
-      "order": 14,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -451,7 +451,7 @@
       "outputs": [
         {
           "name": "CONDITIONING",
-          "type": "CONDITIONING",
+          "type": "*",
           "links": [
             43
           ],
@@ -542,19 +542,19 @@
         26
       ],
       "flags": {},
-      "order": 12,
+      "order": 2,
       "mode": 0,
       "inputs": [
         {
           "name": "",
           "type": "*",
-          "link": 59
+          "link": null
         }
       ],
       "outputs": [
         {
           "name": "CONDITIONING",
-          "type": "CONDITIONING",
+          "type": "*",
           "links": [
             51
           ],
@@ -578,7 +578,7 @@
         "1": 58
       },
       "flags": {},
-      "order": 2,
+      "order": 3,
       "mode": 0,
       "outputs": [
         {
@@ -612,7 +612,7 @@
       "flags": {
         "collapsed": true
       },
-      "order": 7,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -652,7 +652,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 13,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -785,7 +785,7 @@
         "1": 98
       },
       "flags": {},
-      "order": 3,
+      "order": 4,
       "mode": 0,
       "outputs": [
         {
@@ -802,7 +802,7 @@
           "type": "CLIP",
           "links": [
             5,
-            57
+            60
           ],
           "slot_index": 1
         },
@@ -821,43 +821,66 @@
       ]
     },
     {
-      "id": 42,
+      "id": 43,
       "type": "Prompt Generator",
       "pos": [
-        -140,
-        -362
+        -136,
+        -445
       ],
-      "size": [
-        480.43060302734375,
-        580.0348632812501
-      ],
+      "size": {
+        "0": 400,
+        "1": 612
+      },
       "flags": {},
-      "order": 8,
+      "order": 10,
       "mode": 0,
       "inputs": [
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 57
+          "link": 60
         }
       ],
       "outputs": [
         {
-          "name": "CONDITIONING",
+          "name": "first_output",
           "type": "CONDITIONING",
           "links": [
-            58,
-            59
+            61
           ],
           "shape": 3,
           "slot_index": 0
+        },
+        {
+          "name": "second_output",
+          "type": "CONDITIONING",
+          "links": null,
+          "shape": 3
+        },
+        {
+          "name": "third_output",
+          "type": "CONDITIONING",
+          "links": null,
+          "shape": 3
+        },
+        {
+          "name": "fourth_output",
+          "type": "CONDITIONING",
+          "links": null,
+          "shape": 3
+        },
+        {
+          "name": "fifth_output",
+          "type": "CONDITIONING",
+          "links": null,
+          "shape": 3
         }
       ],
       "properties": {
         "Node name for S&R": "Prompt Generator"
       },
       "widgets_values": [
-        "female_positive-gpt2-141972-5-1",
+        "female_positive_generator_sfw",
         "enable",
         "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
         1,
@@ -865,8 +888,9 @@
         50,
         "disable",
         "disable",
+        5,
         1,
-        1,
+        0,
         1,
         50,
         1,
@@ -1081,28 +1105,20 @@
       "IMAGE"
     ],
     [
-      57,
+      60,
       4,
       1,
-      42,
+      43,
       0,
       "CLIP"
     ],
     [
-      58,
-      42,
+      61,
+      43,
       0,
       3,
       1,
       "CONDITIONING"
-    ],
-    [
-      59,
-      42,
-      0,
-      38,
-      0,
-      "*"
     ]
   ],
   "groups": [
@@ -1114,7 +1130,8 @@
         1602,
         1278
       ],
-      "color": "#3f789e"
+      "color": "#3f789e",
+      "font_size": 24
     },
     {
       "title": "Hires .fix",
@@ -1124,7 +1141,8 @@
         1468,
         1275
       ],
-      "color": "#a1309b"
+      "color": "#a1309b",
+      "font_size": 24
     }
   ],
   "config": {},
