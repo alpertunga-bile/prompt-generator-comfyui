@@ -7,7 +7,7 @@ from optimum.onnxruntime import ORTModelForCausalLM
 
 
 def get_default_pipeline(model_name: str) -> Pipeline:
-    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
+    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", torch_dtype="auto")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     pipe = tf_pipe(task="text-generation", model=model, tokenizer=tokenizer)
@@ -27,7 +27,7 @@ def get_onnx_pipeline(model_name: str) -> Pipeline:
 
 
 def get_bettertransformer_pipeline(model_name: str) -> Pipeline:
-    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto")
+    model = AutoModelForCausalLM.from_pretrained(model_name, device_map="auto", torch_dtype="auto")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
 
     pipe = opt_pipe(

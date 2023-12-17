@@ -4,6 +4,8 @@ from preprocess import preprocess
 from generator.generate import GenerateArgs, Generator
 from folder_paths import models_dir, base_path
 from datetime import date, datetime
+from torch.cuda import empty_cache
+from gc import collect
 
 
 class PromptGenerator:
@@ -254,6 +256,11 @@ class PromptGenerator:
             recursive_level,
             preprocess_mode,
         )
+
+        del generator
+
+        empty_cache()
+        collect()
 
         self.log_outputs(
             model_name,

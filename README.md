@@ -17,6 +17,10 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
   - [How Recursive Works?](#how-recursive-works)
   - [How Preprocess Mode Works?](#how-preprocess-mode-works)
     - [Example](#example)
+- [Troubleshooting](#troubleshooting)
+  - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui-1)
+  - [For Portable Installation of the ComfyUI](#for-portable-installation-of-the-comfyui)
+- [Contributing](#contributing)
 - [Example Outputs](#example-outputs)
 
 # Setup
@@ -137,6 +141,35 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 # ------------------------------------------------------------- Preprocess (Exact Prompt) -------------------------------------------------------------- #
 ((masterpiece)), ((masterpiece:1.2)), (masterpiece), blahblah, blah, ((blahblah)), (((((blah))))), ((same prompt)), same prompt
 ```
+
+# Troubleshooting
+
+- The node is based on [transformers](https://github.com/huggingface/transformers) and [optimum](https://github.com/huggingface/optimum) packages. So most of the problems may be caused from these packages. For overcome these problems you can try to update these packages:
+
+## For Manual Installation of the ComfyUI
+
+1. Activate the virtual environment if there is one.
+2. Run ```pip install --upgrade transformers optimum optimum[onnxruntime-gpu]``` command.
+
+## For Portable Installation of the ComfyUI
+
+1. Go to the ```ComfyUI_windows_portable``` folder.
+2. Open the command prompt in this folder.
+3. Run ```.\python_embeded\python.exe -s -m pip install --upgrade transformers optimum optimum[onnxruntime-gpu]``` command.
+
+- If updating the packages is not solve your problem please create an issue with ```bug``` label.
+
+# Contributing
+
+- If you have an idea and want to implement it by yourself please follow these steps:
+
+  1. Create a fork
+  2. Create a branch with a name that describes the feature that you are adding
+  3. Pull request the fork
+
+- If you have an idea but don't know how to implement it please create an issue with ```enhancement``` label.
+
+- [x] The contributing can be done in several ways. You can contribute to code or to README file.
 
 # Example Outputs
 ![ComfyUI_00062_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/82522192-b486-4703-86e2-18aff79fe29b)

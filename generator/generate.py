@@ -42,7 +42,13 @@ class Generator:
         if accelerator_type == "onnx":
             self.pipe = get_onnx_pipeline(model_name=model_path)
         elif accelerator_type == "bettertransformer":
-            self.pipe = get_bettertransformer_pipeline(model_name=model_path)
+            try:
+                self.pipe = get_bettertransformer_pipeline(model_name=model_path)
+            except:
+                try:
+                    self.pipe = get_onnx_pipeline(model_name=model_path)
+                except:
+                    self.pipe = get_default_pipeline(model_path)
         else:
             raise ValueError(
                 "Cant define accelerator type by folder. Can't find .onnx file for onnx, .bin for bettertransformer. Please check your model"
