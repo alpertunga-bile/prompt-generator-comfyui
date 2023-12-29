@@ -1,5 +1,5 @@
 # prompt-generator-comfyui
-Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can use text generation model to generate prompts. Before using, text generation model has to trained with prompt dataset.
+Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can use text generation models to generate prompts. Before using, text generation model has to be trained with prompt dataset.
 
 # Table Of Contents
 - [prompt-generator-comfyui](#prompt-generator-comfyui)
@@ -72,8 +72,8 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- 1.364.471 rows of unique prompts **(Gathering In Process)**
-- %80 train | %20 test
+- 1.434.667 rows of unique prompts **(Gathering In Process)**
+- %85 train | %15 test
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
 - These Huggingface datasets are used:
   - [FredZhang7/anime-prompts-180K](https://huggingface.co/datasets/FredZhang7/anime-prompts-180K)
@@ -87,7 +87,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 - female_positive_generator_v2 **(Training In Process)**
   - using [distilgpt2](https://huggingface.co/distilgpt2) model
-  - Training Loss ~0.46 | Test Loss ~0.42
+  - Training Loss ~0.50
   
 - female_positive_generator_v3 **(Training In Process)**
   - using [bigscience/bloom-560m](https://huggingface.co/bigscience/bloom-560m) model
@@ -144,14 +144,18 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 # Troubleshooting
 
+- If the below solutions are not fixed your issue please create an issue with ```bug``` label
+
+## Package Version
+
 - The node is based on [transformers](https://github.com/huggingface/transformers) and [optimum](https://github.com/huggingface/optimum) packages. So most of the problems may be caused from these packages. For overcome these problems you can try to update these packages:
 
-## For Manual Installation of the ComfyUI
+### For Manual Installation of the ComfyUI
 
 1. Activate the virtual environment if there is one.
 2. Run ```pip install --upgrade transformers optimum optimum[onnxruntime-gpu]``` command.
 
-## For Portable Installation of the ComfyUI
+### For Portable Installation of the ComfyUI
 
 1. Go to the ```ComfyUI_windows_portable``` folder.
 2. Open the command prompt in this folder.
@@ -159,9 +163,20 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 - If updating the packages is not solve your problem please create an issue with ```bug``` label.
 
+## Automatic Installation
+
+### For Manual Installation of the ComfyUI
+
+- The users have to check if they activate the virtual environment if there is one
+
+### For Portable Installation of the ComfyUI
+
+- The users have to check that they are starting the ComfyUI in the ```ComfyUI_windows_portable```
+- Because the node is checking the ```python_embeded``` folder if it is exists and use it to install the required packages
+
 # Contributing
 
-- If you have an idea and want to implement it by yourself please follow these steps:
+- Contributions are welcome. If you have an idea and want to implement it by yourself please follow these steps:
 
   1. Create a fork
   2. Create a branch with a name that describes the feature that you are adding
