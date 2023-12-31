@@ -18,8 +18,12 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
   - [How Preprocess Mode Works?](#how-preprocess-mode-works)
     - [Example](#example)
 - [Troubleshooting](#troubleshooting)
-  - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui-1)
-  - [For Portable Installation of the ComfyUI](#for-portable-installation-of-the-comfyui)
+  - [Package Version](#package-version)
+    - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui-1)
+    - [For Portable Installation of the ComfyUI](#for-portable-installation-of-the-comfyui)
+  - [Automatic Installation](#automatic-installation)
+    - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui-2)
+    - [For Portable Installation of the ComfyUI](#for-portable-installation-of-the-comfyui-1)
 - [Contributing](#contributing)
 - [Example Outputs](#example-outputs)
 
@@ -59,16 +63,16 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ![example_workflow_basic](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/544907ff-2a75-415a-912c-90dfb6959efb)
 
-- For to use the model follow these steps:
-  - Download the model and unzip to ```models/prompt_generators``` folder.
-  - Click ```Refresh``` button in ComfyUI.
-  - Then select the generator with the node's ```model_name``` variable (If you can't see the generator restart the ComfyUI).
-
 - **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
 # Pretrained Prompt Models
 
 - You can find the models in [this link](https://drive.google.com/drive/folders/1c21kMH6FTaia5C8239okL3Q0wJnnWc1N?usp=share_link)
+
+- For to use the pretrained model follow these steps:
+  - Download the model and unzip to ```models/prompt_generators``` folder.
+  - Click ```Refresh``` button in ComfyUI.
+  - Then select the generator with the node's ```model_name``` variable (If you can't see the generator restart the ComfyUI).
 
 ## Dataset
 
@@ -188,5 +192,5 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 # Example Outputs
 ![ComfyUI_00062_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/82522192-b486-4703-86e2-18aff79fe29b)
-![ComfyUI_00055_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/eb0e4944-d3d1-4dcc-9853-7b18f7b6286c)
 ![ComfyUI_00054_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/906c9c1d-d8b5-4aa7-89cc-6a1918eac454)
+![ComfyUI_00048_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/e559c843-8e4c-4f45-9a39-c7f457218467)
