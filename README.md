@@ -188,5 +188,5 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 # Example Outputs
 ![ComfyUI_00062_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/82522192-b486-4703-86e2-18aff79fe29b)
+![ComfyUI_00055_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/eb0e4944-d3d1-4dcc-9853-7b18f7b6286c)
 ![ComfyUI_00054_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/906c9c1d-d8b5-4aa7-89cc-6a1918eac454)
-![ComfyUI_00048_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/e559c843-8e4c-4f45-9a39-c7f457218467)
