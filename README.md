@@ -165,8 +165,6 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 2. Open the command prompt in this folder.
 3. Run ```.\python_embeded\python.exe -s -m pip install --upgrade transformers optimum optimum[onnxruntime-gpu]``` command.
 
-- If updating the packages is not solve your problem please create an issue with ```bug``` label.
-
 ## Automatic Installation
 
 ### For Manual Installation of the ComfyUI
@@ -176,7 +174,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 ### For Portable Installation of the ComfyUI
 
 - The users have to check that they are starting the ComfyUI in the ```ComfyUI_windows_portable```
-- Because the node is checking the ```python_embeded``` folder if it is exists and use it to install the required packages
+- Because the node is checking the ```python_embeded``` folder if it is exists and is using it to install the required packages
 
 # Contributing
 
@@ -184,7 +182,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
   1. Create a fork
   2. Create a branch with a name that describes the feature that you are adding
-  3. Pull request the fork
+  3. Pull request the fork with explaning the new feature
 
 - If you have an idea but don't know how to implement it please create an issue with ```enhancement``` label.
 
