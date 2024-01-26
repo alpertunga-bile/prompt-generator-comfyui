@@ -80,7 +80,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - 1.516.819 rows of unique prompts | **(Gathering In Process)**
 - %85 train | %15 test
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
-- These Huggingface datasets are used for enhance the dataset:
+- These Huggingface datasets are used for enhancing the dataset:
   - [FredZhang7/anime-prompts-180K](https://huggingface.co/datasets/FredZhang7/anime-prompts-180K)
   - [FredZhang7/stable-diffusion-prompts-2.47M](https://huggingface.co/datasets/FredZhang7/stable-diffusion-prompts-2.47M)
   - [thefcraft/civitai-stable-diffusion-337k](https://huggingface.co/datasets/thefcraft/civitai-stable-diffusion-337k)
