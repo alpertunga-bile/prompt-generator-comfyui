@@ -87,7 +87,9 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
   - [Falah/stable_diffusion_prompts_dataset](https://huggingface.co/datasets/Falah/stable_diffusion_prompts_dataset)
   - [daspartho/stable-diffusion-prompts](https://huggingface.co/datasets/daspartho/stable-diffusion-prompts)
   - [andyyang/stable_diffusion_prompts_2m](https://huggingface.co/datasets/andyyang/stable_diffusion_prompts_2m)
-
+  - [poloclub/diffusiondb](https://huggingface.co/datasets/poloclub/diffusiondb)
+  - [yizhangliu/stable-diffusion-prompts](https://huggingface.co/datasets/yizhangliu/stable-diffusion-prompts)
+    
 ## Models
 
 - female_positive_generator_v2 | **(Training In Process)**
