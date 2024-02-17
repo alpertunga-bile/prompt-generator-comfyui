@@ -40,7 +40,6 @@ def preprocess(line: str, preprocess_mode: str) -> str:
     temp_line = line.replace("\xa0", " ")
     temp_line = temp_line.replace("\n", ", ")
     temp_line = temp_line.replace("\t", " ")
-    temp_line = temp_line.replace("|", ",")
     temp_line = temp_line.replace("  ", " ")
     temp_line = sub(pattern, ", ", temp_line)
 

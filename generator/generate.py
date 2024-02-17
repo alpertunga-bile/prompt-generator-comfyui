@@ -6,6 +6,7 @@ from generator.model import (
 )
 from generator.utility import get_accelerator_type, get_variable_dictionary
 from transformers import Pipeline
+from preprocess import preprocess
 
 
 @dataclass
@@ -51,7 +52,7 @@ class Generator:
                     self.pipe = get_default_pipeline(model_path)
         else:
             raise ValueError(
-                "Cant define accelerator type by folder. Can't find .onnx file for onnx, .bin for bettertransformer. Please check your model"
+                "Cant define accelerator type by folder. Can't find .onnx file for onnx, .bin or .safetensors for bettertransformer and default pipeline. Please check your model"
             )
 
     def generate_text(
@@ -81,3 +82,33 @@ class Generator:
         outputs = self.pipe(input, **args)
 
         return [output["generated_text"] for output in outputs]
+
+
+def get_generated_texts(
+    generator: Generator,
+    gen_args: GenerateArgs,
+    prompt: str,
+    is_self_recursive: bool,
+    recursive_level: int,
+    preprocess_mode: str,
+) -> list[str]:
+    results = generator.generate_multiple_output_texts(prompt, gen_args)
+    gen_texts = []
+
+    for result in results:
+        generated_text = preprocess(prompt + result, preprocess_mode)
+
+        if is_self_recursive:
+            for _ in range(0, recursive_level):
+                result = generator.generate_text(generated_text, gen_args)
+                generated_text = preprocess(result, preprocess_mode)
+            generated_text = preprocess(prompt + generated_text, preprocess_mode)
+        else:
+            for _ in range(0, recursive_level):
+                result = generator.generate_text(generated_text, gen_args)
+                generated_text += result
+                generated_text = preprocess(generated_text, preprocess_mode)
+
+        gen_texts.append(generated_text)
+
+    return gen_texts

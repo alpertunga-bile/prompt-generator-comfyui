@@ -1,45 +1,7 @@
 {
-  "last_node_id": 16,
-  "last_link_id": 27,
+  "last_node_id": 24,
+  "last_link_id": 37,
   "nodes": [
-    {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        369,
-        539
-      ],
-      "size": {
-        "0": 425.27801513671875,
-        "1": 180.6060791015625
-      },
-      "flags": {},
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 5
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            6
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "text, watermark"
-      ]
-    },
     {
       "id": 5,
       "type": "EmptyLatentImage",
@@ -150,6 +112,65 @@
       }
     },
     {
+      "id": 3,
+      "type": "KSampler",
+      "pos": [
+        867,
+        170
+      ],
+      "size": {
+        "0": 315,
+        "1": 262
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 37
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            7
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        271604226724519,
+        "randomize",
+        20,
+        7,
+        "dpmpp_2m",
+        "karras",
+        1
+      ]
+    },
+    {
       "id": 14,
       "type": "PreviewImage",
       "pos": [
@@ -157,8 +178,8 @@
         170
       ],
       "size": {
-        "0": 210,
-        "1": 26
+        "0": 677.3001708984375,
+        "1": 475.59991455078125
       },
       "flags": {},
       "order": 8,
@@ -175,11 +196,74 @@
       }
     },
     {
+      "id": 24,
+      "type": "Prompt Generator",
+      "pos": [
+        309,
+        -139
+      ],
+      "size": {
+        "0": 400,
+        "1": 652
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 36
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gen_prompt",
+          "type": "CONDITIONING",
+          "links": [
+            37
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Prompt Generator"
+      },
+      "widgets_values": [
+        "female_positive_generator_v2",
+        "enable",
+        "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful)), ((upper body portrait)),",
+        264202412095949,
+        "randomize",
+        "disable",
+        "enable",
+        1,
+        1,
+        20,
+        50,
+        "enable",
+        "disable",
+        1,
+        1,
+        0,
+        1,
+        50,
+        1,
+        1.2000000000000002,
+        0,
+        "disable",
+        "disable",
+        1,
+        "exact_keyword"
+      ]
+    },
+    {
       "id": 12,
       "type": "VAELoader",
       "pos": [
-        -156,
-        641
+        -199,
+        663
       ],
       "size": {
         "0": 488.8050231933594,
@@ -210,8 +294,8 @@
       "id": 4,
       "type": "CheckpointLoaderSimple",
       "pos": [
-        -151,
-        502
+        -150,
+        496
       ],
       "size": {
         "0": 315,
@@ -234,7 +318,7 @@
           "type": "CLIP",
           "links": [
             5,
-            26
+            36
           ],
           "slot_index": 1
         },
@@ -249,148 +333,47 @@
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "wololo-mix-v3.safetensors"
+        "wololo-mix-v4.safetensors"
       ]
     },
     {
-      "id": 16,
-      "type": "Prompt Generator",
+      "id": 7,
+      "type": "CLIPTextEncode",
       "pos": [
-        363,
-        -140
+        501,
+        601
       ],
       "size": {
-        "0": 400,
-        "1": 612
+        "0": 425.27801513671875,
+        "1": 180.6060791015625
       },
-      "flags": {},
-      "order": 5,
+      "flags": {
+        "collapsed": true
+      },
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 26
+          "link": 5
         }
       ],
       "outputs": [
         {
-          "name": "first_output",
+          "name": "CONDITIONING",
           "type": "CONDITIONING",
           "links": [
-            27
-          ],
-          "shape": 3,
-          "slot_index": 0
-        },
-        {
-          "name": "second_output",
-          "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
-        },
-        {
-          "name": "third_output",
-          "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
-        },
-        {
-          "name": "fourth_output",
-          "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
-        },
-        {
-          "name": "fifth_output",
-          "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Prompt Generator"
-      },
-      "widgets_values": [
-        "female_positive_generator_sfw",
-        "enable",
-        "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
-        1,
-        20,
-        50,
-        "disable",
-        "disable",
-        5,
-        1,
-        0,
-        1,
-        50,
-        1,
-        1,
-        0,
-        "disable",
-        "disable",
-        0,
-        "exact_keyword"
-      ]
-    },
-    {
-      "id": 3,
-      "type": "KSampler",
-      "pos": [
-        867,
-        170
-      ],
-      "size": {
-        "0": 315,
-        "1": 262
-      },
-      "flags": {},
-      "order": 6,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 1
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 27
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 6
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 2
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            7
+            6
           ],
           "slot_index": 0
         }
       ],
       "properties": {
-        "Node name for S&R": "KSampler"
+        "Node name for S&R": "CLIPTextEncode"
       },
       "widgets_values": [
-        916210711106676,
-        "randomize",
-        20,
-        7,
-        "dpmpp_2m",
-        "karras",
-        1
+        "(worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
       ]
     }
   ],
@@ -460,16 +443,16 @@
       "IMAGE"
     ],
     [
-      26,
+      36,
       4,
       1,
-      16,
+      24,
       0,
       "CLIP"
     ],
     [
-      27,
-      16,
+      37,
+      24,
       0,
       3,
       1,

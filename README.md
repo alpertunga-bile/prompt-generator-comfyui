@@ -14,6 +14,8 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
   - [Dataset](#dataset)
   - [Models](#models)
 - [Variables](#variables)
+  - [Random Generation](#random-generation)
+  - [Lock The Generation](#lock-the-generation)
   - [How Recursive Works?](#how-recursive-works)
   - [How Preprocess Mode Works?](#how-preprocess-mode-works)
     - [Example](#example)
@@ -51,7 +53,8 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Click ```Refresh``` button in ComfyUI
 
 # Features
-- Multiple output generation is added. You can choose from 5 outputs and check the generated prompts in the log file and terminal. The prompts are logged and printed in order.
+- Multiple output generation is added. You can choose from 5 outputs with the index value. You can check the generated prompts from the log file and terminal. The prompts are logged and printed in order. 
+- Randomness is added.
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
 - ONNX and transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
@@ -59,9 +62,9 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Print generated text to terminal and log the node's state under  ```generated_prompts``` folder with date as filename.
 
 # Example Workflow
-![example_workflow](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/f50652a9-8751-41f3-81cf-d4cb61dd8a34)
+![example_hires_workflow](workflow_images/hires_workflow.png)
 
-![example_workflow_basic](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/544907ff-2a75-415a-912c-90dfb6959efb)
+![example_basic_workflow](workflow_images/basic_workflow.png)
 
 - **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
@@ -106,10 +109,14 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 |      **model_name**       | Folder name that contains the model                                                                                                                                                                                                                                     |
 |      **accelerate**       | Open optimizations. Some of the models are not supported by BetterTransformer ([Check your model](https://huggingface.co/docs/optimum/bettertransformer/overview#supported-models)). If it is not supported switch this option to disable or convert your model to ONNX |
 |        **prompt**         | Input prompt for the generator                                                                                                                                                                                                                                          |
+|         **seed**          | Seed value for the model                                                                                                                                                                                                                                                |
+|         **lock**          | Lock the generation and select from the last generated prompts with index value                                                                                                                                                                                         |
+|     **random_index**      | Random index value in [1, 5]. If the value is __enable__, the __index__ value is not used                                                                                                                                                                               |
+|         **index**         | User specified index value for selecting prompt from the generated prompts. **random_index** variable must be __disable__                                                                                                                                               |
 |          **cfg**          | CFG is enabled by setting guidance_scale > 1. Higher guidance scale encourages the model to generate samples that are more closely linked to the input prompt, usually at the expense of poorer quality                                                                 |
 |    **min_new_tokens**     | The minimum numbers of tokens to generate, ignoring the number of tokens in the prompt.                                                                                                                                                                                 |
 |    **max_new_tokens**     | The maximum numbers of tokens to generate, ignoring the number of tokens in the prompt.                                                                                                                                                                                 |
-|       **do_sample**       | When True, picks words based on their conditional probability                                                                                                                                                                                                           |
+|       **do_sample**       | When True, picks words based on their conditional probability. For random generation, the value must be __enable__                                                                                                                                                      |
 |    **early_stopping**     | When True, generation finishes if the EOS token is reached                                                                                                                                                                                                              |
 |       **num_beams**       | Number of steps for each search path                                                                                                                                                                                                                                    |
 |    **num_beam_groups**    | Number of groups to divide num_beams into in order to ensure diversity among different groups of beams                                                                                                                                                                  |
@@ -126,6 +133,23 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 - For more information, follow [this link](https://huggingface.co/docs/transformers/v4.31.0/en/main_classes/text_generation#transformers.GenerationConfig)
 - Look [this link](https://huggingface.co/docs/transformers/v4.31.0/en/generation_strategies#text-generation-strategies) for text generation strategies
+
+## Random Generation
+- For random generation:
+  - Enable **do_sample**
+  - Set **num_beams** varible to 1
+
+- You can find this text generation strategy from the upper link. The strategy is called **Multinomial sampling**.
+- Changing variable of **do_sample** to __disable__ gives deterministic generation.
+- For more randomness, you can:
+  - Enable **random_index** variable
+  - Increase **recursive_level**
+  - Enable **self_recursive**
+  
+## Lock The Generation
+- Enabling the **lock** variable skip the generation and let you choose from the last generated prompts.
+- You can choose from the **index** value or use the **random_index**.
+- If **random_index** is enabled, the **index** value is ignored.
 
 ## How Recursive Works?
 - Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to understand the functionality more accurately.
