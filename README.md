@@ -26,6 +26,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
   - [Automatic Installation](#automatic-installation)
     - [For Manual Installation of the ComfyUI](#for-manual-installation-of-the-comfyui-2)
     - [For Portable Installation of the ComfyUI](#for-portable-installation-of-the-comfyui-1)
+  - [New Updates On The Node](#new-updates-on-the-node)
 - [Contributing](#contributing)
 - [Example Outputs](#example-outputs)
 
@@ -79,24 +80,26 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- 1.434.667 rows of unique prompts **(Gathering In Process)**
+- 1.631.670 rows of unique prompts | **(Gathering In Process)**
 - %85 train | %15 test
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
-- These Huggingface datasets are used:
+- These Huggingface datasets are used for enhancing the dataset:
   - [FredZhang7/anime-prompts-180K](https://huggingface.co/datasets/FredZhang7/anime-prompts-180K)
   - [FredZhang7/stable-diffusion-prompts-2.47M](https://huggingface.co/datasets/FredZhang7/stable-diffusion-prompts-2.47M)
   - [thefcraft/civitai-stable-diffusion-337k](https://huggingface.co/datasets/thefcraft/civitai-stable-diffusion-337k)
   - [Falah/stable_diffusion_prompts_dataset](https://huggingface.co/datasets/Falah/stable_diffusion_prompts_dataset)
   - [daspartho/stable-diffusion-prompts](https://huggingface.co/datasets/daspartho/stable-diffusion-prompts)
   - [andyyang/stable_diffusion_prompts_2m](https://huggingface.co/datasets/andyyang/stable_diffusion_prompts_2m)
-
+  - [poloclub/diffusiondb](https://huggingface.co/datasets/poloclub/diffusiondb)
+  - [yizhangliu/stable-diffusion-prompts](https://huggingface.co/datasets/yizhangliu/stable-diffusion-prompts)
+    
 ## Models
 
-- female_positive_generator_v2 **(Training In Process)**
+- female_positive_generator_v2 | **(Training In Process)**
   - using [distilgpt2](https://huggingface.co/distilgpt2) model
   - Training Loss ~0.50
   
-- female_positive_generator_v3 **(Training In Process)**
+- female_positive_generator_v3 | **(Training In Process)**
   - using [bigscience/bloom-560m](https://huggingface.co/bigscience/bloom-560m) model
   - Training loss ~0.59
 
@@ -152,12 +155,12 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - If **random_index** is enabled, the **index** value is ignored.
 
 ## How Recursive Works?
-- Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to understand the functionality more accurately.
+- Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to explain the functionality more accurately.
 - With self recursive, let's say generator's output is ```b```. So next seed is going to be ```b``` and generator's output is ```c```. Final output is ```a, c```. It can be used for generating random outputs.
 - Without self recursive, let's say generator's output is ```b```. So next seed is going to be ```a, b``` and generator's output is ```c```. Final output is ```a, b, c```. It can be used for more accurate prompts.
 
 ## How Preprocess Mode Works?
-- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. The algorithm is adding prompts from the beginning of the generated text so add important prompts to seed.
+- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. The algorithm is adding the prompts from the beginning of the generated text, so add important prompts to seed.
 - **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Checking the exact match of the prompt.
 - **none** => Everything is allowed even the repeated prompts.
 ### Example
@@ -189,8 +192,6 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 2. Open the command prompt in this folder.
 3. Run ```.\python_embeded\python.exe -s -m pip install --upgrade transformers optimum optimum[onnxruntime-gpu]``` command.
 
-- If updating the packages is not solve your problem please create an issue with ```bug``` label.
-
 ## Automatic Installation
 
 ### For Manual Installation of the ComfyUI
@@ -200,7 +201,11 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 ### For Portable Installation of the ComfyUI
 
 - The users have to check that they are starting the ComfyUI in the ```ComfyUI_windows_portable```
-- Because the node is checking the ```python_embeded``` folder if it is exists and use it to install the required packages
+- Because the node is checking the ```python_embeded``` folder if it is exists and is using it to install the required packages
+
+## New Updates On The Node
+
+- Sometimes the variables are changed with updates, so it may broke the workflow. But don't worry you have to just delete the node in the workflow and add it again.
 
 # Contributing
 
@@ -208,7 +213,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
   1. Create a fork
   2. Create a branch with a name that describes the feature that you are adding
-  3. Pull request the fork
+  3. Pull request the fork with the comment that explaining the new feature
 
 - If you have an idea but don't know how to implement it please create an issue with ```enhancement``` label.
 
@@ -216,5 +221,6 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 # Example Outputs
 ![ComfyUI_00062_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/82522192-b486-4703-86e2-18aff79fe29b)
+![ComfyUI_00055_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/af1be3ad-306d-41a1-9022-6401d394b1df)
 ![ComfyUI_00054_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/906c9c1d-d8b5-4aa7-89cc-6a1918eac454)
-![ComfyUI_00048_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/e559c843-8e4c-4f45-9a39-c7f457218467)
+
