@@ -63,9 +63,9 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Print generated text to terminal and log the node's state under  ```generated_prompts``` folder with date as filename.
 
 # Example Workflow
-![example_hires_workflow](workflow_images/hires_workflow.png)
+![example_hires_workflow](images/hires_workflow.png)
 
-![example_basic_workflow](workflow_images/basic_workflow.png)
+![example_basic_workflow](images/basic_workflow.png)
 
 - **Prompt Generator Node** may look different with final version but workflow in ComfyUI is not going to change
 
@@ -220,7 +220,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - [x] The contributing can be done in several ways. You can contribute to code or to README file.
 
 # Example Outputs
-![ComfyUI_00062_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/82522192-b486-4703-86e2-18aff79fe29b)
-![ComfyUI_00055_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/af1be3ad-306d-41a1-9022-6401d394b1df)
-![ComfyUI_00054_](https://github.com/alpertunga-bile/prompt-generator-comfyui/assets/76731692/906c9c1d-d8b5-4aa7-89cc-6a1918eac454)
+![first_example](images/first.png)
+![second_example](images/second.png)
+![third_example](images/third.png)
 
