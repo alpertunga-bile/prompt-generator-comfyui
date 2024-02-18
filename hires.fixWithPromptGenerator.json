@@ -1,66 +1,7 @@
 {
-  "last_node_id": 43,
-  "last_link_id": 61,
+  "last_node_id": 44,
+  "last_link_id": 65,
   "nodes": [
-    {
-      "id": 3,
-      "type": "KSampler",
-      "pos": [
-        571.8721572265622,
-        -146.3239873046875
-      ],
-      "size": {
-        "0": 315,
-        "1": 262
-      },
-      "flags": {},
-      "order": 13,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "model",
-          "type": "MODEL",
-          "link": 47
-        },
-        {
-          "name": "positive",
-          "type": "CONDITIONING",
-          "link": 61
-        },
-        {
-          "name": "negative",
-          "type": "CONDITIONING",
-          "link": 6
-        },
-        {
-          "name": "latent_image",
-          "type": "LATENT",
-          "link": 2
-        }
-      ],
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            7
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "KSampler"
-      },
-      "widgets_values": [
-        884569790411861,
-        "randomize",
-        20,
-        7,
-        "dpmpp_2m",
-        "exponential",
-        1
-      ]
-    },
     {
       "id": 21,
       "type": "ImageUpscaleWithModel",
@@ -101,48 +42,6 @@
       "properties": {
         "Node name for S&R": "ImageUpscaleWithModel"
       }
-    },
-    {
-      "id": 24,
-      "type": "ImageScale",
-      "pos": [
-        1244.4081015625006,
-        -107.3239873046875
-      ],
-      "size": {
-        "0": 315,
-        "1": 130
-      },
-      "flags": {},
-      "order": 17,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "image",
-          "type": "IMAGE",
-          "link": 23
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
-          "type": "IMAGE",
-          "links": [
-            24
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "ImageScale"
-      },
-      "widgets_values": [
-        "bilinear",
-        1024,
-        1536,
-        "disabled"
-      ]
     },
     {
       "id": 26,
@@ -216,7 +115,7 @@
         26
       ],
       "flags": {},
-      "order": 6,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
@@ -253,7 +152,7 @@
         26
       ],
       "flags": {},
-      "order": 11,
+      "order": 12,
       "mode": 0,
       "inputs": [
         {
@@ -290,7 +189,7 @@
         26
       ],
       "flags": {},
-      "order": 12,
+      "order": 9,
       "mode": 0,
       "inputs": [
         {
@@ -326,7 +225,7 @@
         26
       ],
       "flags": {},
-      "order": 7,
+      "order": 4,
       "mode": 0,
       "inputs": [
         {
@@ -362,7 +261,7 @@
         26
       ],
       "flags": {},
-      "order": 8,
+      "order": 5,
       "mode": 0,
       "inputs": [
         {
@@ -439,7 +338,7 @@
         26
       ],
       "flags": {},
-      "order": 5,
+      "order": 14,
       "mode": 0,
       "inputs": [
         {
@@ -451,7 +350,7 @@
       "outputs": [
         {
           "name": "CONDITIONING",
-          "type": "*",
+          "type": "CONDITIONING",
           "links": [
             43
           ],
@@ -462,183 +361,6 @@
         "showOutputText": true,
         "horizontal": false
       }
-    },
-    {
-      "id": 5,
-      "type": "EmptyLatentImage",
-      "pos": [
-        367.8721572265626,
-        -59.3239873046875
-      ],
-      "size": {
-        "0": 315,
-        "1": 106
-      },
-      "flags": {
-        "collapsed": true
-      },
-      "order": 0,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "LATENT",
-          "type": "LATENT",
-          "links": [
-            2
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "EmptyLatentImage"
-      },
-      "widgets_values": [
-        512,
-        768,
-        1
-      ]
-    },
-    {
-      "id": 22,
-      "type": "UpscaleModelLoader",
-      "pos": [
-        961.4081015624997,
-        -223.32398730468748
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "UPSCALE_MODEL",
-          "type": "UPSCALE_MODEL",
-          "links": [
-            21
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "UpscaleModelLoader"
-      },
-      "widgets_values": [
-        "RealESRGAN_x4plus_anime_6B.pth"
-      ]
-    },
-    {
-      "id": 38,
-      "type": "Reroute",
-      "pos": [
-        1086.4081015625006,
-        -326.32398730468753
-      ],
-      "size": [
-        140.8,
-        26
-      ],
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "",
-          "type": "*",
-          "link": null
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "*",
-          "links": [
-            51
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "showOutputText": true,
-        "horizontal": false
-      }
-    },
-    {
-      "id": 19,
-      "type": "VAELoader",
-      "pos": [
-        -661.1278427734378,
-        250.6760126953125
-      ],
-      "size": {
-        "0": 315,
-        "1": 58
-      },
-      "flags": {},
-      "order": 3,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            36
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "VAELoader"
-      },
-      "widgets_values": [
-        "blessed2.vae.pt"
-      ]
-    },
-    {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        -7,
-        261
-      ],
-      "size": {
-        "0": 441.3026428222656,
-        "1": 259.2375183105469
-      },
-      "flags": {
-        "collapsed": true
-      },
-      "order": 9,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 5
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            6,
-            44
-          ],
-          "slot_index": 0
-        }
-      ],
-      "title": "Negative Prompt",
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "(by bad-artist-anime:0.8, by bad-artist:0.8, verybadimagenegative_v1.3, bad-hands-5, negative_hand, negative_hand-neg, bad_prompt_version2, FastNegativeV2, easynegative, ng_deepnegative_v1_75t), (worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
-      ]
     },
     {
       "id": 8,
@@ -652,7 +374,7 @@
         "1": 46
       },
       "flags": {},
-      "order": 14,
+      "order": 13,
       "mode": 0,
       "inputs": [
         {
@@ -785,7 +507,7 @@
         "1": 98
       },
       "flags": {},
-      "order": 4,
+      "order": 0,
       "mode": 0,
       "outputs": [
         {
@@ -802,7 +524,7 @@
           "type": "CLIP",
           "links": [
             5,
-            60
+            62
           ],
           "slot_index": 1
         },
@@ -817,88 +539,348 @@
         "Node name for S&R": "CheckpointLoaderSimple"
       },
       "widgets_values": [
-        "wololo-mix-v3.safetensors"
+        "wololo-mix-v4.safetensors"
       ]
     },
     {
-      "id": 43,
-      "type": "Prompt Generator",
+      "id": 19,
+      "type": "VAELoader",
       "pos": [
-        -136,
-        -445
+        -679,
+        249
+      ],
+      "size": [
+        498.68939306640664,
+        96.94620654296884
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            36
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "anythingKlF8Anime2VaeFtMse840000_blessed2.safetensors"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "KSampler",
+      "pos": [
+        571.8721572265622,
+        -146.3239873046875
       ],
       "size": {
-        "0": 400,
-        "1": 612
+        "0": 315,
+        "1": 262
       },
       "flags": {},
       "order": 10,
       "mode": 0,
       "inputs": [
         {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 60
+          "name": "model",
+          "type": "MODEL",
+          "link": 47
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 63
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 6
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 2
         }
       ],
       "outputs": [
         {
-          "name": "first_output",
-          "type": "CONDITIONING",
+          "name": "LATENT",
+          "type": "LATENT",
           "links": [
-            61
+            7
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        884569790411861,
+        "randomize",
+        20,
+        7,
+        "dpmpp_2m",
+        "karras",
+        1
+      ]
+    },
+    {
+      "id": 5,
+      "type": "EmptyLatentImage",
+      "pos": [
+        357,
+        -44
+      ],
+      "size": {
+        "0": 315,
+        "1": 106
+      },
+      "flags": {
+        "collapsed": true
+      },
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            2
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "EmptyLatentImage"
+      },
+      "widgets_values": [
+        768,
+        512,
+        1
+      ]
+    },
+    {
+      "id": 24,
+      "type": "ImageScale",
+      "pos": [
+        1244.4081015625006,
+        -107.3239873046875
+      ],
+      "size": {
+        "0": 315,
+        "1": 130
+      },
+      "flags": {},
+      "order": 17,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            24
           ],
           "shape": 3,
           "slot_index": 0
-        },
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "bilinear",
+        1536,
+        1024,
+        "disabled"
+      ]
+    },
+    {
+      "id": 22,
+      "type": "UpscaleModelLoader",
+      "pos": [
+        944,
+        -222
+      ],
+      "size": [
+        376.5535845336917,
+        58
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "outputs": [
         {
-          "name": "second_output",
-          "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
-        },
+          "name": "UPSCALE_MODEL",
+          "type": "UPSCALE_MODEL",
+          "links": [
+            21
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UpscaleModelLoader"
+      },
+      "widgets_values": [
+        "RealESRGAN_x4plus_anime_6B.pth"
+      ]
+    },
+    {
+      "id": 38,
+      "type": "Reroute",
+      "pos": [
+        1086.4081015625006,
+        -326.32398730468753
+      ],
+      "size": [
+        140.8,
+        26
+      ],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [
         {
-          "name": "third_output",
-          "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
-        },
+          "name": "",
+          "type": "*",
+          "link": 65
+        }
+      ],
+      "outputs": [
         {
-          "name": "fourth_output",
+          "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
-        },
+          "links": [
+            51
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "showOutputText": true,
+        "horizontal": false
+      }
+    },
+    {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        -7,
+        261
+      ],
+      "size": [
+        554.9647867187502,
+        251.9812148437502
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 6,
+      "mode": 0,
+      "inputs": [
         {
-          "name": "fifth_output",
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
           "type": "CONDITIONING",
-          "links": null,
-          "shape": 3
+          "links": [
+            6,
+            44
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Negative Prompt",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "(worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
+      ]
+    },
+    {
+      "id": 44,
+      "type": "Prompt Generator",
+      "pos": [
+        -140,
+        -462
+      ],
+      "size": {
+        "0": 400,
+        "1": 652
+      },
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 62
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gen_prompt",
+          "type": "CONDITIONING",
+          "links": [
+            63,
+            65
+          ],
+          "shape": 3,
+          "slot_index": 0
         }
       ],
       "properties": {
         "Node name for S&R": "Prompt Generator"
       },
       "widgets_values": [
-        "female_positive_generator_sfw",
+        "female_positive_generator_v2",
         "enable",
         "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
+        0,
+        "randomize",
+        "disable",
+        "enable",
+        1,
         1,
         20,
         50,
+        "enable",
         "disable",
-        "disable",
-        5,
+        1,
         1,
         0,
         1,
         50,
         1,
+        1.2000000000000002,
+        0,
+        "disable",
+        "disable",
         1,
-        0,
-        "disable",
-        "disable",
-        0,
         "exact_keyword"
       ]
     }
@@ -1105,20 +1087,28 @@
       "IMAGE"
     ],
     [
-      60,
+      62,
       4,
       1,
-      43,
+      44,
       0,
       "CLIP"
     ],
     [
-      61,
-      43,
+      63,
+      44,
       0,
       3,
       1,
       "CONDITIONING"
+    ],
+    [
+      65,
+      44,
+      0,
+      38,
+      0,
+      "*"
     ]
   ],
   "groups": [
