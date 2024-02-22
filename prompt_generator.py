@@ -204,6 +204,9 @@ class PromptGenerator:
         recursive_level: int,
         preprocess_mode: str,
     ):
+        prompt = prompt.encode("ascii", "xmlcharrefreplace").decode()
+        prompt = prompt.encode(errors="xmlcharrefreplace").decode()
+
         # create the prompt log file for current day
         prompt_log_filename = (
             join(base_path, "generated_prompts", str(date.today())) + ".txt"
