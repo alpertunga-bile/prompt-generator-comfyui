@@ -168,8 +168,11 @@ class PromptGenerator:
 
         return processed
 
-    RETURN_TYPES = ("CONDITIONING",)
-    RETURN_NAMES = ("gen_prompt",)
+    RETURN_TYPES = (
+        "CONDITIONING",
+        "STRING",
+    )
+    RETURN_NAMES = ("gen_prompt", "gen_prompt_str")
     FUNCTION = "generate"
     CATEGORY = "Prompt Generator"
 
@@ -222,7 +225,10 @@ class PromptGenerator:
                 prompt_log_filename,
             )
 
-            return (self._tokenized_prompts[self._index],)
+            return (
+                self._tokenized_prompts[self._index],
+                self._generated_prompts[self._index],
+            )
 
         # create relative path for the model
         model_path = join(models_dir, "prompt_generators", model_name)
@@ -287,4 +293,7 @@ class PromptGenerator:
             prompt_log_filename,
         )
 
-        return (self._tokenized_prompts[self._index],)
+        return (
+            self._tokenized_prompts[self._index],
+            self._generated_prompts[self._index],
+        )
