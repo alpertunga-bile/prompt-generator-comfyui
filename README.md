@@ -80,7 +80,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- 1.631.670 rows of unique prompts | **(Gathering In Process)**
+- 1.711.808 rows of unique prompts | **(Gathering In Process)**
 - %85 train | %15 test
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
 - These Huggingface datasets are used for enhancing the dataset:
