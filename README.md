@@ -80,18 +80,8 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- 1.711.808 rows of unique prompts | **(Gathering In Process)**
-- %85 train | %15 test
+- [HuggingFace](https://huggingface.co/datasets/WoWoWoWololo/stable_diffusion_female_positive_prompts)
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
-- These Huggingface datasets are used for enhancing the dataset:
-  - [FredZhang7/anime-prompts-180K](https://huggingface.co/datasets/FredZhang7/anime-prompts-180K)
-  - [FredZhang7/stable-diffusion-prompts-2.47M](https://huggingface.co/datasets/FredZhang7/stable-diffusion-prompts-2.47M)
-  - [thefcraft/civitai-stable-diffusion-337k](https://huggingface.co/datasets/thefcraft/civitai-stable-diffusion-337k)
-  - [Falah/stable_diffusion_prompts_dataset](https://huggingface.co/datasets/Falah/stable_diffusion_prompts_dataset)
-  - [daspartho/stable-diffusion-prompts](https://huggingface.co/datasets/daspartho/stable-diffusion-prompts)
-  - [andyyang/stable_diffusion_prompts_2m](https://huggingface.co/datasets/andyyang/stable_diffusion_prompts_2m)
-  - [poloclub/diffusiondb](https://huggingface.co/datasets/poloclub/diffusiondb)
-  - [yizhangliu/stable-diffusion-prompts](https://huggingface.co/datasets/yizhangliu/stable-diffusion-prompts)
     
 ## Models
 
