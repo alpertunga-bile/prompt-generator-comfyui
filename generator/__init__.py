@@ -39,6 +39,8 @@ if os_name == "Linux":
 check_package("optimum", "optimum")
 check_package("onnxruntime", "optimum[onnxruntime-gpu]")
 
+check_package("sentencepiece", "transformers[sentencepiece]")
+
 """
 # This package is for onnx models that run on CPU
 if find_spec("onnxruntime") is None:
