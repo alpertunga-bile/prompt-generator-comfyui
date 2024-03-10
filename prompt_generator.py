@@ -14,10 +14,10 @@ from folder_paths import models_dir, base_path
 
 
 class PromptGenerator:
-    _index = 0
-    _generated_prompts = []
-    _tokenized_prompts = []
-    _gen_settings = GenerateArgs
+    _index = 0  # index to use for the cached generations, range in [0, 4]
+    _generated_prompts = []  # last generated prompts
+    _tokenized_prompts = []  # tokenized prompts from the last generated prompts
+    _gen_settings = GenerateArgs  # gen configurations from the last generation
 
     @classmethod
     def INPUT_TYPES(s):
@@ -161,6 +161,7 @@ class PromptGenerator:
     def tokenize_texts(self, clip: CLIP) -> list:
         processed = []
 
+        # from nodes.py -> CLIPTextEncode -> encode
         for text in self._generated_prompts:
             tokens = clip.tokenize(text)
             cond, pooled = clip.encode_from_tokens(tokens, return_pooled=True)
@@ -204,6 +205,7 @@ class PromptGenerator:
         recursive_level: int,
         preprocess_mode: str,
     ):
+        # deal with encodings
         prompt = prompt.encode("ascii", "xmlcharrefreplace").decode()
         prompt = prompt.encode(errors="xmlcharrefreplace").decode()
 
@@ -214,10 +216,16 @@ class PromptGenerator:
 
         is_do_sample = True if do_sample == "enable" else False
 
+        # randint(min, max) -> [min, max]
+        # index             -> [1, 5]
         self._index = randint(0, 4) if random_index == "enable" else index - 1
 
         is_lock_generation = True if lock == "enable" else False
 
+        # check if it is the first generation with taking length of tokenized prompts
+        # and the boolean with is lock enabled
+        # if it is true just return from the lists with assigned new index (declaration is above)
+        # log the outputs for the clearity
         if is_lock_generation is True and len(self._tokenized_prompts) > 0:
             self.log_outputs(
                 model_name,
@@ -243,6 +251,7 @@ class PromptGenerator:
         is_remove_invalid_values = True if remove_invalid_values == "enable" else False
 
         if is_do_sample:
+            # huggingface supports [0, 2 ** 32 - 1] as seed
             set_seed(randint(0, 4294967294))
             manual_seed(seed)
 

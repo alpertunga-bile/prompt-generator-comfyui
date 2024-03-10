@@ -23,6 +23,9 @@ def check_package(package_name: str, install_name: str) -> None:
 
     process = run(command, shell=True, check=True, capture_output=True)
 
+    if process.returncode != 0:
+        print(f"{package_name} installation is failed\nError: {process.stdout}")
+
 
 print(" Prompt Generator ComfyUI Node ".center(100, "-"))
 
@@ -39,13 +42,5 @@ if os_name == "Linux":
 check_package("optimum", "optimum")
 check_package("onnxruntime", "optimum[onnxruntime-gpu]")
 
+# use_fast for tokenizers used this
 check_package("sentencepiece", "transformers[sentencepiece]")
-
-"""
-# This package is for onnx models that run on CPU
-if find_spec("onnxruntime") is None:
-    print(f"/_\ Installing onnxruntime")
-    process = run(
-        f"pip install optimum[onnxruntime]", shell=True, check=True, capture_output=True
-    )
-"""

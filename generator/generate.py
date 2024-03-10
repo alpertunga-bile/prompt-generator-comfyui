@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+
 from generator.model import (
     get_default_pipeline,
     get_onnx_pipeline,
@@ -41,20 +42,23 @@ class Generator:
         accelerator_type = get_accelerator_type(model_path)
 
         if accelerator_type == "onnx":
-            self.pipe = get_onnx_pipeline(model_name=model_path)
+            self.pipe = get_onnx_pipeline(model_name=model_path, is_native=True)
         elif accelerator_type == "bettertransformer":
-            try:
-                self.pipe = get_bettertransformer_pipeline(model_name=model_path)
-            except:
-                try:
-                    self.pipe = get_onnx_pipeline(model_name=model_path)
-                except:
-                    self.pipe = get_default_pipeline(model_path)
+            # onnx pipeline can broke easily so try without onnx pipeline
+            self.try_wo_onnx_pipeline(model_path)
         else:
             raise ValueError(
-                "Cant define accelerator type by folder. Can't find .onnx file for onnx, .bin or .safetensors for bettertransformer and default pipeline. Please check your model"
+                "Cant define the accelerator type by folder. Can't find .onnx file for onnx, .bin or .safetensors for bettertransformer and default pipeline. Please check your model"
             )
 
+    # try with bettertransformer first then transformers
+    def try_wo_onnx_pipeline(self, model_path: str):
+        try:
+            self.pipe = get_bettertransformer_pipeline(model_name=model_path)
+        except:
+            self.pipe = get_default_pipeline(model_path)
+
+    # generate single output
     def generate_text(
         self,
         input: str,
@@ -69,7 +73,8 @@ class Generator:
 
         return output[0]["generated_text"]
 
-    def generate_multiple_output_texts(
+    # generate 5 outputs
+    def generate_multiple_texts(
         self,
         input: str,
         args: GenerateArgs = GenerateArgs(),
@@ -84,6 +89,8 @@ class Generator:
         return [output["generated_text"] for output in outputs]
 
 
+# first generating 5 outputs
+# then for each output doing the recursion if specified
 def get_generated_texts(
     generator: Generator,
     gen_args: GenerateArgs,
@@ -92,7 +99,7 @@ def get_generated_texts(
     recursive_level: int,
     preprocess_mode: str,
 ) -> list[str]:
-    results = generator.generate_multiple_output_texts(prompt, gen_args)
+    results = generator.generate_multiple_texts(prompt, gen_args)
     gen_texts = []
 
     for result in results:
