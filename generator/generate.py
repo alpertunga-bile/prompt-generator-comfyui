@@ -1,13 +1,13 @@
 from dataclasses import dataclass
 from transformers import Pipeline
 
-from .model import (
+from generator.model import (
     get_default_pipeline,
     get_onnx_pipeline,
     get_bettertransformer_pipeline,
 )
-from .utility import get_accelerator_type, get_variable_dictionary
-from .preprocess import preprocess
+from generator.utility import get_accelerator_type, get_variable_dictionary
+from generator.preprocess import preprocess
 
 
 @dataclass
