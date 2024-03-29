@@ -1,4 +1,3 @@
-from sympy import true
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
