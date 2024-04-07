@@ -34,7 +34,7 @@ def get_tokenizer(model_name: str):
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_name)
     except:
-        tokenizer = AutoModelForCausalLM.from_pretrained(model_name, use_fast=False)
+        tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
     return tokenizer
 
