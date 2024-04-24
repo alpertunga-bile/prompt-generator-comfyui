@@ -9,40 +9,37 @@ from optimum.pipelines import pipeline as opt_pipe
 
 from optimum.onnxruntime import ORTModelForCausalLM
 
-from comfy.model_management import is_device_mps, get_torch_device
+from platform import system
+
+from comfy.model_management import (
+    get_torch_device,
+    should_use_fp16,
+    should_use_bf16,
+)
+from torch import bfloat16 as torch_bfloat16
+from torch import float16 as torch_float16
+from torch import float32 as torch_float32
+
+from torch import compile as torch_compile
 
 
 def get_model(model_name: str):
-    from platform import system
+    dev = get_torch_device()
 
-    """
-    mps is not supporting bfloat16 and the model weights may be bfloat16
-    but torch_dtype is not considering it
-    """
-    if is_device_mps(get_torch_device()):
-        from torch import float16 as torch_float16
-        from torch import float32 as torch_float32
-
-        try:
-            model = AutoModelForCausalLM.from_pretrained(
-                model_name, device_map="auto", torch_dtype=torch_float16
-            )
-        except:
-            model = AutoModelForCausalLM.from_pretrained(
-                model_name, device_map="auto", torch_dtype=torch_float32
-            )
+    if should_use_bf16(device=dev):
+        req_torch_dtype = torch_bfloat16
+    elif should_use_fp16(device=dev):
+        req_torch_dtype = torch_float16
     else:
-        model = AutoModelForCausalLM.from_pretrained(
-            model_name,
-            device_map="auto",
-            torch_dtype="auto",
-        )
+        req_torch_dtype = torch_float32
+
+    model = AutoModelForCausalLM.from_pretrained(
+        model_name, device_map="auto", torch_dtype=req_torch_dtype
+    )
 
     # torch.compile is supported only in Linux
     # has to be tested though
     if system() == "Linux":
-        from torch import compile as torch_compile
-
         torch_compile(model)
 
     return model
