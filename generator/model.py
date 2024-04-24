@@ -15,6 +15,7 @@ from comfy.model_management import (
     get_torch_device,
     should_use_fp16,
     should_use_bf16,
+    is_device_mps,
 )
 from torch import bfloat16 as torch_bfloat16
 from torch import float16 as torch_float16
@@ -23,7 +24,7 @@ from torch import float32 as torch_float32
 from torch import compile as torch_compile
 
 
-def get_model(model_name: str):
+def get_model(model_name: str, use_device_map: bool = True):
     dev = get_torch_device()
 
     if should_use_bf16(device=dev):
@@ -33,9 +34,14 @@ def get_model(model_name: str):
     else:
         req_torch_dtype = torch_float32
 
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name, device_map="auto", torch_dtype=req_torch_dtype
-    )
+    if use_device_map:
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name, device_map="auto", torch_dtype=req_torch_dtype
+        )
+    else:
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name, device=dev, torch_dtype=req_torch_dtype
+        )
 
     # torch.compile is supported only in Linux
     # has to be tested though
@@ -89,7 +95,13 @@ def get_onnx_pipeline(model_name: str, is_native: bool = True) -> Pipeline:
 
 
 def get_bettertransformer_pipeline(model_name: str) -> Pipeline:
-    model = get_model(model_name)
+    is_mps = is_device_mps(get_torch_device())
+
+    if is_mps:
+        model = get_model(model_name, use_device_map=False)
+    else:
+        model = get_model(model_name, use_device_map=True)
+
     tokenizer = get_tokenizer(model_name)
 
     pipe = opt_pipe(
@@ -98,6 +110,7 @@ def get_bettertransformer_pipeline(model_name: str) -> Pipeline:
         tokenizer=tokenizer,
         accelerator="bettertransformer",
         framework="pt",
+        device=get_torch_device() if is_mps else None,
     )
 
     return pipe
