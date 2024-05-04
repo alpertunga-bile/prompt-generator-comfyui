@@ -1,13 +1,14 @@
 from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
-    Pipeline,
 )
-
-from transformers import pipeline as tf_pipe
-from optimum.pipelines import pipeline as opt_pipe
-
+from optimum.bettertransformer import BetterTransformer
 from optimum.onnxruntime import ORTModelForCausalLM
+
+from torch import bfloat16 as torch_bfloat16
+from torch import float16 as torch_float16
+from torch import float32 as torch_float32
+from torch import compile as torch_compile
 
 from platform import system
 
@@ -15,16 +16,17 @@ from comfy.model_management import (
     get_torch_device,
     should_use_fp16,
     should_use_bf16,
-    is_device_mps,
 )
-from torch import bfloat16 as torch_bfloat16
-from torch import float16 as torch_float16
-from torch import float32 as torch_float32
 
-from torch import compile as torch_compile
+from .utility import (
+    ModelType,
+    QuantizationType,
+    QuantizationPackage,
+    get_quantization_package,
+)
 
 
-def get_model(model_name: str, use_device_map: bool = True):
+def get_torch_dtype():
     dev = get_torch_device()
 
     if should_use_bf16(device=dev):
@@ -34,13 +36,74 @@ def get_model(model_name: str, use_device_map: bool = True):
     else:
         req_torch_dtype = torch_float32
 
+    return req_torch_dtype
+
+
+def get_quanto_config(type: QuantizationType):
+    from transformers import QuantoConfig
+
+    quanto_config = None
+
+    if type == QuantizationType.EightBit:
+        quanto_config = QuantoConfig(weights="int8")
+    elif type == QuantizationType.FourBit:
+        quanto_config = QuantoConfig(weight="int4")
+    elif type == QuantizationType.EightFloat:
+        quanto_config = QuantoConfig(weights="float8")
+
+    return quanto_config
+
+
+def get_bitsandbytes_config(type: QuantizationType):
+    from transformers import BitsAndBytesConfig
+
+    bnb_config = None
+
+    if type == QuantizationType.EightBit:
+        bnb_config = BitsAndBytesConfig(load_in_8bit=True)
+    elif type == QuantizationType.FourBit:
+        bnb_config = BitsAndBytesConfig(
+            load_in_4bit=True,
+            bnb_4bit_use_double_quant=True,
+            bnb_4bit_quant_type="nf4",
+            bnb_4bit_compute_dtype=get_torch_dtype(),
+        )
+
+    return bnb_config
+
+
+def get_quantization_config(type: QuantizationType):
+    quant_config = None
+
+    quant_package = get_quantization_package()
+
+    if quant_package == QuantizationPackage.QUANTO:
+        quant_config = get_quanto_config(type)
+    elif quant_package == QuantizationPackage.BITSANDBYTES:
+        quant_config = get_bitsandbytes_config(type)
+
+    return quant_config
+
+
+def get_model(model_name: str, type: QuantizationType, use_device_map: bool = True):
+    req_torch_dtype = get_torch_dtype()
+    quant_config = get_quantization_config(type)
+
     if use_device_map:
         model = AutoModelForCausalLM.from_pretrained(
-            model_name, device_map="auto", torch_dtype=req_torch_dtype
+            model_name,
+            device_map="auto",
+            torch_dtype=req_torch_dtype,
+            quantization_config=quant_config,
         )
     else:
+        dev = get_torch_device()
+
         model = AutoModelForCausalLM.from_pretrained(
-            model_name, device=dev, torch_dtype=req_torch_dtype
+            model_name,
+            device=dev,
+            torch_dtype=req_torch_dtype,
+            quantization_config=quant_config,
         )
 
     # torch.compile is supported only in Linux
@@ -58,59 +121,34 @@ def get_tokenizer(model_name: str):
     except:
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
+    tokenizer.pad_token_id = tokenizer.eos_token_id
+    tokenizer.padding_side = "left"
+
     return tokenizer
 
 
-def get_default_pipeline(model_name: str) -> Pipeline:
-    model = get_model(model_name)
-    tokenizer = get_tokenizer(model_name)
+def get_model_tokenizer(
+    model_path: str,
+    type: ModelType,
+    quant_type: QuantizationType,
+    is_native: bool = True,
+):
+    if type == ModelType.ONNX:
+        if is_native:
+            model = ORTModelForCausalLM.from_pretrained(model_path)
+        else:
+            model = ORTModelForCausalLM.from_pretrained(model_path, export=True)
+    elif type == ModelType.BETTERTRANSFORMER or ModelType.DEFAULT:
+        # is_mps = is_device_mps(get_torch_device())
 
-    pipe = tf_pipe(
-        task="text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        framework="pt",
-    )
+        model = get_model(model_path, quant_type, use_device_map=True)
 
-    return pipe
+    if type == ModelType.BETTERTRANSFORMER:
+        try:
+            model = BetterTransformer.transform(model)
+        except:
+            pass
 
+    tokenizer = get_tokenizer(model_path)
 
-def get_onnx_pipeline(model_name: str, is_native: bool = True) -> Pipeline:
-    if is_native:
-        model = ORTModelForCausalLM.from_pretrained(model_name)
-    else:
-        model = ORTModelForCausalLM.from_pretrained(model_name, export=True)
-
-    tokenizer = get_tokenizer(model_name)
-
-    pipe = opt_pipe(
-        task="text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        accelerator="ort",
-        framework="pt",
-    )
-
-    return pipe
-
-
-def get_bettertransformer_pipeline(model_name: str) -> Pipeline:
-    is_mps = is_device_mps(get_torch_device())
-
-    if is_mps:
-        model = get_model(model_name, use_device_map=False)
-    else:
-        model = get_model(model_name, use_device_map=True)
-
-    tokenizer = get_tokenizer(model_name)
-
-    pipe = opt_pipe(
-        task="text-generation",
-        model=model,
-        tokenizer=tokenizer,
-        accelerator="bettertransformer",
-        framework="pt",
-        device=get_torch_device() if is_mps else None,
-    )
-
-    return pipe
+    return (model, tokenizer)

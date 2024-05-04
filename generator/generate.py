@@ -1,19 +1,22 @@
 from dataclasses import dataclass
 from transformers import Pipeline
 
-from generator.model import (
-    get_default_pipeline,
-    get_onnx_pipeline,
-    get_bettertransformer_pipeline,
+from comfy.model_management import get_torch_device
+from generator.model import get_model_tokenizer
+
+from generator.utility import (
+    get_accelerator_type,
+    get_variable_dictionary,
+    str_to_quant_type,
 )
-from generator.utility import get_accelerator_type, get_variable_dictionary
 from generator.preprocess import preprocess
+
+from .utility import ModelType
 
 
 @dataclass
 class GenerateArgs:
     num_return_sequences: int = 1
-    return_full_text: bool = False
     min_new_tokens: int = 0
     max_new_tokens: int = 50
     early_stopping: bool = False
@@ -33,30 +36,28 @@ class GenerateArgs:
 @dataclass
 class Generator:
     pipe: Pipeline = None
+    model = None
+    tokenizer = None
+    dev = None
 
-    def __init__(self, model_path: str, is_accelerate: bool) -> None:
+    def __init__(
+        self, model_path: str, is_accelerate: bool, model_quant_type: str
+    ) -> None:
+        quantize_type = str_to_quant_type(model_quant_type)
+
         if is_accelerate is False:
-            self.pipe = get_default_pipeline(model_path)
-            return
-
-        accelerator_type = get_accelerator_type(model_path)
-
-        if accelerator_type == "onnx":
-            self.pipe = get_onnx_pipeline(model_name=model_path, is_native=True)
-        elif accelerator_type == "bettertransformer":
-            # onnx pipeline can broke easily so try without onnx pipeline
-            self.try_wo_onnx_pipeline(model_path)
+            self.model, self.tokenizer = get_model_tokenizer(
+                model_path, ModelType.DEFAULT, quantize_type
+            )
         else:
-            raise ValueError(
-                "Cant define the accelerator type by folder. Can't find .onnx file for onnx, .bin or .safetensors for bettertransformer and default pipeline. Please check your model"
+            accelerator_type = get_accelerator_type(model_path)
+            is_onnx_native = True if accelerator_type == ModelType.ONNX else False
+
+            self.model, self.tokenizer = get_model_tokenizer(
+                model_path, accelerator_type, quantize_type, is_onnx_native
             )
 
-    # try with bettertransformer first then transformers
-    def try_wo_onnx_pipeline(self, model_path: str):
-        try:
-            self.pipe = get_bettertransformer_pipeline(model_name=model_path)
-        except:
-            self.pipe = get_default_pipeline(model_path)
+        self.dev = get_torch_device()
 
     # generate single output
     def generate_text(
@@ -64,14 +65,27 @@ class Generator:
         input: str,
         args: GenerateArgs = GenerateArgs(),
     ) -> str:
-        if self.pipe is None:
-            raise RuntimeError("Pipeline is NONE. Please check your model path")
+        if self.model and self.tokenizer is None:
+            raise RuntimeError(
+                "Model and tokenizer is NONE. Please check your model path"
+            )
 
         args.num_return_sequences = 1
-        args = get_variable_dictionary(args)
-        output = self.pipe(input, **args)
 
-        return output[0]["generated_text"]
+        inputs = self.tokenizer(input, padding=True, return_tensors="pt").to(self.dev)
+        generated_ids = self.model.generate(
+            **inputs,
+            **get_variable_dictionary(args),
+            pad_token_id=self.tokenizer.eos_token_id,
+        )
+        output = self.tokenizer.decode(
+            generated_ids[0], skip_special_tokens=True, cleanup_tokenization_spaces=True
+        )
+
+        # output = self.pipe(input, **args)
+        # return output[0]["generated_text"]
+
+        return output
 
     # generate 5 outputs
     def generate_multiple_texts(
@@ -79,14 +93,27 @@ class Generator:
         input: str,
         args: GenerateArgs = GenerateArgs(),
     ) -> list[str]:
-        if self.pipe is None:
-            raise RuntimeError("Pipeline is NONE. Please check your model path")
+        if self.model and self.tokenizer is None:
+            raise RuntimeError(
+                "Model and tokenizer is NONE. Please check your model path"
+            )
 
         args.num_return_sequences = 5
-        args = get_variable_dictionary(args)
-        outputs = self.pipe(input, **args)
 
-        return [output["generated_text"] for output in outputs]
+        inputs = self.tokenizer(input, padding=True, return_tensors="pt").to(self.dev)
+        generated_ids = self.model.generate(
+            **inputs,
+            **get_variable_dictionary(args),
+            pad_token_id=self.tokenizer.eos_token_id,
+        )
+        outputs = self.tokenizer.batch_decode(
+            generated_ids, skip_special_tokens=True, cleanup_tokenization_spaces=True
+        )
+
+        # outputs = self.pipe(input, **args)
+        # return [output["generated_text"] for output in outputs]
+
+        return outputs
 
 
 # first generating 5 outputs

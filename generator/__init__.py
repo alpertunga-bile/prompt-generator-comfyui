@@ -3,6 +3,7 @@ from os.path import dirname, exists
 from subprocess import run
 from importlib.util import find_spec
 from platform import system
+from torch import __version__ as torch_version
 
 os_name = system()
 
@@ -44,3 +45,20 @@ check_package("onnxruntime", "optimum[onnxruntime-gpu]")
 
 # use_fast for tokenizers used this
 check_package("sentencepiece", "transformers[sentencepiece]")
+
+
+def check_torch_version_is_enough(min_major: int, min_minor: int) -> bool:
+    torch_version_splitted = torch_version.split(".")
+    torch_version_major = int(torch_version_splitted[0])
+    torch_version_minor = int(torch_version_splitted[1])
+
+    if torch_version_major >= min_major and torch_version_minor >= min_minor:
+        return True
+    else:
+        return False
+
+
+if os_name == "Linux":
+    check_package("bitsandbytes", "bitsandbytes")
+elif check_torch_version_is_enough(2, 2):
+    check_package("quanto", "quanto")

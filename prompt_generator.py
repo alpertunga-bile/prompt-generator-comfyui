@@ -8,6 +8,7 @@ from random import randint
 from datetime import date
 
 from generator.generate import GenerateArgs, Generator, get_generated_texts
+from generator.utility import get_usable_quantize_sizes
 
 from comfy.sd import CLIP
 from folder_paths import models_dir, base_path
@@ -21,17 +22,19 @@ class PromptGenerator:
 
     @classmethod
     def INPUT_TYPES(s):
+        quantize_sizes = get_usable_quantize_sizes()
+        model_names = [
+            file
+            for file in listdir(join(models_dir, "prompt_generators"))
+            if isdir(join(models_dir, "prompt_generators", file))
+        ]
+
         return {
             "required": {
                 "clip": ("CLIP",),
-                "model_name": (
-                    [
-                        file
-                        for file in listdir(join(models_dir, "prompt_generators"))
-                        if isdir(join(models_dir, "prompt_generators", file))
-                    ],
-                ),
+                "model_name": (model_names,),
                 "accelerate": (["enable", "disable"],),
+                "quantize": (quantize_sizes,),
                 "prompt": (
                     "STRING",
                     {
@@ -182,6 +185,7 @@ class PromptGenerator:
         clip: CLIP,
         model_name: str,
         accelerate: str,
+        quantize: str,
         prompt: str,
         seed: int,
         lock: str,
@@ -262,7 +266,7 @@ class PromptGenerator:
             file = open(prompt_log_filename, "w")
             file.close()
 
-        generator = Generator(model_path, is_accelerate)
+        generator = Generator(model_path, is_accelerate, quantize)
 
         self._gen_settings = GenerateArgs(
             guidance_scale=cfg,
