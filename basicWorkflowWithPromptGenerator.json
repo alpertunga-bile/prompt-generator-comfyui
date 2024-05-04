@@ -1,6 +1,6 @@
 {
-  "last_node_id": 24,
-  "last_link_id": 37,
+  "last_node_id": 25,
+  "last_link_id": 39,
   "nodes": [
     {
       "id": 5,
@@ -134,7 +134,7 @@
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 37
+          "link": 39
         },
         {
           "name": "negative",
@@ -196,69 +196,6 @@
       }
     },
     {
-      "id": 24,
-      "type": "Prompt Generator",
-      "pos": [
-        309,
-        -139
-      ],
-      "size": {
-        "0": 400,
-        "1": 652
-      },
-      "flags": {},
-      "order": 5,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 36
-        }
-      ],
-      "outputs": [
-        {
-          "name": "gen_prompt",
-          "type": "CONDITIONING",
-          "links": [
-            37
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "Prompt Generator"
-      },
-      "widgets_values": [
-        "female_positive_generator_v2",
-        "enable",
-        "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful)), ((upper body portrait)),",
-        264202412095949,
-        "randomize",
-        "disable",
-        "enable",
-        1,
-        1,
-        20,
-        50,
-        "enable",
-        "disable",
-        1,
-        1,
-        0,
-        1,
-        50,
-        1,
-        1.2000000000000002,
-        0,
-        "disable",
-        "disable",
-        1,
-        "exact_keyword"
-      ]
-    },
-    {
       "id": 12,
       "type": "VAELoader",
       "pos": [
@@ -288,52 +225,6 @@
       },
       "widgets_values": [
         "anythingKlF8Anime2VaeFtMse840000_blessed2.safetensors"
-      ]
-    },
-    {
-      "id": 4,
-      "type": "CheckpointLoaderSimple",
-      "pos": [
-        -150,
-        496
-      ],
-      "size": {
-        "0": 315,
-        "1": 98
-      },
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            1
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            5,
-            36
-          ],
-          "slot_index": 1
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [],
-          "slot_index": 2
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CheckpointLoaderSimple"
-      },
-      "widgets_values": [
-        "wololo-mix-v4.safetensors"
       ]
     },
     {
@@ -374,6 +265,122 @@
       },
       "widgets_values": [
         "(worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -150,
+        496
+      ],
+      "size": {
+        "0": 315,
+        "1": 98
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            5,
+            38
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "wololo-mix-v4.safetensors"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "Prompt Generator",
+      "pos": [
+        306,
+        -168
+      ],
+      "size": {
+        "0": 400,
+        "1": 696
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 38
+        }
+      ],
+      "outputs": [
+        {
+          "name": "gen_prompt",
+          "type": "CONDITIONING",
+          "links": [
+            39
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "gen_prompt_str",
+          "type": "STRING",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Prompt Generator"
+      },
+      "widgets_values": [
+        "female_positive_generator_v2",
+        "enable",
+        "none",
+        "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
+        0,
+        "randomize",
+        "disable",
+        "enable",
+        1,
+        1,
+        20,
+        50,
+        "enable",
+        "disable",
+        1,
+        1,
+        0,
+        1,
+        50,
+        1,
+        1,
+        0,
+        "disable",
+        "disable",
+        0,
+        "exact_keyword"
       ]
     }
   ],
@@ -443,16 +450,16 @@
       "IMAGE"
     ],
     [
-      36,
+      38,
       4,
       1,
-      24,
+      25,
       0,
       "CLIP"
     ],
     [
-      37,
-      24,
+      39,
+      25,
       0,
       3,
       1,

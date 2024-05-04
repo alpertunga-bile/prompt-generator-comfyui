@@ -39,7 +39,7 @@ class PromptGenerator:
                     "STRING",
                     {
                         "multiline": True,
-                        "default": "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
+                        "default": "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful)),",
                     },
                 ),
                 "seed": (
