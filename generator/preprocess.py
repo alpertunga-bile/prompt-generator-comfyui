@@ -86,7 +86,7 @@ def preprocess(line: str, preprocess_mode: str) -> str:
     temp_line = temp_line.replace("\xa0", " ")
     temp_line = temp_line.replace("\n", ", ")
     temp_line = remove_multiwhitespaces_regex.sub(
-        "", temp_line
+        " ", temp_line
     )  # from -> ,       ,  , (     prompt) | to -> , , , (prompt)
 
     temp_line = remove_nonpromptcommas_regex.sub(
