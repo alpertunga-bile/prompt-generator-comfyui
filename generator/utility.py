@@ -77,6 +77,16 @@ def get_variable_dictionary(given_class) -> dict:
     }
 
 
+def is_base_model(path: str) -> bool:
+    files = listdir(path)
+
+    for file in files:
+        if "adapter" in file:
+            return False
+
+    return True
+
+
 def get_accelerator_type(path: str) -> ModelType:
     files = listdir(path)
     accelerator_type = ModelType.NONE

@@ -23,7 +23,10 @@ from .utility import (
     QuantizationType,
     QuantizationPackage,
     get_quantization_package,
+    is_base_model,
 )
+
+from peft import PeftModel
 
 
 def get_torch_dtype():
@@ -85,16 +88,15 @@ def get_quantization_config(type: QuantizationType):
     return quant_config
 
 
-def get_model(model_name: str, type: QuantizationType, use_device_map: bool = True):
-    req_torch_dtype = get_torch_dtype()
-    quant_config = get_quantization_config(type)
-
+def get_model_from_base(
+    model_name: str, required_torch_dtype, quant_conf, use_device_map
+):
     if use_device_map:
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             device_map="auto",
-            torch_dtype=req_torch_dtype,
-            quantization_config=quant_config,
+            torch_dtype=required_torch_dtype,
+            quantization_config=quant_conf,
         )
     else:
         dev = get_torch_device()
@@ -102,8 +104,39 @@ def get_model(model_name: str, type: QuantizationType, use_device_map: bool = Tr
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             device=dev,
-            torch_dtype=req_torch_dtype,
-            quantization_config=quant_config,
+            torch_dtype=required_torch_dtype,
+            quantization_config=quant_conf,
+        )
+
+    return model
+
+
+def get_model_from_lora(
+    model_name: str, required_torch_dtype, quant_conf, use_device_map
+):
+    model = get_model_from_base(
+        model_name, required_torch_dtype, quant_conf, use_device_map
+    )
+
+    model.config.forced_decoder_ids = None
+    model.config.suppress_tokens = []
+
+    model = PeftModel.from_pretrained(model, model_name, is_trainable=False)
+
+    return model
+
+
+def get_model(model_name: str, type: QuantizationType, use_device_map: bool = True):
+    req_torch_dtype = get_torch_dtype()
+    quant_config = get_quantization_config(type)
+
+    if is_base_model(model_name):
+        model = get_model_from_base(
+            model_name, req_torch_dtype, quant_config, use_device_map
+        )
+    else:
+        model = get_model_from_lora(
+            model_name, req_torch_dtype, quant_config, use_device_map
         )
 
     # torch.compile is supported only in Linux

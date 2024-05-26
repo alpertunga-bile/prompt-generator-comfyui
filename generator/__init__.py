@@ -46,6 +46,8 @@ check_package("onnxruntime", "optimum[onnxruntime-gpu]")
 # use_fast for tokenizers used this
 check_package("sentencepiece", "transformers[sentencepiece]")
 
+check_package("peft", "peft")
+
 
 def check_torch_version_is_enough(min_major: int, min_minor: int) -> bool:
     torch_version_splitted = torch_version.split(".")
