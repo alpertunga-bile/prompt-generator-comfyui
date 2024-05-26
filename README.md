@@ -58,6 +58,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Multiple output generation is added. You can choose from 5 outputs with the index value. You can check the generated prompts from the log file and terminal. The prompts are logged and printed in order. 
 - Randomness is added. See [this section](#random-generation).
 - Quantization is added with [Quanto](https://github.com/huggingface/quanto) and [Bitsandbytes](https://huggingface.co/docs/bitsandbytes/main/en/index) packages. See [this section](#quantization).
+- Lora adapter model loading is added with [Peft](https://huggingface.co/docs/peft/en/index) package. (The feature is not full tested in this repository because of my VRAM but I am using the same implementation in Google Colab for training and inference and it is working there)
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
 - ONNX and transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
@@ -82,17 +83,29 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- The dataset has 1.983.965 rows of unique prompts currently.
+- The dataset has 2.054.314 rows of unique prompts currently.
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
     
 ## Models
 
+- The model versions are used to differentiate models rather than showing which one is better.
+- The v2 version is the latest trained model and the v4 model is an experimental model.
+
 - female_positive_generator_v2 | **(Training In Process)**
+  - Base model
   - using [distilgpt2](https://huggingface.co/distilgpt2) model
   - Training Loss ~0.47
+  - ~500 MB 
   
 - female_positive_generator_v3 | **(Training In Process)**
+  - Base model
   - using [bigscience/bloom-560m](https://huggingface.co/bigscience/bloom-560m) model
+  - ~1.3 GB
+
+- female_positive_generator_v4 | **Experimental**
+  - Lora adapter model
+  - using [senseable/WestLake-7B-v2](https://huggingface.co/senseable/WestLake-7B-v2) model as the base model
+  - Base model is ~14 GB
 
 # Variables
 
