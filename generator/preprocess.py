@@ -1,4 +1,4 @@
-from re import sub, findall, compile
+from re import compile
 from collections import OrderedDict
 
 # compiled regex strings
@@ -30,24 +30,24 @@ def remove_exact_keywords(line: str) -> list[str]:
 
     # remove exact keyword
     for prompt in prompts:
-        tempPrompt = sub(
-            remove_nonprompts_regex, "", prompt
+        tempPrompt = remove_nonprompts_regex.sub(
+            "", prompt
         ).lstrip()  # from -> ((masterpiece:1.2)) | to -> ((masterpiece))
 
         if tempPrompt == "":
             continue
 
-        tempPrompt = sub(
-            remove_nonweighters_regex, "", tempPrompt
+        tempPrompt = remove_nonweighters_regex.sub(
+            "", tempPrompt
         )  # from -> ((masterpiece)) | to -> masterpiece
 
         if tempPrompt in extracted_pure_prompts:
-            tempPrompt = sub(
-                remove_inside_regex, "", prompt
+            tempPrompt = remove_inside_regex.sub(
+                "", prompt
             )  # from -> ((masterpiece:1.2)) | to -> (())
 
             if (
-                len(findall(find_empty_parantheses_regex, tempPrompt))
+                len(find_empty_parantheses_regex.findall(tempPrompt))
                 > 0  # find () count
                 or tempPrompt == ""
             ):
@@ -69,7 +69,7 @@ def remove_exact_keywords(line: str) -> list[str]:
             continue
 
         if tempPrompt == "":
-            tempPrompt = sub(remove_nonprompts_regex, "", prompt).lstrip()
+            tempPrompt = remove_nonprompts_regex.sub("", prompt).lstrip()
             pure_prompts[tempPrompt] = True
         else:
             extracted_pure_prompts[tempPrompt] = True
@@ -85,27 +85,27 @@ def preprocess(line: str, preprocess_mode: str) -> str:
 
     temp_line = temp_line.replace("\xa0", " ")
     temp_line = temp_line.replace("\n", ", ")
-    temp_line = sub(
-        remove_multiwhitespaces_regex, " ", temp_line
+    temp_line = remove_multiwhitespaces_regex.sub(
+        "", temp_line
     )  # from -> ,       ,  , (     prompt) | to -> , , , (prompt)
 
-    temp_line = sub(
-        remove_nonpromptcommas_regex, ", ", temp_line
+    temp_line = remove_nonpromptcommas_regex.sub(
+        ", ", temp_line
     )  # from -> , , , , | to -> ,
 
-    temp_line = sub(
-        remove_scalarweights_regex, "", temp_line
+    temp_line = remove_scalarweights_regex.sub(
+        "", temp_line
     )  # from -> , 0.6 | to -> *empty string*
 
     if preprocess_mode == "exact_keyword":
         temp_line = ", ".join(remove_exact_keywords(temp_line))
 
-        temp_line = sub(
-            remove_multiwhitespaces_regex, " ", temp_line
+        temp_line = remove_multiwhitespaces_regex.sub(
+            " ", temp_line
         )  # from -> ,       ,  , (       prompt) | to -> , , , (prompt)
 
-        temp_line = sub(
-            remove_nonpromptcommas_regex, ", ", temp_line
+        temp_line = remove_nonpromptcommas_regex.sub(
+            ", ", temp_line
         )  # from -> , , , , | to -> ,
 
         # fixing the artifacts
@@ -121,12 +121,12 @@ def preprocess(line: str, preprocess_mode: str) -> str:
         for old_str, new_str in replace_dict.items():
             temp_line = temp_line.replace(old_str, new_str)
 
-        temp_line = sub(
-            remove_emptyprompts_regex, ",", temp_line
+        temp_line = remove_emptyprompts_regex.sub(
+            ",", temp_line
         )  # from -> , (((, | to -> ,
 
-        temp_line = sub(
-            remove_danglingparantheses_regex, " ", temp_line
+        temp_line = remove_danglingparantheses_regex.sub(
+            " ", temp_line
         )  # from -> (( ((prompt)) | to -> ((prompt))
 
     elif preprocess_mode == "exact_prompt":
