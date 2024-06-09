@@ -84,7 +84,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 ## Dataset
 
 - The dataset has 2.054.314 rows of unique prompts currently.
-- Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/CLI/CLICivitai.py)
+- Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/sources/CLI/CLICivitai.py)
     
 ## Models
 
