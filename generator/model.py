@@ -5,6 +5,8 @@ from transformers import (
 from optimum.bettertransformer import BetterTransformer
 from optimum.onnxruntime import ORTModelForCausalLM
 
+from optimum.quanto import qfloat8, qint8, qint4, quantize, freeze
+
 from torch import bfloat16 as torch_bfloat16
 from torch import float16 as torch_float16
 from torch import float32 as torch_float32
@@ -42,21 +44,6 @@ def get_torch_dtype():
     return req_torch_dtype
 
 
-def get_quanto_config(type: QuantizationType):
-    from transformers import QuantoConfig
-
-    quanto_config = None
-
-    if type == QuantizationType.EightBit:
-        quanto_config = QuantoConfig(weights="int8")
-    elif type == QuantizationType.FourBit:
-        quanto_config = QuantoConfig(weight="int4")
-    elif type == QuantizationType.EightFloat:
-        quanto_config = QuantoConfig(weights="float8")
-
-    return quanto_config
-
-
 def get_bitsandbytes_config(type: QuantizationType):
     from transformers import BitsAndBytesConfig
 
@@ -75,29 +62,42 @@ def get_bitsandbytes_config(type: QuantizationType):
     return bnb_config
 
 
-def get_quantization_config(type: QuantizationType):
-    quant_config = None
-
-    quant_package = get_quantization_package()
-
-    if quant_package == QuantizationPackage.QUANTO:
-        quant_config = get_quanto_config(type)
-    elif quant_package == QuantizationPackage.BITSANDBYTES:
-        quant_config = get_bitsandbytes_config(type)
-
-    return quant_config
-
-
 def get_model_from_base(
-    model_name: str, required_torch_dtype, quant_conf, use_device_map
+    model_name: str, required_torch_dtype, type: QuantizationType, use_device_map: bool
 ):
+    quant_pack = get_quantization_package()
+
     if use_device_map:
-        model = AutoModelForCausalLM.from_pretrained(
-            model_name,
-            device_map="auto",
-            torch_dtype=required_torch_dtype,
-            quantization_config=quant_conf,
-        )
+        if quant_pack == QuantizationPackage.BITSANDBYTES:
+            quant_conf = get_bitsandbytes_config(type)
+
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                device_map="auto",
+                torch_dtype=required_torch_dtype,
+                quantization_config=quant_conf,
+            )
+        elif quant_pack == QuantizationPackage.QUANTO:
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                device_map="auto",
+                torch_dtype=required_torch_dtype,
+            )
+
+            if type == QuantizationType.EightBit:
+                quantize(model, weights=qint8)
+            elif type == QuantizationType.EightFloat:
+                quantize(model, weights=qfloat8)
+            elif type == QuantizationType.FourBit:
+                quantize(model, weights=qint4)
+
+            freeze(model)
+        elif quant_pack == QuantizationPackage.NONE:
+            model = AutoModelForCausalLM.from_pretrained(
+                model_name,
+                device_map="auto",
+                torch_dtype=required_torch_dtype,
+            )
     else:
         dev = get_torch_device()
 
@@ -112,11 +112,9 @@ def get_model_from_base(
 
 
 def get_model_from_lora(
-    model_name: str, required_torch_dtype, quant_conf, use_device_map
+    model_name: str, required_torch_dtype, type: QuantizationType, use_device_map: bool
 ):
-    model = get_model_from_base(
-        model_name, required_torch_dtype, quant_conf, use_device_map
-    )
+    model = get_model_from_base(model_name, required_torch_dtype, type, use_device_map)
 
     model.config.forced_decoder_ids = None
     model.config.suppress_tokens = []
@@ -128,16 +126,11 @@ def get_model_from_lora(
 
 def get_model(model_name: str, type: QuantizationType, use_device_map: bool = True):
     req_torch_dtype = get_torch_dtype()
-    quant_config = get_quantization_config(type)
 
     if is_base_model(model_name):
-        model = get_model_from_base(
-            model_name, req_torch_dtype, quant_config, use_device_map
-        )
+        model = get_model_from_base(model_name, req_torch_dtype, type, use_device_map)
     else:
-        model = get_model_from_lora(
-            model_name, req_torch_dtype, quant_config, use_device_map
-        )
+        model = get_model_from_lora(model_name, req_torch_dtype, type, use_device_map)
 
     # torch.compile is supported only in Linux
     # has to be tested though
