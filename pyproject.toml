@@ -2,13 +2,24 @@
 name = "prompt-generator-comfyui"
 description = "Custom AI prompt generator node for ComfyUI."
 version = "1.0.0"
-license = "LICENSE"
+license = "MIT"
+dependencies = [
+    "transformers",
+    "accelerate",
+    'triton; platform_system == "Linux"',
+    "optimum",
+    "optimum[onnxruntime-gpu]",
+    "transformers[sentencepiece]",
+    "peft",
+    'bitsandbytes; platform_system == "Linux"',
+    'optimum-quanto; platform_system != "Linux"',
+]
 
 [project.urls]
 Repository = "https://github.com/alpertunga-bile/prompt-generator-comfyui"
 #  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = ""
+PublisherId = "alpertunga-bile"
 DisplayName = "prompt-generator-comfyui"
 Icon = ""
