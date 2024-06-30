@@ -57,7 +57,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 # Features
 - Multiple output generation is added. You can choose from 5 outputs with the index value. You can check the generated prompts from the log file and terminal. The prompts are logged and printed in order. 
 - Randomness is added. See [this section](#random-generation).
-- Quantization is added with [Quanto](https://github.com/huggingface/quanto) and [Bitsandbytes](https://huggingface.co/docs/bitsandbytes/main/en/index) packages. See [this section](#quantization).
+- Quantization is added with [Quanto](https://github.com/huggingface/optimum-quanto) and [Bitsandbytes](https://huggingface.co/docs/bitsandbytes/main/en/index) packages. See [this section](#quantization).
 - Lora adapter model loading is added with [Peft](https://huggingface.co/docs/peft/en/index) package. (The feature is not full tested in this repository because of my VRAM but I am using the same implementation in Google Colab for training and inference and it is working there)
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
 - ONNX and transformers models are supported.
@@ -83,7 +83,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- The dataset has 2.054.314 rows of unique prompts currently.
+- The dataset has 2.150.395 rows of unique prompts currently.
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/sources/CLI/CLICivitai.py)
     
 ## Models
@@ -141,7 +141,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Check [this link](https://huggingface.co/docs/transformers/v4.31.0/en/generation_strategies#text-generation-strategies) for text generation strategies.
 
 ## Quantization
-- Quantization is added with [Quanto](https://github.com/huggingface/quanto) and [Bitsandbytes](https://huggingface.co/docs/bitsandbytes/main/en/index) packages.
+- Quantization is added with [Quanto](https://github.com/huggingface/optimum-quanto) and [Bitsandbytes](https://huggingface.co/docs/bitsandbytes/main/en/index) packages.
 - The Quanto package requires ```torch >= 2.2``` and Bitsandbytes package works out-of-box with Linux OS. So the node is checking which package to use:
   - If requirements are not specified for this packages, you can not use the ```quantize``` variable and it has only ```none``` value.
   - If the Quanto requirements are filled then you can choose between ```none, int8, float8, int4``` values.
