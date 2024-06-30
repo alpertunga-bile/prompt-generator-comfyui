@@ -94,7 +94,6 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - female_positive_generator_v2 | **(Training In Process)**
   - Base model
   - using [distilgpt2](https://huggingface.co/distilgpt2) model
-  - Training Loss ~0.47
   - ~500 MB 
   
 - female_positive_generator_v3 | **(Training In Process)**
