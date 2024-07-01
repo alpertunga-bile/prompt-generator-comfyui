@@ -13,12 +13,23 @@ remove_multiwhitespaces_regex = compile(r"\s+")
 remove_nonpromptcommas_regex = compile(r"(,\s){2,}")
 remove_scalarweights_regex = compile(r",\s*:[0-9]*\.?[0-9]+")
 remove_emptyprompts_regex = compile(r",\s+[()\[\]{}]+\s*,")
-remove_danglingparantheses_regex = compile(r"\s+[()]*\s+[^a-zA-Z0-9]+")
+remove_danglingparantheses_regex = compile(r"\B\s+|\s+\B")
+
+replace_dict = {
+    compile(r"\(\s*,"): "(",
+    compile(r"\[\s*,"): "[",
+    compile(r"{\s*,"): "{",
+    compile(r",\s*\)"): ")",
+    compile(r",\s*\]"): "]",
+    compile(r",\s*}"): "}",
+}
 
 
-def get_unique_list(sequence: list) -> list:
+def get_unique_list(sequence: list[str]) -> list[str]:
     seen = set()
-    return [x for x in sequence if not (x.strip() in seen or seen.add(x.strip()))]
+    return [
+        x.strip() for x in sequence if not (x.strip() in seen or seen.add(x.strip()))
+    ]
 
 
 def remove_exact_keywords(line: str) -> list[str]:
@@ -65,7 +76,8 @@ def remove_exact_keywords(line: str) -> list[str]:
                 for _ in range(lowest_count):
                     tempPrompt = tempPrompt.replace("()", "")
 
-            pure_prompts[tempPrompt] = True
+                pure_prompts[tempPrompt] = True
+
             continue
 
         if tempPrompt == "":
@@ -81,7 +93,7 @@ def remove_exact_keywords(line: str) -> list[str]:
 def preprocess(line: str, preprocess_mode: str) -> str:
 
     temp_line = line.encode("ascii", "xmlcharrefreplace").decode()
-    temp_line = temp_line.encode(errors="xmlcharrefreplace").decode()
+    temp_line = temp_line.encode("utf-8", "xmlcharrefreplace").decode()
 
     temp_line = temp_line.replace("\xa0", " ")
     temp_line = temp_line.replace("\n", ", ")
@@ -109,24 +121,15 @@ def preprocess(line: str, preprocess_mode: str) -> str:
         )  # from -> , , , , | to -> ,
 
         # fixing the artifacts
-        replace_dict = {
-            "(,": "(",
-            "[,": "[",
-            "{,": "{",
-            ", )": ")",
-            ", ]": "]",
-            ", }": "}",
-        }
-
-        for old_str, new_str in replace_dict.items():
-            temp_line = temp_line.replace(old_str, new_str)
+        for regex_pattern, new_str in replace_dict.items():
+            temp_line = regex_pattern.sub(new_str, temp_line)
 
         temp_line = remove_emptyprompts_regex.sub(
             ",", temp_line
         )  # from -> , (((, | to -> ,
 
-        temp_line = remove_danglingparantheses_regex.sub(
-            " ", temp_line
+        temp_line = remove_danglingparantheses_regex.sub("", temp_line).replace(
+            ",", ", "
         )  # from -> (( ((prompt)) | to -> ((prompt))
 
     elif preprocess_mode == "exact_prompt":
