@@ -99,7 +99,7 @@ class PromptGenerator:
             },
         }
 
-    def log_outputs(
+    def __log_outputs(
         self,
         model_name: str,
         prompt: str,
@@ -160,7 +160,7 @@ class PromptGenerator:
             file.write(f"recursive_level       : {recursive_level}\n")
             file.write(f"preprocess_mode       : {preprocess_mode}\n")
 
-    def tokenize_texts(self, clip: CLIP) -> list:
+    def __tokenize_texts(self, clip: CLIP) -> list:
         processed = []
 
         # from nodes.py -> CLIPTextEncode -> encode
@@ -230,7 +230,7 @@ class PromptGenerator:
         # if it is true just return from the lists with assigned new index (declaration is above)
         # log the outputs for the clearity
         if is_lock_generation is True and len(self._tokenized_prompts) > 0:
-            self.log_outputs(
+            self.__log_outputs(
                 model_name,
                 prompt,
                 self_recursive,
@@ -293,13 +293,13 @@ class PromptGenerator:
             preprocess_mode,
         )
 
-        self._tokenized_prompts = self.tokenize_texts(clip)
+        self._tokenized_prompts = self.__tokenize_texts(clip)
 
         del generator
         empty_cache()
         collect()
 
-        self.log_outputs(
+        self.__log_outputs(
             model_name,
             prompt,
             self_recursive,

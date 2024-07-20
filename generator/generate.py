@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from transformers import Pipeline
 
 from comfy.model_management import get_torch_device
 from generator.model import get_model_tokenizer
@@ -35,7 +34,6 @@ class GenerateArgs:
 
 @dataclass
 class Generator:
-    pipe: Pipeline = None
     model = None
     tokenizer = None
     dev = None
@@ -82,9 +80,6 @@ class Generator:
             generated_ids[0], skip_special_tokens=True, cleanup_tokenization_spaces=True
         )
 
-        # output = self.pipe(input, **args)
-        # return output[0]["generated_text"]
-
         return output
 
     # generate 5 outputs
@@ -109,9 +104,6 @@ class Generator:
         outputs = self.tokenizer.batch_decode(
             generated_ids, skip_special_tokens=True, cleanup_tokenization_spaces=True
         )
-
-        # outputs = self.pipe(input, **args)
-        # return [output["generated_text"] for output in outputs]
 
         return outputs
 

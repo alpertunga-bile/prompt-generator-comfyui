@@ -62,59 +62,45 @@ def get_bitsandbytes_config(type: QuantizationType):
     return bnb_config
 
 
-def get_model_from_base(
-    model_name: str, required_torch_dtype, type: QuantizationType, use_device_map: bool
-):
+def get_model_from_base(model_name: str, required_torch_dtype, type: QuantizationType):
     quant_pack = get_quantization_package()
 
-    if use_device_map:
-        if quant_pack == QuantizationPackage.BITSANDBYTES:
-            quant_conf = get_bitsandbytes_config(type)
-
-            model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                device_map="auto",
-                torch_dtype=required_torch_dtype,
-                quantization_config=quant_conf,
-            )
-        elif quant_pack == QuantizationPackage.QUANTO:
-            model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                device_map="auto",
-                torch_dtype=required_torch_dtype,
-            )
-
-            if type == QuantizationType.EightBit:
-                quantize(model, weights=qint8)
-            elif type == QuantizationType.EightFloat:
-                quantize(model, weights=qfloat8)
-            elif type == QuantizationType.FourBit:
-                quantize(model, weights=qint4)
-
-            freeze(model)
-        elif quant_pack == QuantizationPackage.NONE:
-            model = AutoModelForCausalLM.from_pretrained(
-                model_name,
-                device_map="auto",
-                torch_dtype=required_torch_dtype,
-            )
-    else:
-        dev = get_torch_device()
+    if quant_pack == QuantizationPackage.BITSANDBYTES:
+        quant_conf = get_bitsandbytes_config(type)
 
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
-            device=dev,
+            device_map="auto",
             torch_dtype=required_torch_dtype,
             quantization_config=quant_conf,
+        )
+    elif quant_pack == QuantizationPackage.QUANTO:
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            device_map="auto",
+            torch_dtype=required_torch_dtype,
+        )
+
+        if type == QuantizationType.EightBit:
+            quantize(model, weights=qint8)
+        elif type == QuantizationType.EightFloat:
+            quantize(model, weights=qfloat8)
+        elif type == QuantizationType.FourBit:
+            quantize(model, weights=qint4)
+
+        freeze(model)
+    elif quant_pack == QuantizationPackage.NONE:
+        model = AutoModelForCausalLM.from_pretrained(
+            model_name,
+            device_map="auto",
+            torch_dtype=required_torch_dtype,
         )
 
     return model
 
 
-def get_model_from_lora(
-    model_name: str, required_torch_dtype, type: QuantizationType, use_device_map: bool
-):
-    model = get_model_from_base(model_name, required_torch_dtype, type, use_device_map)
+def get_model_from_lora(model_name: str, required_torch_dtype, type: QuantizationType):
+    model = get_model_from_base(model_name, required_torch_dtype, type)
 
     model.config.forced_decoder_ids = None
     model.config.suppress_tokens = []
@@ -124,13 +110,13 @@ def get_model_from_lora(
     return model
 
 
-def get_model(model_name: str, type: QuantizationType, use_device_map: bool = True):
+def get_model(model_name: str, type: QuantizationType):
     req_torch_dtype = get_torch_dtype()
 
     if is_base_model(model_name):
-        model = get_model_from_base(model_name, req_torch_dtype, type, use_device_map)
+        model = get_model_from_base(model_name, req_torch_dtype, type)
     else:
-        model = get_model_from_lora(model_name, req_torch_dtype, type, use_device_map)
+        model = get_model_from_lora(model_name, req_torch_dtype, type)
 
     # torch.compile is supported only in Linux
     # has to be tested though
@@ -165,9 +151,7 @@ def get_model_tokenizer(
         else:
             model = ORTModelForCausalLM.from_pretrained(model_path, export=True)
     elif type == ModelType.BETTERTRANSFORMER or ModelType.DEFAULT:
-        # is_mps = is_device_mps(get_torch_device())
-
-        model = get_model(model_path, quant_type, use_device_map=True)
+        model = get_model(model_path, quant_type)
 
     if type == ModelType.BETTERTRANSFORMER:
         try:
