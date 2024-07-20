@@ -140,7 +140,6 @@ class PromptGenerator:
             file.write(f"max_new_tokens        : {self._gen_settings.max_new_tokens}\n")
             file.write(f"do_sample             : {self._gen_settings.do_sample}\n")
             file.write(f"early_stopping        : {self._gen_settings.early_stopping}\n")
-            file.write(f"early_stopping        : {self._gen_settings.early_stopping}\n")
             file.write(f"num_beams             : {self._gen_settings.num_beams}\n")
             file.write(
                 f"num_beam_groups       : {self._gen_settings.num_beam_groups}\n"
