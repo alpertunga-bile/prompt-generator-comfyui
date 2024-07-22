@@ -5,8 +5,6 @@ from transformers import (
 from optimum.bettertransformer import BetterTransformer
 from optimum.onnxruntime import ORTModelForCausalLM
 
-from optimum.quanto import qfloat8, qint8, qint4, quantize, freeze
-
 from torch import bfloat16 as torch_bfloat16
 from torch import float16 as torch_float16
 from torch import float32 as torch_float32
@@ -75,6 +73,8 @@ def get_model_from_base(model_name: str, required_torch_dtype, type: Quantizatio
             quantization_config=quant_conf,
         )
     elif quant_pack == QuantizationPackage.QUANTO:
+        from optimum.quanto import qfloat8, qint8, qint4, quantize, freeze
+
         model = AutoModelForCausalLM.from_pretrained(
             model_name,
             device_map="auto",
