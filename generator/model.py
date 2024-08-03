@@ -139,17 +139,12 @@ def get_tokenizer(model_name: str):
     return tokenizer
 
 
-def get_model_tokenizer(
-    model_path: str,
-    type: ModelType,
-    quant_type: QuantizationType,
-    is_native: bool = True,
-):
+def get_model_tokenizer(model_path: str, type: ModelType, quant_type: QuantizationType):
+    """
+    transformers -> ONNX operation brokes often
+    """
     if type == ModelType.ONNX:
-        if is_native:
-            model = ORTModelForCausalLM.from_pretrained(model_path)
-        else:
-            model = ORTModelForCausalLM.from_pretrained(model_path, export=True)
+        model = ORTModelForCausalLM.from_pretrained(model_path)
     elif type == ModelType.BETTERTRANSFORMER or ModelType.DEFAULT:
         model = get_model(model_path, quant_type)
 

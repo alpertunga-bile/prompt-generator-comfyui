@@ -49,10 +49,9 @@ class Generator:
             )
         else:
             accelerator_type = get_accelerator_type(model_path)
-            is_onnx_native = True if accelerator_type == ModelType.ONNX else False
 
             self.model, self.tokenizer = get_model_tokenizer(
-                model_path, accelerator_type, quantize_type, is_onnx_native
+                model_path, accelerator_type, quantize_type
             )
 
         self.dev = get_torch_device()
