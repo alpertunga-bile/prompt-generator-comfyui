@@ -13,6 +13,9 @@ from generator.utility import get_usable_quantize_sizes
 from comfy.sd import CLIP
 from folder_paths import models_dir, base_path
 
+INT_MAX = 0xFFFFFFFFFFFFFFFF
+FLOAT_MAX = 1_000_000.0
+
 
 class PromptGenerator:
     _index = 0  # index to use for the cached generations, range in [0, 4]
@@ -39,7 +42,7 @@ class PromptGenerator:
                     "STRING",
                     {
                         "multiline": True,
-                        "default": "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful)),",
+                        "default": "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful)), ",
                     },
                 ),
                 "seed": (
@@ -51,49 +54,57 @@ class PromptGenerator:
                 "index": ("INT", {"default": 1, "min": 1, "max": 5}),
                 "cfg": (
                     "FLOAT",
-                    {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.1},
+                    {
+                        "default": 1.0,
+                        "min": 0.0,
+                        "max": INT_MAX,
+                        "step": 0.1,
+                    },
                 ),
                 "min_new_tokens": (
                     "INT",
-                    {"default": 20, "min": 0, "max": 100, "step": 1},
+                    {"default": 20, "min": 0, "max": INT_MAX, "step": 1},
                 ),
                 "max_new_tokens": (
                     "INT",
-                    {"default": 50, "min": 35, "max": 200, "step": 1},
+                    {"default": 50, "min": 35, "max": INT_MAX, "step": 1},
                 ),
-                "do_sample": (["enable", "disable"],),
-                "early_stopping": (["disable", "enable"],),
-                "num_beams": ("INT", {"default": 1, "min": 1, "max": 50, "step": 1}),
+                "do_sample": (["disable", "enable"],),
+                "early_stopping": (["enable", "disable"],),
+                "num_beams": (
+                    "INT",
+                    {"default": 1, "min": 1, "max": INT_MAX, "step": 1},
+                ),
                 "num_beam_groups": (
                     "INT",
-                    {"default": 1, "min": 0, "max": 50, "step": 1},
+                    {"default": 1, "min": 0, "max": INT_MAX, "step": 1},
                 ),
                 "diversity_penalty": (
                     "FLOAT",
-                    {"default": 0.0, "min": 0.0, "max": 10.0, "step": 0.1},
+                    {"default": 0.0, "min": 0.0, "max": FLOAT_MAX, "step": 0.1},
                 ),
                 "temperature": (
                     "FLOAT",
-                    {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.1},
+                    {"default": 1.0, "min": 0.0, "max": FLOAT_MAX, "step": 0.1},
                 ),
-                "top_k": ("INT", {"default": 50, "min": 0, "max": 150, "step": 1}),
+                "top_k": ("INT", {"default": 50, "min": 0, "max": INT_MAX, "step": 1}),
                 "top_p": (
                     "FLOAT",
-                    {"default": 1.0, "min": 0.0, "max": 2.0, "step": 0.1},
+                    {"default": 1.0, "min": 0.0, "max": FLOAT_MAX, "step": 0.1},
                 ),
                 "repetition_penalty": (
                     "FLOAT",
-                    {"default": 1.0, "min": 1.0, "max": 2.0, "step": 0.1},
+                    {"default": 1.0, "min": 1.0, "max": FLOAT_MAX, "step": 0.1},
                 ),
                 "no_repeat_ngram_size": (
                     "INT",
-                    {"default": 0, "min": 0, "max": 50, "step": 1},
+                    {"default": 0, "min": 0, "max": INT_MAX, "step": 1},
                 ),
                 "remove_invalid_values": (["disable", "enable"],),
                 "self_recursive": (["disable", "enable"],),
                 "recursive_level": (
                     "INT",
-                    {"default": 0, "min": 0, "max": 50, "step": 1},
+                    {"default": 0, "min": 0, "max": FLOAT_MAX, "step": 1},
                 ),
                 "preprocess_mode": (["exact_keyword", "exact_prompt", "none"],),
             },
