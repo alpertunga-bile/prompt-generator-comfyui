@@ -121,18 +121,29 @@ def get_generated_texts(
     gen_texts = []
 
     for result in results:
-        generated_text = preprocess(prompt + result, preprocess_mode)
+        generated_text = preprocess(", ".join([prompt, result]), preprocess_mode)
+
+        if recursive_level == 0:
+            gen_texts.append(generated_text)
+            continue
 
         if is_self_recursive:
             for _ in range(0, recursive_level):
                 result = generator.generate_text(generated_text, gen_args)
                 generated_text = preprocess(result, preprocess_mode)
-            generated_text = preprocess(prompt + generated_text, preprocess_mode)
+
+            """
+            in self recursive, generated_text is not include the prompt string
+            """
+            generated_text = preprocess(
+                ", ".join([prompt, generated_text]), preprocess_mode
+            )
         else:
             for _ in range(0, recursive_level):
                 result = generator.generate_text(generated_text, gen_args)
-                generated_text += result
-                generated_text = preprocess(generated_text, preprocess_mode)
+                generated_text = preprocess(
+                    ", ".join([generated_text, result]), preprocess_mode
+                )
 
         gen_texts.append(generated_text)
 
