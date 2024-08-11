@@ -1,5 +1,5 @@
-from sys import path
-from os.path import dirname, exists
+import sys
+from os.path import dirname
 from subprocess import run
 from importlib.util import find_spec
 from platform import system
@@ -7,7 +7,7 @@ from torch import __version__ as torch_version
 
 os_name = system()
 
-path.append(dirname(__file__))
+sys.path.append(dirname(__file__))
 
 
 def check_package(package_name: str, install_name: str) -> None:
@@ -16,11 +16,7 @@ def check_package(package_name: str, install_name: str) -> None:
 
     print(f"/_\ Installing {package_name}")
 
-    # check if portable version or manual
-    if exists("python_embeded"):
-        command = f".\\python_embeded\\python.exe -s -m pip install {install_name}"
-    else:
-        command = f"pip install {install_name}"
+    command = f"{sys.executable} -m pip install {install_name}"
 
     process = run(command, shell=True, check=True, capture_output=True)
 
