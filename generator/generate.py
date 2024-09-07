@@ -74,7 +74,9 @@ class Generator:
             **inputs,
             **get_variable_dictionary(args),
             pad_token_id=self.tokenizer.eos_token_id,
+            renormalize_logits=True,
         )
+
         output = self.tokenizer.decode(
             generated_ids[0], skip_special_tokens=True, cleanup_tokenization_spaces=True
         )
@@ -99,6 +101,7 @@ class Generator:
             **inputs,
             **get_variable_dictionary(args),
             pad_token_id=self.tokenizer.eos_token_id,
+            renormalize_logits=True,
         )
         outputs = self.tokenizer.batch_decode(
             generated_ids, skip_special_tokens=True, cleanup_tokenization_spaces=True
