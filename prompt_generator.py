@@ -323,3 +323,12 @@ class PromptGenerator:
             self._tokenized_prompts[self._index],
             self._generated_prompts[self._index],
         )
+
+    @classmethod
+    def VALIDATE_INPUTS(s, clip: CLIP, model_name: str):
+        model_path = join(models_dir, "prompt_generators", model_name)
+
+        if not exists(model_path):
+            return f"{model_path} is not exists"
+        
+        return True
