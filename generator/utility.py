@@ -38,7 +38,7 @@ class QuantizationType(Enum):
 def get_quantization_package() -> QuantizationPackage:
     if system() == "Linux":
         return QuantizationPackage.BITSANDBYTES
-    elif check_torch_version_is_enough(2, 2):
+    elif check_torch_version_is_enough(2, 4):
         return QuantizationPackage.QUANTO
     else:
         return QuantizationPackage.NONE

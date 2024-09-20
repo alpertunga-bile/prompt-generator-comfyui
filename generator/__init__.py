@@ -58,5 +58,5 @@ def check_torch_version_is_enough(min_major: int, min_minor: int) -> bool:
 
 if os_name == "Linux":
     check_package("bitsandbytes", "bitsandbytes")
-elif check_torch_version_is_enough(2, 2):
+elif check_torch_version_is_enough(2, 4):
     check_package("optimum-quanto", "optimum-quanto")
