@@ -1,5 +1,6 @@
 # prompt-generator-comfyui
-Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can use text generation models to generate prompts. Before using, text generation model has to be trained with prompt dataset.
+
+Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can use text generation models to generate prompts. Before using, text generation model has to be trained with prompt dataset or you can use the [pretrained models](#pretrained-prompt-models).
 
 # Table Of Contents
 - [prompt-generator-comfyui](#prompt-generator-comfyui)
@@ -58,7 +59,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - Multiple output generation is added. You can choose from 5 outputs with the index value. You can check the generated prompts from the log file and terminal. The prompts are logged and printed in order. 
 - Randomness is added. See [this section](#random-generation).
 - Quantization is added with [Quanto](https://github.com/huggingface/optimum-quanto) and [Bitsandbytes](https://huggingface.co/docs/bitsandbytes/main/en/index) packages. See [this section](#quantization).
-- Lora adapter model loading is added with [Peft](https://huggingface.co/docs/peft/en/index) package. (The feature is not full tested in this repository because of my VRAM but I am using the same implementation in Google Colab for training and inference and it is working there)
+- Lora adapter model loading is added with [Peft](https://huggingface.co/docs/peft/en/index) package. (The feature is not full tested in this repository because of my low VRAM but I am using the same implementation in Google Colab for training and inference and it is working there)
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum) package.
 - ONNX and transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
@@ -83,13 +84,13 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- The dataset has 2.150.395 rows of unique prompts currently.
+- The dataset has 2.473.270 rows of unique prompts currently.
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/sources/CLI/CLICivitai.py)
     
 ## Models
 
 - The model versions are used to differentiate models rather than showing which one is better.
-- The v2 version is the latest trained model and the v4 model is an experimental model.
+- The v2 version is the latest trained model and the v4 and v5 models are experimental models.
 
 - female_positive_generator_v2 | **(Training In Process)**
   - Base model
@@ -141,7 +142,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Quantization
 - Quantization is added with [Quanto](https://github.com/huggingface/optimum-quanto) and [Bitsandbytes](https://huggingface.co/docs/bitsandbytes/main/en/index) packages.
-- The Quanto package requires ```torch >= 2.2``` and Bitsandbytes package works out-of-box with Linux OS. So the node is checking which package to use:
+- The Quanto package requires ```torch >= 2.4``` and Bitsandbytes package works out-of-box with Linux OS. So the node is checking which package to use:
   - If requirements are not specified for this packages, you can not use the ```quantize``` variable and it has only ```none``` value.
   - If the Quanto requirements are filled then you can choose between ```none, int8, float8, int4``` values.
   - If the Bitsandbytes requirements are filled then you can choose between ```none, int8, int4``` values.
@@ -155,6 +156,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - You can find this text generation strategy from the upper link. The strategy is called **Multinomial sampling**.
 - Changing variable of **do_sample** to __disable__ gives deterministic generation.
 - For more randomness, you can:
+  - Set **num_beams** to 1
   - Enable **random_index** variable
   - Increase **recursive_level**
   - Enable **self_recursive**
@@ -165,12 +167,12 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 - If **random_index** is enabled, the **index** value is ignored.
 
 ## How Recursive Works?
-- Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to explain the functionality more accurately.
+- Let's say we give ```a, ``` as seed and recursive level is 1. I am going to use the same outputs for this example to explain the functionality more understandable.
 - With self recursive, let's say generator's output is ```b```. So next seed is going to be ```b``` and generator's output is ```c```. Final output is ```a, c```. It can be used for generating random outputs.
 - Without self recursive, let's say generator's output is ```b```. So next seed is going to be ```a, b``` and generator's output is ```c```. Final output is ```a, b, c```. It can be used for more accurate prompts.
 
 ## How Preprocess Mode Works?
-- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. The algorithm is adding the prompts from the beginning of the generated text, so add important prompts to seed.
+- **exact_keyword** => ```(masterpiece), ((masterpiece))``` is not allowed. Checking the pure keyword without parantheses and weights. The algorithm is adding the prompts from the beginning of the generated text, so add important prompts to **prompt** variable.
 - **exact_prompt** => ```(masterpiece), ((masterpiece))``` is allowed but ```(masterpiece), (masterpiece)``` is not. Checking the exact match of the prompt.
 - **none** => Everything is allowed even the repeated prompts.
 ### Example
