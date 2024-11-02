@@ -14,7 +14,7 @@ def check_package(package_name: str, install_name: str) -> None:
     if find_spec(package_name):
         return
 
-    print(f"/_\ Installing {package_name}")
+    print(f"/_\\ Installing {package_name}")
 
     command = f"{sys.executable} -m pip install {install_name}"
 
@@ -27,7 +27,7 @@ def check_package(package_name: str, install_name: str) -> None:
 print(" Prompt Generator ComfyUI Node ".center(100, "-"))
 
 # Check required packages
-print("/_\ Checking packages")
+print("/_\\ Checking packages")
 
 check_package("transformers", "transformers")
 check_package("accelerate", "accelerate")
@@ -50,7 +50,10 @@ def check_torch_version_is_enough(min_major: int, min_minor: int) -> bool:
     torch_version_major = int(torch_version_splitted[0])
     torch_version_minor = int(torch_version_splitted[1])
 
-    if torch_version_major >= min_major and torch_version_minor >= min_minor:
+    major_check = torch_version_major >= min_major
+    minor_check = torch_version_major == min_major and torch_version_minor >= min_minor
+
+    if major_check or minor_check:
         return True
     else:
         return False
