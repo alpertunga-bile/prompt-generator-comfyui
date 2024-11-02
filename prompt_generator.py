@@ -330,5 +330,5 @@ class PromptGenerator:
 
         if not exists(model_path):
             return f"{model_path} is not exists"
-        
+
         return True
