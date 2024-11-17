@@ -5,7 +5,6 @@ from generator.utility import (
     get_accelerator_type,
     get_variable_dictionary,
     str_to_quant_type,
-    check_transformers_version,
     ModelType,
 )
 from generator.preprocess import preprocess
@@ -60,9 +59,14 @@ class Generator:
         self.extra_params["renormalize_logits"] = True
         self.extra_params["pad_token_id"] = self.tokenizer.eos_token_id
 
+        """
+        # token healing feature is breaking the generator
+        # in experiments so this is disabled for now
+
         if check_transformers_version(4, 6):
             self.extra_params["token_healing"] = True
             self.extra_params["tokenizer"] = self.tokenizer
+        """
 
         self.dev = get_torch_device()
 
