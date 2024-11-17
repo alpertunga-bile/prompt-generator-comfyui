@@ -1,5 +1,6 @@
 from re import compile
 from collections import OrderedDict, namedtuple
+from functools import lru_cache
 
 
 def get_unique_list(sequence: list[str]) -> list[str]:
@@ -96,6 +97,7 @@ def fix_artifacts(string: str) -> str:
     return temp_string
 
 
+@lru_cache
 def preprocess(line: str, preprocess_mode: str) -> str:
     remove_scalarweights_regex = compile(r",\s*:[0-9]*\.?[0-9]+")
     remove_emptyprompts_regex = compile(r",\s+[()\[\]{}]+\s*,")
