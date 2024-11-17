@@ -133,9 +133,6 @@ def get_tokenizer(model_name: str):
     except:
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
-    tokenizer.pad_token_id = tokenizer.eos_token_id
-    tokenizer.padding_side = "left"
-
     return tokenizer
 
 
