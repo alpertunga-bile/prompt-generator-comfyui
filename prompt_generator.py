@@ -24,7 +24,7 @@ class PromptGenerator:
     _gen_settings = GenerateArgs  # gen configurations from the last generation
 
     @classmethod
-    def INPUT_TYPES(s):
+    def INPUT_TYPES(self):
         quantize_sizes = get_usable_quantize_sizes()
         model_names = [
             file
@@ -57,7 +57,7 @@ class PromptGenerator:
                     {
                         "default": 1.0,
                         "min": 0.0,
-                        "max": INT_MAX,
+                        "max": FLOAT_MAX,
                         "step": 0.1,
                     },
                 ),
@@ -104,7 +104,7 @@ class PromptGenerator:
                 "self_recursive": (["disable", "enable"],),
                 "recursive_level": (
                     "INT",
-                    {"default": 0, "min": 0, "max": FLOAT_MAX, "step": 1},
+                    {"default": 0, "min": 0, "max": INT_MAX, "step": 1},
                 ),
                 "preprocess_mode": (["exact_keyword", "exact_prompt", "none"],),
             },
@@ -138,7 +138,7 @@ class PromptGenerator:
             file.write(f"Date & Time           : {datetime.now()}\n")
             file.write(f"Model                 : {model_name}\n")
             file.write(f"Prompt                : {prompt}\n")
-            file.write(f"Generated Prompts     :\n")
+            file.write("Generated Prompts     :\n")
 
             for i in range(len(self._generated_prompts)):
                 file.write(
@@ -236,10 +236,12 @@ class PromptGenerator:
 
         is_lock_generation = True if lock == "enable" else False
 
-        # check if it is the first generation with taking length of tokenized prompts
-        # and the boolean with is lock enabled
-        # if it is true just return from the lists with assigned new index (declaration is above)
-        # log the outputs for the clearity
+        """
+            check if it is the first generation with taking length of tokenized prompts
+            and the boolean with is lock enabled
+            if it is true just return from the lists with assigned new index (declaration is above)
+            log the outputs for the clearity
+        """
         if is_lock_generation is True and len(self._tokenized_prompts) > 0:
             self.__log_outputs(
                 model_name,
@@ -325,7 +327,9 @@ class PromptGenerator:
         )
 
     @classmethod
-    def VALIDATE_INPUTS(s, clip: CLIP, model_name: str):
+    def VALIDATE_INPUTS(self, **kwargs):
+        model_name = kwargs["model_name"]
+
         model_path = join(models_dir, "prompt_generators", model_name)
 
         if not exists(model_path):
