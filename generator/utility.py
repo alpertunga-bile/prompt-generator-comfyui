@@ -14,7 +14,6 @@ class ModelType(Enum):
     NONE = 4
 
 
-@lru_cache
 def check_required_package_version(
     current_major: int, current_minor: int, required_major: int, required_minor: int
 ) -> bool:
@@ -24,7 +23,6 @@ def check_required_package_version(
     return major_check or minor_check
 
 
-@lru_cache
 def get_major_minor_versions(
     version_str: str, split_char: str = "."
 ) -> Tuple[int, int]:
@@ -35,22 +33,23 @@ def get_major_minor_versions(
     return (version_major, version_minor)
 
 
-def check_torch_version_is_enough(min_major: int, min_minor: int) -> bool:
-    torch_version_major, torch_version_minor = get_major_minor_versions(torch_version)
+@lru_cache
+def check_package_version(
+    version_str: str, min_major: int, min_minor: int, split_char: str = "."
+) -> bool:
+    package_major, package_minor = get_major_minor_versions(version_str, split_char)
 
     return check_required_package_version(
-        torch_version_major, torch_version_minor, min_major, min_minor
+        package_major, package_minor, min_major, min_minor
     )
+
+
+def check_torch_version_is_enough(min_major: int, min_minor: int) -> bool:
+    return check_package_version(torch_version, min_major, min_minor)
 
 
 def check_transformers_version(min_major: int, min_minor: int) -> bool:
-    transformers_version_major, transformers_version_minor = get_major_minor_versions(
-        transformers_version
-    )
-
-    return check_required_package_version(
-        transformers_version_major, transformers_version_minor, min_major, min_minor
-    )
+    return check_package_version(transformers_version, min_major, min_minor)
 
 
 class QuantizationPackage(Enum):
@@ -75,7 +74,6 @@ def get_quantization_package() -> QuantizationPackage:
         return QuantizationPackage.NONE
 
 
-@lru_cache
 def get_usable_quantize_sizes() -> list[str]:
     quant_package = get_quantization_package()
     quant_sizes = ["none"]
@@ -110,7 +108,6 @@ def get_variable_dictionary(given_class) -> dict:
     }
 
 
-@lru_cache
 def is_base_model(path: str) -> bool:
     files = listdir(path)
 
@@ -121,7 +118,6 @@ def is_base_model(path: str) -> bool:
     return True
 
 
-@lru_cache
 def get_accelerator_type(path: str) -> ModelType:
     files = listdir(path)
     accelerator_type = ModelType.NONE
