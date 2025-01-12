@@ -82,10 +82,15 @@ class Generator:
             )
 
         args.num_return_sequences = 1
+        given_input = input
+
+        if "token_healing" in self.extra_params:
+            given_input = input.strip()
 
         inputs = self.tokenizer(
-            input.strip(), padding=True, truncation=True, return_tensors="pt"
+            given_input, padding=True, truncation=True, return_tensors="pt"
         ).to(self.dev)
+
         generated_ids = self.model.generate(
             **inputs,
             **get_variable_dictionary(args),
@@ -110,15 +115,21 @@ class Generator:
             )
 
         args.num_return_sequences = 5
+        given_input = input
+
+        if "token_healing" in self.extra_params:
+            given_input = input.strip()
 
         inputs = self.tokenizer(
-            input.strip(), padding=True, truncation=True, return_tensors="pt"
+            given_input, padding=True, truncation=True, return_tensors="pt"
         ).to(self.dev)
+
         generated_ids = self.model.generate(
             **inputs,
             **get_variable_dictionary(args),
             **self.extra_params,
         )
+
         outputs = self.tokenizer.batch_decode(
             generated_ids, skip_special_tokens=True, clean_up_tokenization_spaces=True
         )
@@ -126,8 +137,12 @@ class Generator:
         return outputs
 
 
-# first generating 5 outputs
-# then for each output doing the recursion if specified
+"""
+    first generating 5 outputs
+    then for each output doing the recursion if specified
+"""
+
+
 def get_generated_texts(
     generator: Generator,
     gen_args: GenerateArgs,
@@ -152,7 +167,7 @@ def get_generated_texts(
                 generated_text = preprocess(result, preprocess_mode)
 
             """
-            in self recursive, generated_text is not include the prompt string
+                in self recursive, generated_text is not include the prompt string
             """
             generated_text = preprocess(
                 ", ".join([prompt, generated_text]), preprocess_mode
@@ -167,3 +182,6 @@ def get_generated_texts(
         gen_texts.append(generated_text)
 
     return gen_texts
+
+
+__all__ = [GenerateArgs, Generator, get_generated_texts]
