@@ -73,7 +73,7 @@ class PromptGenerator:
                 "early_stopping": (["enable", "disable"],),
                 "num_beams": (
                     "INT",
-                    {"default": 1, "min": 1, "max": INT_MAX, "step": 1},
+                    {"default": 5, "min": 1, "max": INT_MAX, "step": 1},
                 ),
                 "num_beam_groups": (
                     "INT",
@@ -270,9 +270,6 @@ class PromptGenerator:
             # huggingface supports [0, 2 ** 32 - 1] as seed
             set_seed(randint(0, 4294967294))
             manual_seed(seed)
-
-        if exists(model_path) is False:
-            raise ValueError(f"{model_path} is not exists")
 
         if exists(prompt_log_filename) is False:
             file = open(prompt_log_filename, "w")
