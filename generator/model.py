@@ -154,3 +154,6 @@ def get_model_tokenizer(model_path: str, type: ModelType, quant_type: Quantizati
     tokenizer = get_tokenizer(model_path)
 
     return (model, tokenizer)
+
+
+__all__ = [get_model_tokenizer]
