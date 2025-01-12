@@ -1,21 +1,102 @@
 {
-  "last_node_id": 25,
-  "last_link_id": 39,
+  "last_node_id": 26,
+  "last_link_id": 41,
   "nodes": [
+    {
+      "id": 12,
+      "type": "VAELoader",
+      "pos": [
+        -199,
+        663
+      ],
+      "size": [
+        488.8050231933594,
+        67.95999145507812
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            19
+          ],
+          "slot_index": 0,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "anythingKlF8Anime2VaeFtMse840000_blessed2.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "CheckpointLoaderSimple",
+      "pos": [
+        -150,
+        496
+      ],
+      "size": [
+        315,
+        98
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ],
+          "slot_index": 0
+        },
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            5,
+            40
+          ],
+          "slot_index": 1
+        },
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [],
+          "slot_index": 2
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CheckpointLoaderSimple"
+      },
+      "widgets_values": [
+        "wololo-mix-v4.safetensors"
+      ]
+    },
     {
       "id": 5,
       "type": "EmptyLatentImage",
       "pos": [
-        468,
-        776
+        380.1536865234375,
+        641.3025512695312
       ],
-      "size": {
-        "0": 315,
-        "1": 106
-      },
+      "size": [
+        315,
+        106
+      ],
       "flags": {},
-      "order": 0,
+      "order": 2,
       "mode": 0,
+      "inputs": [],
       "outputs": [
         {
           "name": "LATENT",
@@ -36,11 +117,93 @@
       ]
     },
     {
+      "id": 7,
+      "type": "CLIPTextEncode",
+      "pos": [
+        346.3381042480469,
+        590.6181030273438
+      ],
+      "size": [
+        425.27801513671875,
+        180.6060791015625
+      ],
+      "flags": {
+        "collapsed": true
+      },
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "CONDITIONING",
+          "type": "CONDITIONING",
+          "links": [
+            6
+          ],
+          "slot_index": 0
+        }
+      ],
+      "title": "Negative Prompts",
+      "properties": {
+        "Node name for S&R": "CLIPTextEncode"
+      },
+      "widgets_values": [
+        "(worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
+      ]
+    },
+    {
+      "id": 8,
+      "type": "VAEDecode",
+      "pos": [
+        1161.103759765625,
+        163.0140380859375
+      ],
+      "size": [
+        210,
+        46
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 7
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 20
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            23
+          ],
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
       "id": 13,
       "type": "Reroute",
       "pos": [
-        1183,
-        657
+        1052.559814453125,
+        660.9929809570312
       ],
       "size": [
         75,
@@ -72,56 +235,43 @@
       }
     },
     {
-      "id": 8,
-      "type": "VAEDecode",
+      "id": 14,
+      "type": "PreviewImage",
       "pos": [
-        1221,
-        171
+        1186.5015869140625,
+        260.5079650878906
       ],
-      "size": {
-        "0": 210,
-        "1": 46
-      },
+      "size": [
+        677.3001708984375,
+        475.59991455078125
+      ],
       "flags": {},
-      "order": 7,
+      "order": 8,
       "mode": 0,
       "inputs": [
         {
-          "name": "samples",
-          "type": "LATENT",
-          "link": 7
-        },
-        {
-          "name": "vae",
-          "type": "VAE",
-          "link": 20
-        }
-      ],
-      "outputs": [
-        {
-          "name": "IMAGE",
+          "name": "images",
           "type": "IMAGE",
-          "links": [
-            23
-          ],
-          "slot_index": 0
+          "link": 23
         }
       ],
+      "outputs": [],
       "properties": {
-        "Node name for S&R": "VAEDecode"
-      }
+        "Node name for S&R": "PreviewImage"
+      },
+      "widgets_values": []
     },
     {
       "id": 3,
       "type": "KSampler",
       "pos": [
-        867,
-        170
+        799.1193237304688,
+        163.34503173828125
       ],
-      "size": {
-        "0": 315,
-        "1": 262
-      },
+      "size": [
+        315,
+        262
+      ],
       "flags": {},
       "order": 6,
       "mode": 0,
@@ -134,7 +284,7 @@
         {
           "name": "positive",
           "type": "CONDITIONING",
-          "link": 39
+          "link": 41
         },
         {
           "name": "negative",
@@ -161,7 +311,7 @@
         "Node name for S&R": "KSampler"
       },
       "widgets_values": [
-        271604226724519,
+        518864828878613,
         "randomize",
         20,
         7,
@@ -171,159 +321,16 @@
       ]
     },
     {
-      "id": 14,
-      "type": "PreviewImage",
-      "pos": [
-        1474,
-        170
-      ],
-      "size": {
-        "0": 677.3001708984375,
-        "1": 475.59991455078125
-      },
-      "flags": {},
-      "order": 8,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "images",
-          "type": "IMAGE",
-          "link": 23
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "PreviewImage"
-      }
-    },
-    {
-      "id": 12,
-      "type": "VAELoader",
-      "pos": [
-        -199,
-        663
-      ],
-      "size": {
-        "0": 488.8050231933594,
-        "1": 67.95999145507812
-      },
-      "flags": {},
-      "order": 1,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [
-            19
-          ],
-          "shape": 3,
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "VAELoader"
-      },
-      "widgets_values": [
-        "anythingKlF8Anime2VaeFtMse840000_blessed2.safetensors"
-      ]
-    },
-    {
-      "id": 7,
-      "type": "CLIPTextEncode",
-      "pos": [
-        501,
-        601
-      ],
-      "size": {
-        "0": 425.27801513671875,
-        "1": 180.6060791015625
-      },
-      "flags": {
-        "collapsed": true
-      },
-      "order": 4,
-      "mode": 0,
-      "inputs": [
-        {
-          "name": "clip",
-          "type": "CLIP",
-          "link": 5
-        }
-      ],
-      "outputs": [
-        {
-          "name": "CONDITIONING",
-          "type": "CONDITIONING",
-          "links": [
-            6
-          ],
-          "slot_index": 0
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CLIPTextEncode"
-      },
-      "widgets_values": [
-        "(worst quality:2.0, loli:1.4, old woman:1.4, low quality:2.0, blurry:1.4), (zombie, sketch, interlocked fingers, comic), ((text:2.0, title:2.0, logo:2.0, signature:2.0, watermark)), (crossed eyes, squint, unrealistic eyes, unrealistic pose), duplicate, mutilated, out of frame, extra fingers, mutated hands, poorly drawn hands, poorly drawn face, mutation, extra legs, extra limbs, ugly, bad anatomy, bad proportions, gross proportions, distorted face, poorly drawn body, poorly drawn lips, poorly drawn mouth, poorly drawn hair, unrealistic hair style, cloned face, deformed, extra arms, mutated hands, fused fingers, too many fingers, long neck, poorly drawn feet, bad visual effects, low quality visual effects"
-      ]
-    },
-    {
-      "id": 4,
-      "type": "CheckpointLoaderSimple",
-      "pos": [
-        -150,
-        496
-      ],
-      "size": {
-        "0": 315,
-        "1": 98
-      },
-      "flags": {},
-      "order": 2,
-      "mode": 0,
-      "outputs": [
-        {
-          "name": "MODEL",
-          "type": "MODEL",
-          "links": [
-            1
-          ],
-          "slot_index": 0
-        },
-        {
-          "name": "CLIP",
-          "type": "CLIP",
-          "links": [
-            5,
-            38
-          ],
-          "slot_index": 1
-        },
-        {
-          "name": "VAE",
-          "type": "VAE",
-          "links": [],
-          "slot_index": 2
-        }
-      ],
-      "properties": {
-        "Node name for S&R": "CheckpointLoaderSimple"
-      },
-      "widgets_values": [
-        "wololo-mix-v4.safetensors"
-      ]
-    },
-    {
-      "id": 25,
+      "id": 26,
       "type": "Prompt Generator",
       "pos": [
-        306,
-        -168
+        327.739990234375,
+        -175.78738403320312
       ],
-      "size": {
-        "0": 400,
-        "1": 696
-      },
+      "size": [
+        400,
+        733.2000122070312
+      ],
       "flags": {},
       "order": 5,
       "mode": 0,
@@ -331,7 +338,7 @@
         {
           "name": "clip",
           "type": "CLIP",
-          "link": 38
+          "link": 40
         }
       ],
       "outputs": [
@@ -339,16 +346,14 @@
           "name": "gen_prompt",
           "type": "CONDITIONING",
           "links": [
-            39
+            41
           ],
-          "shape": 3,
           "slot_index": 0
         },
         {
           "name": "gen_prompt_str",
           "type": "STRING",
-          "links": null,
-          "shape": 3
+          "links": null
         }
       ],
       "properties": {
@@ -358,15 +363,16 @@
         "female_positive_generator_v2",
         "enable",
         "none",
-        "((masterpiece, best quality, ultra detailed)), illustration, digital art, 1girl, solo, ((stunningly beautiful))",
-        0,
+        "enable",
+        "(((sfw))), 1girl, solo, mature female, medium breasts, ((stunningly beautiful)), beautiful detailed eyes, realistic skin texture, short hair, colorful hair, ((upper body portrait)), portrait, cowboy shot, front view, elegant, godrays, hdr, bloom, simple background",
+        979085436176677,
         "randomize",
         "disable",
         "enable",
-        1,
-        1,
-        20,
+        5,
+        1.4000000000000001,
         50,
+        100,
         "enable",
         "disable",
         1,
@@ -375,9 +381,9 @@
         1,
         50,
         1,
-        1,
+        5,
         0,
-        "disable",
+        "enable",
         "disable",
         0,
         "exact_keyword"
@@ -450,16 +456,16 @@
       "IMAGE"
     ],
     [
-      38,
+      40,
       4,
       1,
-      25,
+      26,
       0,
       "CLIP"
     ],
     [
-      39,
-      25,
+      41,
+      26,
       0,
       3,
       1,
@@ -468,6 +474,14 @@
   ],
   "groups": [],
   "config": {},
-  "extra": {},
+  "extra": {
+    "ds": {
+      "scale": 0.620921323059155,
+      "offset": [
+        385.3139820431732,
+        306.38853182688354
+      ]
+    }
+  },
   "version": 0.4
 }
