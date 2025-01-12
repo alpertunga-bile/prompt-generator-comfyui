@@ -84,7 +84,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 
 ## Dataset
 
-- The dataset has 2.473.270 rows of unique prompts currently.
+- [Huggingface Dataset](https://huggingface.co/datasets/WoWoWoWololo/stable_diffusion_female_prompts)
 - Process of data cleaning and gathering can be found [here](https://github.com/alpertunga-bile/prompt-markdown-parser/blob/master/sources/CLI/CLICivitai.py)
     
 ## Models
@@ -114,6 +114,7 @@ Custom AI prompt generator node for [ComfyUI](https://github.com/comfyanonymous/
 |      **model_name**       | Folder name that contains the model                                                                                                                                                                                                                                     |
 |      **accelerate**       | Open optimizations. Some of the models are not supported by BetterTransformer ([Check your model](https://huggingface.co/docs/optimum/bettertransformer/overview#supported-models)). If it is not supported switch this option to disable or convert your model to ONNX |
 |       **quantize**        | Quantize the model. The quantize type is changed based on your OS and torch version. ```none``` value disables the quantization. Check [this section](#quantization) for more information                                                                               |
+| **token_healing** | Enable token healing algorithm which is used for fixing unintended bias. Read more [from this blog post](https://towardsdatascience.com/the-art-of-prompt-design-prompt-boundaries-and-token-healing-3b2448b0be38). To use it, the transformers package version has to be newer from or equal to **4.6 version** |
 |        **prompt**         | Input prompt for the generator                                                                                                                                                                                                                                          |
 |         **seed**          | Seed value for the model                                                                                                                                                                                                                                                |
 |         **lock**          | Lock the generation and select from the last generated prompts with index value                                                                                                                                                                                         |
