@@ -1,5 +1,5 @@
 from re import compile
-from collections import OrderedDict, namedtuple
+from collections import namedtuple
 from functools import lru_cache
 
 
@@ -19,7 +19,7 @@ def remove_exact_keywords(line: str) -> list[str]:
     # remove exact prompts
     prompts = get_unique_list(line.split(","))
 
-    pure_prompts = OrderedDict()  # order matters, it contains prompts' original forms
+    pure_prompts = []  # contains prompt values
     extracted_pure_prompts = set()  # order doesn't matters, it contains prompt keywords
 
     # remove exact keyword
@@ -53,19 +53,21 @@ def remove_exact_keywords(line: str) -> list[str]:
 
                 lowest_count = min(inner_parant_count, outer_parant_count)
 
-                # remove balanced parantheses
-                # because it is going to be appended to a string
+                """
+                remove balanced parantheses
+                because it is going to be appended to latter or former prompt
+                """
                 for _ in range(lowest_count):
                     tempPrompt = tempPrompt.replace("()", "")
 
-                pure_prompts[tempPrompt] = True
+                pure_prompts.append(tempPrompt)
 
             continue
 
         extracted_pure_prompts.add(tempPrompt)
-        pure_prompts[prompt] = True
+        pure_prompts.append(prompt)
 
-    return pure_prompts.keys()
+    return pure_prompts
 
 
 def fix_commas(string: str) -> str:
@@ -133,3 +135,6 @@ def preprocess(line: str, preprocess_mode: str) -> str:
         temp_line = ", ".join(get_unique_list(temp_line.split(",")))
 
     return temp_line
+
+
+__all__ = [preprocess]
