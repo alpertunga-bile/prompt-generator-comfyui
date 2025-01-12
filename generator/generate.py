@@ -5,6 +5,7 @@ from generator.utility import (
     get_accelerator_type,
     get_variable_dictionary,
     str_to_quant_type,
+    check_transformers_version,
     ModelType,
 )
 from generator.preprocess import preprocess
@@ -39,7 +40,11 @@ class Generator:
     extra_params = {}
 
     def __init__(
-        self, model_path: str, is_accelerate: bool, model_quant_type: str
+        self,
+        model_path: str,
+        is_accelerate: bool,
+        is_token_healing: bool,
+        model_quant_type: str,
     ) -> None:
         quantize_type = str_to_quant_type(model_quant_type)
 
@@ -60,13 +65,13 @@ class Generator:
         self.extra_params["pad_token_id"] = self.tokenizer.eos_token_id
 
         """
-        # token healing feature is breaking the generator
-        # in experiments so this is disabled for now
+            token healing feature is breaking the generator
+            in experiments so this is disabled for now
+        """
 
-        if check_transformers_version(4, 6):
+        if check_transformers_version(4, 6) and is_token_healing is True:
             self.extra_params["token_healing"] = True
             self.extra_params["tokenizer"] = self.tokenizer
-        """
 
         self.dev = get_torch_device()
 

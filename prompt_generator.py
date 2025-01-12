@@ -38,6 +38,7 @@ class PromptGenerator:
                 "model_name": (model_names,),
                 "accelerate": (["enable", "disable"],),
                 "quantize": (quantize_sizes,),
+                "token_healing": (["disable", "enable"],),
                 "prompt": (
                     "STRING",
                     {
@@ -196,6 +197,7 @@ class PromptGenerator:
         model_name: str,
         accelerate: str,
         quantize: str,
+        token_healing: str,
         prompt: str,
         seed: int,
         lock: str,
@@ -263,6 +265,8 @@ class PromptGenerator:
         is_self_recursive = True if self_recursive == "enable" else False
         is_accelerate = True if accelerate == "enable" else False
 
+        is_token_healing = True if token_healing == "enable" else False
+
         is_early_stopping = True if early_stopping == "enable" else False
         is_remove_invalid_values = True if remove_invalid_values == "enable" else False
 
@@ -275,7 +279,7 @@ class PromptGenerator:
             file = open(prompt_log_filename, "w")
             file.close()
 
-        generator = Generator(model_path, is_accelerate, quantize)
+        generator = Generator(model_path, is_accelerate, is_token_healing, quantize)
 
         self._gen_settings = GenerateArgs(
             guidance_scale=cfg,
