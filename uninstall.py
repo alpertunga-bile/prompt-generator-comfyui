@@ -42,7 +42,8 @@ if __name__ == "__main__":
     if os_name != "Linux" and generator.utility.check_torch_version_is_enough(2, 4):
         packages_to_uninstall.append("optimum-quanto")
 
-    uninstall_packages()
+    uninstall_packages(packages_to_uninstall)
     """
 
     print("/_\\ Uninstallation is compeleted successfully")
+    print("-" * 100)
