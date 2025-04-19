@@ -4,6 +4,7 @@ from torch import manual_seed
 from transformers import set_seed
 from random import randint
 from datetime import date, datetime
+import gc
 
 from generator.generate import GenerateArgs, Generator, get_generated_texts
 from generator.utility import get_usable_quantize_sizes
@@ -312,6 +313,7 @@ class PromptGenerator:
         self._tokenized_prompts = self.__tokenize_texts(clip)
 
         del generator
+        gc.collect()
         soft_empty_cache()
 
         self.__log_outputs(
