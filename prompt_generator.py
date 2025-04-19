@@ -1,11 +1,9 @@
 from os import listdir
 from os.path import join, isdir, exists
 from torch import manual_seed
-from torch.cuda import empty_cache
-from gc import collect
 from transformers import set_seed
 from random import randint
-from datetime import date
+from datetime import date, datetime
 
 from generator.generate import GenerateArgs, Generator, get_generated_texts
 from generator.utility import get_usable_quantize_sizes
@@ -13,8 +11,14 @@ from generator.utility import get_usable_quantize_sizes
 from comfy.sd import CLIP
 from folder_paths import models_dir, base_path
 
+from comfy.model_management import soft_empty_cache
+
 INT_MAX = 0xFFFFFFFFFFFFFFFF
 FLOAT_MAX = 1_000_000.0
+
+
+def str_to_bool(value: str) -> bool:
+    return True if value == "enable" else False
 
 
 class PromptGenerator:
@@ -126,16 +130,14 @@ class PromptGenerator:
 
         for i in range(len(self._generated_prompts)):
             print_string += (
-                f"[{i + 1}. Prompt] {self._generated_prompts[i]}\n{'-'*200}\n"
+                f"[{i + 1}. Prompt] {self._generated_prompts[i]}\n{'-' * 200}\n"
             )
-        print_string += f"{'#'*200}\n"
+        print_string += f"{'#' * 200}\n"
 
         print(print_string)
 
-        from datetime import datetime
-
         with open(log_filename, "a") as file:
-            file.write(f"{'#'*200}\n")
+            file.write(f"{'#' * 200}\n")
             file.write(f"Date & Time           : {datetime.now()}\n")
             file.write(f"Model                 : {model_name}\n")
             file.write(f"Prompt                : {prompt}\n")
@@ -143,7 +145,7 @@ class PromptGenerator:
 
             for i in range(len(self._generated_prompts)):
                 file.write(
-                    f"[{i + 1}. Prompt]           : {self._generated_prompts[i]}\n{'-'*200}\n"
+                    f"[{i + 1}. Prompt]           : {self._generated_prompts[i]}\n{'-' * 200}\n"
                 )
             file.write(f"Selected Prompt Index : {self._index + 1}\n")
 
@@ -230,21 +232,20 @@ class PromptGenerator:
             join(base_path, "generated_prompts", str(date.today())) + ".txt"
         )
 
-        is_do_sample = True if do_sample == "enable" else False
+        is_do_sample = str_to_bool(do_sample)
 
         # randint(min, max) -> [min, max]
         # index             -> [1, 5]
         self._index = randint(0, 4) if random_index == "enable" else index - 1
 
-        is_lock_generation = True if lock == "enable" else False
+        is_lock_generation = str_to_bool(lock)
 
         """
-            check if it is the first generation with taking length of tokenized prompts
-            and the boolean with is lock enabled
+            check if this is the first generation with taking the length of the tokenized prompts and the boolean with is lock enabled
             if it is true just return from the lists with assigned new index (declaration is above)
             log the outputs for the clearity
         """
-        if is_lock_generation is True and len(self._tokenized_prompts) > 0:
+        if is_lock_generation and len(self._tokenized_prompts) > 0:
             self.__log_outputs(
                 model_name,
                 prompt,
@@ -259,16 +260,17 @@ class PromptGenerator:
                 self._generated_prompts[self._index],
             )
 
-        # create relative path for the model
+        """
+            create relative path for the model
+            the existance check is done in the VALIDATE_INPUTS function
+        """
         model_path = join(models_dir, "prompt_generators", model_name)
 
-        is_self_recursive = True if self_recursive == "enable" else False
-        is_accelerate = True if accelerate == "enable" else False
-
-        is_token_healing = True if token_healing == "enable" else False
-
-        is_early_stopping = True if early_stopping == "enable" else False
-        is_remove_invalid_values = True if remove_invalid_values == "enable" else False
+        is_self_recursive = str_to_bool(self_recursive)
+        is_accelerate = str_to_bool(accelerate)
+        is_token_healing = str_to_bool(token_healing)
+        is_early_stopping = str_to_bool(early_stopping)
+        is_remove_invalid_values = str_to_bool(remove_invalid_values)
 
         if is_do_sample:
             # huggingface supports [0, 2 ** 32 - 1] as seed
@@ -310,8 +312,7 @@ class PromptGenerator:
         self._tokenized_prompts = self.__tokenize_texts(clip)
 
         del generator
-        empty_cache()
-        collect()
+        soft_empty_cache()
 
         self.__log_outputs(
             model_name,
