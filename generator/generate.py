@@ -64,11 +64,6 @@ class Generator:
         self.extra_params["renormalize_logits"] = True
         self.extra_params["pad_token_id"] = self.tokenizer.eos_token_id
 
-        """
-            token healing feature is breaking the generator
-            in experiments so this is disabled for now
-        """
-
         if check_transformers_version(4, 6) and is_token_healing is True:
             self.extra_params["token_healing"] = True
             self.extra_params["tokenizer"] = self.tokenizer

@@ -77,7 +77,12 @@ def get_model_from_base(
     if is_acceleration and check_torch_version_is_enough(2, 1):
         model_configs["attn_implementation"] = "sdpa"
 
-    model = AutoModelForCausalLM.from_pretrained(model_name, **model_configs)
+    try:
+        model = AutoModelForCausalLM.from_pretrained(model_name, **model_configs)
+    except:
+        model_configs["attn_implementation"] = None
+
+        model = AutoModelForCausalLM.from_pretrained(model_name, **model_configs)
 
     if quant_pack == QuantizationPackage.QUANTO:
         from optimum.quanto import qfloat8, qint8, qint4, quantize, freeze
@@ -115,7 +120,8 @@ def get_model(model_name: str, type: QuantizationType, is_acceleration: bool):
     else:
         model = get_model_from_lora(model_name, req_torch_dtype, type, is_acceleration)
 
-    torch_compile(model)
+    if check_torch_version_is_enough(2, 0) and is_device_cuda(get_torch_device()):
+        model = torch_compile(model, mode="reduce-overhead", fullgraph=True)
 
     return model
 
