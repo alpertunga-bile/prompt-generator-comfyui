@@ -1,7 +1,7 @@
 [project]
 name = "prompt-generator-comfyui"
 description = "Custom AI prompt generator node for ComfyUI."
-version = "1.0.12"
+version = "1.0.13"
 license = { text = "MIT License" }
 dependencies = [
     "transformers",
