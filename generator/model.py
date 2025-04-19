@@ -9,8 +9,6 @@ from torch import float16 as torch_float16
 from torch import float32 as torch_float32
 from torch import compile as torch_compile
 
-from platform import system
-
 from comfy.model_management import (
     get_torch_device,
     should_use_fp16,
@@ -117,12 +115,7 @@ def get_model(model_name: str, type: QuantizationType, is_acceleration: bool):
     else:
         model = get_model_from_lora(model_name, req_torch_dtype, type, is_acceleration)
 
-    """
-        torch.compile is supported only in Linux
-        has to be tested though
-    """
-    if system() == "Linux":
-        torch_compile(model)
+    torch_compile(model)
 
     return model
 
