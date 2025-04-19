@@ -15,6 +15,7 @@ from comfy.model_management import (
     get_torch_device,
     should_use_fp16,
     should_use_bf16,
+    is_device_cuda,
 )
 
 from .utility import (
@@ -23,7 +24,7 @@ from .utility import (
     QuantizationPackage,
     get_quantization_package,
     is_base_model,
-    check_torch_version_is_enough
+    check_torch_version_is_enough,
 )
 
 from peft import PeftModel
@@ -60,12 +61,14 @@ def get_bitsandbytes_config(type: QuantizationType):
     return bnb_config
 
 
-def get_model_from_base(model_name: str, required_torch_dtype, type: QuantizationType, is_acceleration: bool):
+def get_model_from_base(
+    model_name: str, required_torch_dtype, type: QuantizationType, is_acceleration: bool
+):
     model_configs = {}
 
     model_configs["device_map"] = "auto"
     model_configs["torch_dtype"] = required_torch_dtype
-    
+
     quant_pack = get_quantization_package()
 
     if quant_pack == QuantizationPackage.BITSANDBYTES:
@@ -76,27 +79,26 @@ def get_model_from_base(model_name: str, required_torch_dtype, type: Quantizatio
     if is_acceleration and check_torch_version_is_enough(2, 1):
         model_configs["attn_implementation"] = "sdpa"
 
-    model = AutoModelForCausalLM.from_pretrained(
-        model_name,
-        **model_configs
-    )
+    model = AutoModelForCausalLM.from_pretrained(model_name, **model_configs)
 
     if quant_pack == QuantizationPackage.QUANTO:
         from optimum.quanto import qfloat8, qint8, qint4, quantize, freeze
 
         if type == QuantizationType.EightBit:
-            quantize(model, weights=qint8)
+            quantize(model, weights=qint8, activations=qfloat8, exclude="lm_head")
         elif type == QuantizationType.EightFloat:
-            quantize(model, weights=qfloat8)
+            quantize(model, weights=qfloat8, activations=qfloat8, exclude="lm_head")
         elif type == QuantizationType.FourBit:
-            quantize(model, weights=qint4)
+            quantize(model, weights=qint4, activations=qfloat8, exclude="lm_head")
 
         freeze(model)
 
     return model
 
 
-def get_model_from_lora(model_name: str, required_torch_dtype, type: QuantizationType, is_acceleration: bool):
+def get_model_from_lora(
+    model_name: str, required_torch_dtype, type: QuantizationType, is_acceleration: bool
+):
     model = get_model_from_base(model_name, required_torch_dtype, type, is_acceleration)
 
     model.config.forced_decoder_ids = None
@@ -137,10 +139,15 @@ def get_tokenizer(model_name: str):
 
 def get_model_tokenizer(model_path: str, type: ModelType, quant_type: QuantizationType):
     """
-        transformers -> ONNX operation brokes often
+    transformers -> ONNX operation brokes often
     """
     if type == ModelType.ONNX:
-        model = ORTModelForCausalLM.from_pretrained(model_path)
+        model_configs = {}
+
+        if is_device_cuda(get_torch_device()):
+            model_configs["provider"] = "CUDAExecutionProvider"
+
+        model = ORTModelForCausalLM.from_pretrained(model_path, **model_configs)
     elif type == ModelType.BETTERTRANSFORMER:
         model = get_model(model_path, quant_type, is_acceleration=True)
     elif type == ModelType.DEFAULT:
