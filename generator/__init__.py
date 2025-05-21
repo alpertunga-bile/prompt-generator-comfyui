@@ -1,9 +1,8 @@
 import sys
 from os.path import dirname
-from subprocess import run
-from importlib.util import find_spec
 from platform import system
 from torch import __version__ as torch_version
+from importlib import util
 
 os_name = system()
 
@@ -11,17 +10,13 @@ sys.path.append(dirname(__file__))
 
 
 def check_package(package_name: str, install_name: str) -> None:
-    if find_spec(package_name):
+    if util.find_spec(package_name) is None:
+        print(
+            f"/_\\ The {package_name} is not installed. Please install it with `pip install {install_name}` command or `pip install -r requirements.txt`"
+        )
         return
 
-    print(f"/_\\ Installing {package_name}")
-
-    command = f"{sys.executable} -m pip install {install_name}"
-
-    process = run(command, shell=True, check=True, capture_output=True)
-
-    if process.returncode != 0:
-        print(f"{package_name} installation is failed\nError: {process.stdout}")
+    print(f"/_\\ The {package_name} is found")
 
 
 print(" Prompt Generator ComfyUI Node ".center(100, "-"))
@@ -37,7 +32,7 @@ if os_name == "Linux":
     check_package("triton", "triton")
 
 check_package("optimum", "optimum")
-check_package("onnxruntime", "optimum[onnxruntime-gpu]")
+check_package("onnxruntime-gpu", "optimum[onnxruntime-gpu]")
 
 # use_fast for tokenizers used this
 check_package("sentencepiece", "transformers[sentencepiece]")
