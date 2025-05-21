@@ -1,5 +1,8 @@
 # prompt-generator-comfyui
 
+![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.comfy.org%2Fnodes%2Fprompt-generator-comfyui&query=%24.downloads&suffix=%20Downloads&style=flat&label=Comfy%20Registry&color=ff00ff)
+![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.comfy.org%2Fnodes%2Fprompt-generator-comfyui&query=%24.latest_version.version&style=flat&label=Latest%20Version&color=ff00ff)
+
 Custom AI prompt generator node for
 [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can
 use text generation models to generate prompts. Before using, text generation
@@ -39,39 +42,45 @@ model has to be trained with prompt dataset or you can use the
 
 ## For Portable Installation of the ComfyUI
 
-- [x] Automatic package installation is added for portable version.
-- Clone the repository with
-  `git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git`
-  command under `custom_nodes` folder.
-- Go to the `ComfyUI_windows_portable` folder and run the **run_nvidia_gpu.bat**
-  file
-- Open the `hires.fixWithPromptGenerator.json` or
-  `basicWorkflowWithPromptGenerator.json` workflow
-- Put your generator under the `models/prompt_generators` folder. You have to
-  put generator as folder. Do not just put `pytorch_model.bin` file for example.
-- Refresh or restart the ComfyUI
+1. Clone the repository with
+   `git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git`
+   command under `custom_nodes` folder
+2. Go to the `ComfyUI_windows_portable` folder and install the required packages
+   with
+   `.\python_embeded\Scripts\python.exe -s -m pip install -r .\ComfyUI\custom_nodes\prompt-generator-comfyui\requirements.txt`
+   command
+3. Put your generator under the `models/prompt_generators` folder. You have to
+   put generator as folder. Do not just put `pytorch_model.bin` file for
+   example.
+4. Go to the `ComfyUI_windows_portable` folder and run the
+   **run_nvidia_gpu.bat** file
+5. Open the `hires.fixWithPromptGenerator.json` or
+   `basicWorkflowWithPromptGenerator.json` workflow
 
 ## For Manual Installation of the ComfyUI
 
-- Clone the repository with
-  `git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git`
-  command under `custom_nodes` folder.
-- Run the ComfyUI
-- Open the `hires.fixWithPromptGenerator.json` or
-  `basicWorkflowWithPromptGenerator.json` workflow
-- Put your generator under the `models/prompt_generators` folder. You have to
-  put generator as folder. Do not just put `pytorch_model.bin` file for example.
-- Refresh or restart the ComfyUI
+1. Clone the repository with
+   `git clone https://github.com/alpertunga-bile/prompt-generator-comfyui.git`
+   command under `custom_nodes` folder.
+2. Activate the virtual environment if there is one and install the required
+   packages with `pip install -r requirements.txt` command
+3. Put your generator under the `models/prompt_generators` folder. You have to
+   put generator as folder. Do not just put `pytorch_model.bin` file for
+   example.
+4. Open the `hires.fixWithPromptGenerator.json` or
+   `basicWorkflowWithPromptGenerator.json` workflow
 
 ## For ComfyUI Manager Users
 
-- Download the node with
-  [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager)
-- Open the `hires.fixWithPromptGenerator.json` or
-  `basicWorkflowWithPromptGenerator.json` workflow
-- Put your generator under the `models/prompt_generators` folder. You have to
-  put generator as folder. Do not just put `pytorch_model.bin` file for example.
-- Refresh or restart the ComfyUI
+1. Download the node with
+   [ComfyUI Manager](https://github.com/ltdrdata/ComfyUI-Manager)
+   - [x] The required packages are installed automatically when installing the
+         node.
+2. Put your generator under the `models/prompt_generators` folder. You have to
+   put generator as folder. Do not just put `pytorch_model.bin` file for
+   example.
+3. Open the `hires.fixWithPromptGenerator.json` or
+   `basicWorkflowWithPromptGenerator.json` workflow
 
 # Features
 
@@ -273,15 +282,14 @@ model has to be trained with prompt dataset or you can use the
 ### For Manual Installation of the ComfyUI
 
 1. Activate the virtual environment if there is one.
-2. Run the `pip install --upgrade transformers optimum optimum[onnxruntime-gpu]`
-   command.
+2. Run the `pip install --upgrade -r requirements.txt` command.
 
 ### For Portable Installation of the ComfyUI
 
 1. Go to the `ComfyUI_windows_portable` folder.
 2. Open the command prompt in this folder.
 3. Run the
-   `.\python_embeded\python.exe -s -m pip install --upgrade transformers optimum optimum[onnxruntime-gpu]`
+   `.\python_embeded\Scripts\python.exe -s -m pip install --upgrade -r .\ComfyUI\custom_nodes\prompt-generator-comfyui\requirements.txt`
    command.
 
 ## New Updates On The Node
