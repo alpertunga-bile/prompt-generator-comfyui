@@ -1,7 +1,7 @@
 # prompt-generator-comfyui
 
-![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.comfy.org%2Fnodes%2Fprompt-generator-comfyui&query=%24.downloads&suffix=%20Downloads&style=flat&label=Comfy%20Registry&color=ff00ff)
-![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.comfy.org%2Fnodes%2Fprompt-generator-comfyui&query=%24.latest_version.version&style=flat&label=Latest%20Version&color=ff00ff)
+![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.comfy.org%2Fnodes%2Fprompt-generator-comfyui&query=%24.downloads&suffix=%20Downloads&style=for-the-badge&label=Comfy%20Registry)
+![Dynamic JSON Badge](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fapi.comfy.org%2Fnodes%2Fprompt-generator-comfyui&query=%24.latest_version.version&style=for-the-badge&label=Latest%20Version)
 
 Custom AI prompt generator node for
 [ComfyUI](https://github.com/comfyanonymous/ComfyUI). With this node, you can
