@@ -1,0 +1,9 @@
+transformers
+accelerate
+optimum
+optimum[onnxruntime-gpu]
+transformers[sentencepiece]
+peft
+triton; platform_system == "Linux"
+bitsandbytes; platform_system == "Linux"
+optimum-quanto; platform_system != "Linux"
