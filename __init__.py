@@ -8,7 +8,7 @@ os_name = system()
 
 path.append(dirname(__file__))
 
-from prompt_generator import PromptGenerator
+from .prompt_generator import PromptGenerator
 
 print("/_\\ Loading Prompt Generator")
 
