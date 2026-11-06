@@ -5,6 +5,8 @@ from torch import __version__ as torch_version
 from transformers import __version__ as transformers_version
 from typing import Tuple
 from functools import lru_cache
+from importlib.util import find_spec
+from comfy.model_management import get_torch_device, is_device_cuda
 
 
 def check_required_package_version(
@@ -56,12 +58,17 @@ class QuantizationType(Enum):
 
 
 def get_quantization_package() -> QuantizationPackage:
-    if system() == "Linux":
+    if is_device_cuda(get_torch_device()) and find_spec("bitsandbytes"):
         return QuantizationPackage.BITSANDBYTES
-    elif check_torch_version_is_enough(2, 4):
+
+    if (
+        check_torch_version_is_enough(2, 4)
+        and find_spec("optimum")
+        and find_spec("optimum.quanto")
+    ):
         return QuantizationPackage.QUANTO
-    else:
-        return QuantizationPackage.NONE
+
+    return QuantizationPackage.NONE
 
 
 def get_usable_quantize_sizes() -> list[str]:
