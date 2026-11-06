@@ -97,8 +97,6 @@ model has to be trained with prompt dataset or you can use the
   full tested in this repository because of my low VRAM but I am using the same
   implementation in Google Colab for training and inference and it is working
   there)
-- Optimizations are done with [Optimum](https://github.com/huggingface/optimum)
-  package.
 - Transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
 - Recursive generation is supported. See [this section](#how-recursive-works).
