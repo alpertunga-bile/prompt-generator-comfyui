@@ -29,6 +29,20 @@ class GenerateArgs:
     guidance_scale: float = 1.0
 
 
+def generation_kwargs(args: GenerateArgs) -> dict:
+    kwargs = asdict(args)
+
+    if args.do_sample:
+        return kwargs
+
+    sampling_keys = ("temperature", "top_k", "top_p")
+
+    for key in sampling_keys:
+        kwargs.pop(key)
+
+    return kwargs
+
+
 @dataclass
 class Generator:
     model = None
@@ -84,7 +98,7 @@ class Generator:
 
         generated_ids = self.model.generate(
             **inputs,
-            **asdict(replace(args, num_return_sequences=1)),
+            **generation_kwargs(replace(args, num_return_sequences=1)),
             **self.extra_params,
         )
 
@@ -118,7 +132,7 @@ class Generator:
 
         generated_ids = self.model.generate(
             **inputs,
-            **asdict(replace(args, num_return_sequences=5)),
+            **generation_kwargs(replace(args, num_return_sequences=5)),
             **self.extra_params,
         )
 
