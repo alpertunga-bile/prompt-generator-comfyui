@@ -99,7 +99,7 @@ model has to be trained with prompt dataset or you can use the
   there)
 - Optimizations are done with [Optimum](https://github.com/huggingface/optimum)
   package.
-- ONNX and transformers models are supported.
+- Transformers models are supported.
 - Preprocessing outputs. See [this section](#how-preprocess-mode-works).
 - Recursive generation is supported. See [this section](#how-recursive-works).
 - Print generated text to terminal and log the node's state under the

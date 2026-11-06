@@ -32,10 +32,9 @@ if os_name == "Linux":
     check_package("triton", "triton")
 
 check_package("optimum", "optimum")
-check_package("onnxruntime-gpu", "optimum[onnxruntime-gpu]")
 
 # use_fast for tokenizers used this
-check_package("sentencepiece", "transformers[sentencepiece]")
+check_package("sentencepiece", "sentencepiece")
 
 check_package("peft", "peft")
 

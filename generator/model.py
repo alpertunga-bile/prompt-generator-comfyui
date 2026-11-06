@@ -2,7 +2,6 @@ from transformers import (
     AutoModelForCausalLM,
     AutoTokenizer,
 )
-from optimum.onnxruntime import ORTModelForCausalLM
 
 from torch import bfloat16 as torch_bfloat16
 from torch import float16 as torch_float16
@@ -137,17 +136,9 @@ def get_tokenizer(model_name: str):
 
 
 def get_model_tokenizer(model_path: str, type: ModelType, quant_type: QuantizationType):
-    """
-    transformers -> ONNX operation brokes often
-    """
-    if type == ModelType.ONNX:
-        model_configs = {}
+    model = None
 
-        if is_device_cuda(get_torch_device()):
-            model_configs["provider"] = "CUDAExecutionProvider"
-
-        model = ORTModelForCausalLM.from_pretrained(model_path, **model_configs)
-    elif type == ModelType.BETTERTRANSFORMER:
+    if type == ModelType.BETTERTRANSFORMER:
         model = get_model(model_path, quant_type, is_acceleration=True)
     elif type == ModelType.DEFAULT:
         model = get_model(model_path, quant_type, is_acceleration=False)
