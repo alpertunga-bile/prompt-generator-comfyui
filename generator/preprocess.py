@@ -1,5 +1,4 @@
 from re import compile
-from collections import namedtuple
 from functools import lru_cache
 
 
@@ -81,20 +80,17 @@ def fix_commas(string: str) -> str:
 def fix_artifacts(string: str) -> str:
     temp_string = string
 
-    ArtifactFix = namedtuple("ArtifactFix", ["regex", "new_str"])
-
     replace_list = [
-        ArtifactFix(regex=compile(r"\(\s*,"), new_str="("),
-        ArtifactFix(regex=compile(r"\[\s*,"), new_str="["),
-        ArtifactFix(regex=compile(r"{\s*,"), new_str="{"),
-        ArtifactFix(regex=compile(r",\s*\)"), new_str=")"),
-        ArtifactFix(regex=compile(r",\s*\]"), new_str="]"),
-        ArtifactFix(regex=compile(r",\s*}"), new_str="}"),
+        (compile(r"\(\s*,"), "("),
+        (compile(r"\[\s*,"), "["),
+        (compile(r"{\s*,"), "{"),
+        (compile(r",\s*\)"), ")"),
+        (compile(r",\s*\]"), "]"),
+        (compile(r",\s*}"), "}"),
     ]
 
-    # fixing the artifacts
-    for artifact_fix in replace_list:
-        temp_string = artifact_fix.regex.sub(artifact_fix.new_str, temp_string)
+    for regex, new_str in replace_list:
+        temp_string = regex.sub(new_str, temp_string)
 
     return temp_string
 
