@@ -109,7 +109,7 @@ class Generator:
         input: str,
         args: GenerateArgs = GenerateArgs(),
     ) -> list[str]:
-        if self.model and self.tokenizer is None:
+        if self.model is None and self.tokenizer is None:
             raise RuntimeError(
                 "Model and tokenizer is NONE. Please check your model path"
             )
