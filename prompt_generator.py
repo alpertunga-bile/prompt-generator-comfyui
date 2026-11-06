@@ -215,7 +215,7 @@ class PromptGenerator:
         num_beam_groups: int,
         diversity_penalty: float,
         temperature: float,
-        top_k: float,
+        top_k: int,
         top_p: float,
         repetition_penalty: float,
         no_repeat_ngram_size: int,
