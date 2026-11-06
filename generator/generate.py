@@ -1,14 +1,13 @@
 from comfy.model_management import get_torch_device
-from generator.model import get_model_tokenizer
+from .model import get_model_tokenizer
 
-from generator.utility import (
-    get_variable_dictionary,
+from .utility import (
     str_to_quant_type,
     check_transformers_version,
 )
-from generator.preprocess import preprocess
+from .preprocess import preprocess
 
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, replace
 
 
 @dataclass
@@ -74,7 +73,6 @@ class Generator:
                 "Model and tokenizer is NONE. Please check your model path"
             )
 
-        args.num_return_sequences = 1
         given_input = input
 
         if "token_healing" in self.extra_params:
@@ -86,7 +84,7 @@ class Generator:
 
         generated_ids = self.model.generate(
             **inputs,
-            **asdict(args),
+            **asdict(replace(args, num_return_sequences=1)),
             **self.extra_params,
         )
 
@@ -109,7 +107,6 @@ class Generator:
                 "Model and tokenizer is NONE. Please check your model path"
             )
 
-        args.num_return_sequences = 5
         given_input = input
 
         if "token_healing" in self.extra_params:
@@ -121,7 +118,7 @@ class Generator:
 
         generated_ids = self.model.generate(
             **inputs,
-            **asdict(args),
+            **asdict(replace(args, num_return_sequences=5)),
             **self.extra_params,
         )
 
