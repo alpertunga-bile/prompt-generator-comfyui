@@ -2,15 +2,13 @@ from comfy.model_management import get_torch_device
 from generator.model import get_model_tokenizer
 
 from generator.utility import (
-    get_accelerator_type,
     get_variable_dictionary,
     str_to_quant_type,
     check_transformers_version,
-    ModelType,
 )
 from generator.preprocess import preprocess
 
-from dataclasses import dataclass
+from dataclasses import dataclass, asdict
 
 
 @dataclass
@@ -48,21 +46,16 @@ class Generator:
     ) -> None:
         quantize_type = str_to_quant_type(model_quant_type)
 
-        if is_accelerate is False:
-            self.model, self.tokenizer = get_model_tokenizer(
-                model_path, ModelType.DEFAULT, quantize_type
-            )
-        else:
-            accelerator_type = get_accelerator_type(model_path)
-
-            self.model, self.tokenizer = get_model_tokenizer(
-                model_path, accelerator_type, quantize_type
-            )
+        self.model, self.tokenizer = get_model_tokenizer(
+            model_path, is_accelerate, quantize_type
+        )
 
         self.tokenizer.padding_side = "left"
 
-        self.extra_params["renormalize_logits"] = True
-        self.extra_params["pad_token_id"] = self.tokenizer.eos_token_id
+        self.extra_params = {
+            "renormalize_logits": True,
+            "pad_token_id": self.tokenizer.eos_token_id,
+        }
 
         if check_transformers_version(4, 6) and is_token_healing is True:
             self.extra_params["token_healing"] = True
@@ -76,7 +69,7 @@ class Generator:
         input: str,
         args: GenerateArgs = GenerateArgs(),
     ) -> str:
-        if self.model and self.tokenizer is None:
+        if self.model is None and self.tokenizer is None:
             raise RuntimeError(
                 "Model and tokenizer is NONE. Please check your model path"
             )
@@ -93,12 +86,14 @@ class Generator:
 
         generated_ids = self.model.generate(
             **inputs,
-            **get_variable_dictionary(args),
+            **asdict(args),
             **self.extra_params,
         )
 
         output = self.tokenizer.decode(
-            generated_ids[0], skip_special_tokens=True, cleanup_tokenization_spaces=True
+            generated_ids[0],
+            skip_special_tokens=True,
+            clean_up_tokenization_spaces=True,
         )
 
         return output
@@ -126,7 +121,7 @@ class Generator:
 
         generated_ids = self.model.generate(
             **inputs,
-            **get_variable_dictionary(args),
+            **asdict(args),
             **self.extra_params,
         )
 
@@ -184,4 +179,4 @@ def get_generated_texts(
     return gen_texts
 
 
-__all__ = [GenerateArgs, Generator, get_generated_texts]
+__all__ = ["GenerateArgs", "Generator", "get_generated_texts"]

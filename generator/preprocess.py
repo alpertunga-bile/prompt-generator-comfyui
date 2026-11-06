@@ -137,4 +137,4 @@ def preprocess(line: str, preprocess_mode: str) -> str:
     return temp_line
 
 
-__all__ = [preprocess]
+__all__ = ["preprocess"]

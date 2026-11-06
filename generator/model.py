@@ -16,7 +16,6 @@ from comfy.model_management import (
 )
 
 from .utility import (
-    ModelType,
     QuantizationType,
     QuantizationPackage,
     get_quantization_package,
@@ -135,17 +134,10 @@ def get_tokenizer(model_name: str):
     return tokenizer
 
 
-def get_model_tokenizer(model_path: str, type: ModelType, quant_type: QuantizationType):
-    model = None
-
-    if type == ModelType.BETTERTRANSFORMER:
-        model = get_model(model_path, quant_type, is_acceleration=True)
-    elif type == ModelType.DEFAULT:
-        model = get_model(model_path, quant_type, is_acceleration=False)
-
-    tokenizer = get_tokenizer(model_path)
-
-    return (model, tokenizer)
+def get_model_tokenizer(
+    model_path: str, is_accelerate: bool, quant_type: QuantizationType
+):
+    return get_model(model_path, quant_type, is_accelerate), get_tokenizer(model_path)
 
 
-__all__ = [get_model_tokenizer]
+__all__ = ["get_model_tokenizer"]

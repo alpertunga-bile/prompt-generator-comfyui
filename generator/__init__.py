@@ -10,13 +10,17 @@ sys.path.append(dirname(__file__))
 
 
 def check_package(package_name: str, install_name: str) -> None:
-    if util.find_spec(package_name) is None:
+    try:
+        found = util.find_spec(package_name) is not None
+    except ModuleNotFoundError:
+        found = False
+
+    if not found:
         print(
             f"/_\\ The {package_name} is not installed. Please install it with `pip install {install_name}` command or `pip install -r requirements.txt`"
         )
-        return
-
-    print(f"/_\\ The {package_name} is found")
+    else:
+        print(f"/_\\ The {package_name} is found")
 
 
 print(" Prompt Generator ComfyUI Node ".center(100, "-"))
@@ -27,9 +31,10 @@ print("/_\\ Checking packages")
 check_package("transformers", "transformers")
 check_package("accelerate", "accelerate")
 
-# triton package exists only in Linux
 if os_name == "Linux":
     check_package("triton", "triton")
+else:
+    check_package("optimum.quanto", "optimum-quanto")
 
 check_package("optimum", "optimum")
 

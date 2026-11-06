@@ -7,20 +7,10 @@ from typing import Tuple
 from functools import lru_cache
 
 
-class ModelType(Enum):
-    DEFAULT = 1
-    ONNX = 2
-    BETTERTRANSFORMER = 3
-    NONE = 4
-
-
 def check_required_package_version(
     current_major: int, current_minor: int, required_major: int, required_minor: int
 ) -> bool:
-    major_check = current_major >= required_major
-    minor_check = current_major == required_major and current_minor >= required_minor
-
-    return major_check or minor_check
+    return (current_major, current_minor) >= (required_major, required_minor)
 
 
 def get_major_minor_versions(
@@ -116,18 +106,3 @@ def is_base_model(path: str) -> bool:
             return False
 
     return True
-
-
-def get_accelerator_type(path: str) -> ModelType:
-    files = listdir(path)
-    accelerator_type = ModelType.NONE
-
-    for file in files:
-        if file.endswith(".onnx"):
-            accelerator_type = ModelType.ONNX
-            break
-        if file.endswith(".bin") or file.endswith(".safetensors"):
-            accelerator_type = ModelType.BETTERTRANSFORMER
-            break
-
-    return accelerator_type
