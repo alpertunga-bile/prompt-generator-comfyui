@@ -12,7 +12,7 @@ def get_unique_list(sequence: list[str]) -> list[str]:
 
 def remove_exact_keywords(line: str) -> list[str]:
     find_empty_parantheses_regex = compile(r"\(\s*\)")
-    remove_nonprompts_regex = compile(r"[^a-zA-Z_\-()\[\]{}]*")
+    remove_nonprompts_regex = compile(r":\s*-?\d*\.?\d+")
     remove_nonweighters_regex = compile(r"[()\[\]{}]*")
     remove_inside_regex = compile(r"[^()\[\]{}]*")
 
