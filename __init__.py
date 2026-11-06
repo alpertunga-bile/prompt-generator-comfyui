@@ -10,14 +10,14 @@ path.append(dirname(__file__))
 
 from prompt_generator import PromptGenerator
 
-print("/_\ Loading Prompt Generator")
+print("/_\\ Loading Prompt Generator")
 
 # check prompt_generators folder under the models folder
 
 root = join(models_dir, "prompt_generators")
 if exists(root) is False:
     mkdir(root)
-    print(f"/_\ {root} is created. Please add your prompt generators to {root} folder")
+    print(f"/_\\ {root} is created. Please add your prompt generators to {root} folder")
 
 prompts_file = join(base_path, "generated_prompts")
 if exists(prompts_file) is False:
@@ -35,5 +35,5 @@ NODE_DISPLAY_NAME_MAPPINGS = {
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
 
-print("/_\ Loaded Successfully")
+print("/_\\ Loaded Successfully")
 print("-" * 100)
