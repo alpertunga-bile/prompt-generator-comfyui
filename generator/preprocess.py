@@ -105,8 +105,7 @@ def preprocess(line: str, preprocess_mode: str) -> str:
     remove_emptyprompts_regex = compile(r",\s+[()\[\]{}]+\s*,")
     remove_danglingparantheses_regex = compile(r"\B\s+|\s+\B")
 
-    temp_line = line.encode("ascii", "xmlcharrefreplace").decode()
-    temp_line = temp_line.encode("utf-8", "xmlcharrefreplace").decode()
+    temp_line = line.encode("utf-8").decode()
 
     temp_line = temp_line.replace("\xa0", " ")
     temp_line = temp_line.replace("\n", ", ")
