@@ -160,6 +160,9 @@ class PromptGenerator:
             file.write(
                 f"num_beam_groups       : {self._gen_settings.num_beam_groups}\n"
             )
+            file.write(
+                f"diversity_penalty      : {self._gen_settings.diversity_penalty}\n"
+            )
             file.write(f"temperature           : {self._gen_settings.temperature}\n")
             file.write(f"top_k                 : {self._gen_settings.top_k}\n")
             file.write(f"top_p                 : {self._gen_settings.top_p}\n")
@@ -285,10 +288,6 @@ class PromptGenerator:
             # huggingface supports [0, 2 ** 32 - 1] as seed
             set_seed(Random(seed).randint(0, 2**32 - 1))
             manual_seed(seed)
-
-        if exists(prompt_log_filename) is False:
-            file = open(prompt_log_filename, "w")
-            file.close()
 
         generator = Generator(model_path, is_accelerate, is_token_healing, quantize)
 
