@@ -36,8 +36,6 @@ if os_name == "Linux":
 else:
     check_package("optimum.quanto", "optimum-quanto")
 
-check_package("optimum", "optimum")
-
 # use_fast for tokenizers used this
 check_package("sentencepiece", "sentencepiece")
 
