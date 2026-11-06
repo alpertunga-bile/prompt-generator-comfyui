@@ -1,6 +1,5 @@
 from os import listdir
 from enum import Enum
-from platform import system
 from torch import __version__ as torch_version
 from transformers import __version__ as transformers_version
 from typing import Tuple

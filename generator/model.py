@@ -6,13 +6,11 @@ from transformers import (
 from torch import bfloat16 as torch_bfloat16
 from torch import float16 as torch_float16
 from torch import float32 as torch_float32
-from torch import compile as torch_compile
 
 from comfy.model_management import (
     get_torch_device,
     should_use_fp16,
     should_use_bf16,
-    is_device_cuda,
 )
 
 from .utility import (
