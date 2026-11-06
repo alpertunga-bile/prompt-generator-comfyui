@@ -77,7 +77,7 @@ def get_model_from_base(
 
     try:
         model = AutoModelForCausalLM.from_pretrained(model_name, **model_configs)
-    except:
+    except ValueError:
         model_configs["attn_implementation"] = None
 
         model = AutoModelForCausalLM.from_pretrained(model_name, **model_configs)
@@ -118,9 +118,6 @@ def get_model(model_name: str, type: QuantizationType, is_acceleration: bool):
     else:
         model = get_model_from_lora(model_name, req_torch_dtype, type, is_acceleration)
 
-    if check_torch_version_is_enough(2, 0) and is_device_cuda(get_torch_device()):
-        model = torch_compile(model, mode="reduce-overhead", fullgraph=True)
-
     return model
 
 
@@ -128,7 +125,7 @@ def get_tokenizer(model_name: str):
     # use the fast implementation of the tokenizer if possible
     try:
         tokenizer = AutoTokenizer.from_pretrained(model_name)
-    except:
+    except Exception:
         tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
 
     return tokenizer
