@@ -6,8 +6,8 @@ from random import Random
 from datetime import date, datetime
 import gc
 
-from generator.generate import GenerateArgs, Generator, get_generated_texts
-from generator.utility import get_usable_quantize_sizes
+from .generator.generate import GenerateArgs, Generator, get_generated_texts
+from .generator.utility import get_usable_quantize_sizes
 
 from comfy.sd import CLIP
 from folder_paths import models_dir, base_path
@@ -84,7 +84,7 @@ class PromptGenerator:
                 ),
                 "num_beam_groups": (
                     "INT",
-                    {"default": 1, "min": 0, "max": INT_MAX, "step": 1},
+                    {"default": 1, "min": 1, "max": INT_MAX, "step": 1},
                 ),
                 "diversity_penalty": (
                     "FLOAT",
@@ -291,6 +291,12 @@ class PromptGenerator:
             file.close()
 
         generator = Generator(model_path, is_accelerate, is_token_healing, quantize)
+
+        if min_new_tokens > max_new_tokens:
+            raise ValueError("min_new_tokens must be <= max_new_tokens")
+
+        if num_beams % num_beam_groups != 0:
+            raise ValueError("num_beams must be divisible by num_beam_groups")
 
         self._gen_settings = GenerateArgs(
             guidance_scale=cfg,
