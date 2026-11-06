@@ -6,7 +6,6 @@ license = { text = "MIT License" }
 dependencies = [
     "transformers",
     "accelerate",
-    "optimum",
     "sentencepiece",
     "peft",
     'triton; platform_system == "Linux"',

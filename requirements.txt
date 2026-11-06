@@ -1,6 +1,5 @@
 transformers
 accelerate
-optimum
 sentencepiece
 peft
 triton; platform_system == "Linux"
