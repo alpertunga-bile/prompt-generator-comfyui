@@ -2,7 +2,7 @@ from os import listdir
 from os.path import join, isdir, exists
 from torch import manual_seed
 from transformers import set_seed
-from random import randint
+from random import Random
 from datetime import date, datetime
 import gc
 
@@ -27,6 +27,7 @@ class PromptGenerator:
     _generated_prompts = []  # last generated prompts
     _tokenized_prompts = []  # tokenized prompts from the last generated prompts
     _gen_settings = GenerateArgs  # gen configurations from the last generation
+    _cached_clip = None  # cached clip from previous generation
 
     @classmethod
     def INPUT_TYPES(self):
@@ -137,7 +138,7 @@ class PromptGenerator:
 
         print(print_string)
 
-        with open(log_filename, "a") as file:
+        with open(log_filename, "a", encoding="utf-8") as file:
             file.write(f"{'#' * 200}\n")
             file.write(f"Date & Time           : {datetime.now()}\n")
             file.write(f"Model                 : {model_name}\n")
@@ -225,8 +226,7 @@ class PromptGenerator:
         preprocess_mode: str,
     ):
         # deal with encodings
-        prompt = prompt.encode("ascii", "xmlcharrefreplace").decode()
-        prompt = prompt.encode(errors="xmlcharrefreplace").decode()
+        prompt = prompt.encode("utf-8").decode()
 
         # create the prompt log file for current day
         prompt_log_filename = (
@@ -237,7 +237,9 @@ class PromptGenerator:
 
         # randint(min, max) -> [min, max]
         # index             -> [1, 5]
-        self._index = randint(0, 4) if random_index == "enable" else index - 1
+        self._index = (
+            Random(seed).randint(0, 4) if random_index == "enable" else index - 1
+        )
 
         is_lock_generation = str_to_bool(lock)
 
@@ -247,6 +249,10 @@ class PromptGenerator:
             log the outputs for the clearity
         """
         if is_lock_generation and len(self._tokenized_prompts) > 0:
+            if clip is not self._cached_clip:
+                self._tokenized_prompts = self.__tokenize_texts(clip)
+                self._cached_clip = clip
+
             self.__log_outputs(
                 model_name,
                 prompt,
@@ -260,6 +266,8 @@ class PromptGenerator:
                 self._tokenized_prompts[self._index],
                 self._generated_prompts[self._index],
             )
+
+        self._cached_clip = clip
 
         """
             create relative path for the model
@@ -275,7 +283,7 @@ class PromptGenerator:
 
         if is_do_sample:
             # huggingface supports [0, 2 ** 32 - 1] as seed
-            set_seed(randint(0, 4294967294))
+            set_seed(Random(seed).randint(0, 2**32 - 1))
             manual_seed(seed)
 
         if exists(prompt_log_filename) is False:
@@ -301,20 +309,21 @@ class PromptGenerator:
             remove_invalid_values=is_remove_invalid_values,
         )
 
-        self._generated_prompts = get_generated_texts(
-            generator,
-            self._gen_settings,
-            prompt,
-            is_self_recursive,
-            recursive_level,
-            preprocess_mode,
-        )
+        try:
+            self._generated_prompts = get_generated_texts(
+                generator,
+                self._gen_settings,
+                prompt,
+                is_self_recursive,
+                recursive_level,
+                preprocess_mode,
+            )
+        finally:
+            del generator
+            gc.collect()
+            soft_empty_cache()
 
         self._tokenized_prompts = self.__tokenize_texts(clip)
-
-        del generator
-        gc.collect()
-        soft_empty_cache()
 
         self.__log_outputs(
             model_name,
